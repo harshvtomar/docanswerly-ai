@@ -1,0 +1,64 @@
+{
+  "generatedAt": "2026-10-11T21:01:14.316Z",
+  "note": "Synthetic single-line fixtures; CER is NFC-normalized Unicode code-point Levenshtein distance after whitespace collapse. Not a real-world accuracy claim.",
+  "results": [
+    {
+      "language": "english",
+      "kind": "text",
+      "page": 1,
+      "reference": "Artificial intelligence improves information retrieval.",
+      "actual": "Artificial intelligence improves information retrieval.",
+      "characterErrorRate": 0,
+      "passed": true
+    },
+    {
+      "language": "english",
+      "kind": "scan",
+      "page": 1,
+      "reference": "Artificial intelligence improves information retrieval.",
+      "actual": "Artificial intelligence improves information retrieval.",
+      "characterErrorRate": 0,
+      "passed": true
+    },
+    {
+      "language": "hindi",
+      "kind": "text",
+      "page": 1,
+      "reference": "कृत्रिम बुद्धिमत्ता सूचना पुनर्प्राप्ति में सुधार करती है।",
+      "actual": "कृत्रिम बुद्धिमत्ता सूचना पुनर्प्राप्ति में सुधार करती है।",
+      "characterErrorRate": 0,
+      "passed": true
+    },
+    {
+      "language": "hindi",
+      "kind": "scan",
+      "page": 1,
+      "reference": "कृत्रिम बुद्धिमत्ता सूचना पुनर्प्राप्ति में सुधार करती है।",
+      "actual": "कृत्रिम बुद्धिमत्ता सूचना पुनर्प्राप्ति में सुधार करती gl",
+      "characterErrorRate": 0.05172413793103448,
+      "passed": true
+    },
+    {
+      "language": "mixed",
+      "kind": "text",
+      "page": 1,
+      "reference": "भारत में Artificial Intelligence का उपयोग तेजी से बढ़ रहा है।",
+      "actual": "भारत में Artificial Intelligence का उपयोग तेजी से बढ़ रहा है।",
+      "characterErrorRate": 0,
+      "passed": true
+    },
+    {
+      "language": "mixed",
+      "kind": "scan",
+      "page": 1,
+      "reference": "भारत में Artificial Intelligence का उपयोग तेजी से बढ़ रहा है।",
+      "actual": "भारत में Artificial Intelligence का उपयोग तेजी से बढ़ रहा है।",
+      "characterErrorRate": 0,
+      "passed": true
+    },
+    {
+      "test": "invalid PDF rejected",
+      "passed": true
+    }
+  ]
+}

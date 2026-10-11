@@ -6,3 +6,7 @@ dist/
 *.log
 test-results/
 playwright-report/
+public/ocr/
+public/pdf/
+
+tmp/

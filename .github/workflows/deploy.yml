@@ -21,7 +21,19 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
+      - run: npm run test:pdf
       - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-test-results
+          path: |
+            playwright-report/
+            test-results/
+            docs/evaluation.json
+          retention-days: 14
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
