@@ -53,3 +53,13 @@ After the interruption, remote main was still 579aede. Re-ran unit and PDF tests
 Fixed final asset packaging to use Tesseract's LICENSE.md filename (the other
 packages use LICENSE). Verified the production build again before publishing
 handoff files. The failed packaging attempt did not affect the live deployment.
+
+## Session 2 — restoration, 12 October 2026
+
+Verified remote main e57c20cd11be56a263e86e12586ad37e9ab0a7af; clean local
+source tree. Reviewed continuity documents and source. Re-ran Node 24 npm ci,
+15 unit tests, 7 real PDF/OCR checks and production build successfully.
+Existing Actions run 38201513927 has successful build and deployment (20 browser
+cases from Session 1). Public homepage loaded and sample processing rechecked.
+Session 2 work begins with pinned local multilingual embeddings and measured
+retrieval; generation remains pending. No paid services activated.
