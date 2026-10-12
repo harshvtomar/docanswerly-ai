@@ -70,7 +70,7 @@ export async function extractPdf(
         let text = normalizeText(
           content.items
             .map((item) =>
-              "str" in item ? item.str + (item.hasEOL ? "\n" : " ") : "",
+              "str" in item ? item.str + (item.hasEOL ? "\n" : "") : "",
             )
             .join(""),
         );
