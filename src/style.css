@@ -1071,3 +1071,8 @@ footer > span {
   color: inherit;
   font: inherit;
 }
+
+.answer-output { margin-top: 1rem; padding: 1rem; background: #f3f7f4; border-radius: 12px; text-align: left; }
+.answer-citation { display: block; width: 100%; text-align: left; margin: .7rem 0; white-space: normal; overflow-wrap: anywhere; }
+.answer-citation span { font-weight: 600; }
+.answer-citation p { font-size: .85rem; }

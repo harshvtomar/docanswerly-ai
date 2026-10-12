@@ -30,10 +30,4 @@ export interface EmbeddingProvider {
   model: string;
   embed(texts: string[]): Promise<number[][]>;
 }
-export interface AnswerProvider {
-  answer(
-    question: string,
-    evidence: Chunk[],
-    language: "auto" | "en" | "hi",
-  ): Promise<{ text: string; citations: string[] }>;
-}
+export type { AnswerRequest, GroundedAnswer, InferenceClient } from './answers';

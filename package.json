@@ -1,7 +1,7 @@
 {
   "name": "docanswerly-ai",
   "version": "0.2.0",
-  "description": "DocAnswerly AI — Upload Documents. Ask Questions. Get Answers. Multilingual English/Hindi document intelligence.",
+  "description": "DocAnswerly AI \u2014 Upload Documents. Ask Questions. Get Answers. Multilingual English/Hindi document intelligence.",
   "main": "index.js",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
@@ -9,13 +9,14 @@
     "test": "vitest run",
     "preview": "vite preview --host 0.0.0.0",
     "prepare:assets": "node scripts/prepare-assets.mjs",
-    "prebuild": "npm run prepare:assets && npm run prepare:model",
-    "predev": "npm run prepare:assets && npm run prepare:model",
+    "prebuild": "npm run prepare:assets && npm run prepare:model && npm run prepare:generation",
+    "predev": "npm run prepare:assets && npm run prepare:model && npm run prepare:generation",
     "test:pdf": "npm run prepare:assets && node scripts/evaluate.mjs",
     "test:e2e": "playwright test",
     "format": "prettier --write src scripts/*.mjs *.ts *.json docs/*.md *.md",
     "prepare:model": "node scripts/prepare-model.mjs",
-    "test:retrieval": "npm run prepare:model && node --import tsx scripts/evaluate-retrieval.ts"
+    "test:retrieval": "npm run prepare:model && node --import tsx scripts/evaluate-retrieval.ts",
+    "prepare:generation": "node scripts/prepare-generation.mjs"
   },
   "repository": {
     "type": "git",
@@ -34,6 +35,7 @@
     "@fontsource/manrope": "^5.3.0",
     "@fontsource/noto-sans-devanagari": "^5.3.0",
     "@huggingface/transformers": "3.8.1",
+    "@wllama/wllama": "3.8.1",
     "pdfjs-dist": "^6.4.299",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",

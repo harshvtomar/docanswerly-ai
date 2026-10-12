@@ -1,3 +1,4 @@
+import { AnswerPanel } from "./components/AnswerPanel";
 import { useMemo, useRef, useState } from "react";
 import { SearchPanel } from "./components/SearchPanel";
 import { Viewer } from "./components/Viewer";
@@ -442,35 +443,7 @@ export default function App() {
           </div>
           <div className="bottom-grid">
             <SearchPanel chunks={chunks} onSource={source} />
-            <section className="panel ask-panel">
-              <div className="panel-title">
-                <h3>Ask your documents</h3>
-                <span className="chip pending">Coming next</span>
-              </div>
-              <div className="ask-symbol">✧</div>
-              <h3>Answers with evidence.</h3>
-              <p>
-                Document-grounded AI answers are not enabled yet. You can
-                already search passages and open their source pages.
-              </p>
-              <label>
-                Answer language
-                <select disabled aria-label="Answer language">
-                  <option>Auto · match your question</option>
-                  <option>English</option>
-                  <option>हिन्दी</option>
-                </select>
-              </label>
-              <textarea
-                disabled
-                aria-label="Ask a question"
-                placeholder="Ask in English or Hindi…"
-              />
-              <button disabled className="primary">
-                AI connection pending
-              </button>
-              <small>No simulated answers. No exposed API keys.</small>
-            </section>
+            <AnswerPanel chunks={chunks} onSource={source} />
           </div>
           {activity.length > 0 && (
             <div className="activity">

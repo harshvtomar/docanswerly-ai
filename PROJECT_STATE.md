@@ -70,3 +70,7 @@ Current remote baseline verified: 03c6001e21d7714d3dba61d3fe20134c8348e82f.
 40 local checks rerun successfully; baseline browser/deployment gates verified
 in Actions 38231588343. CPU-only npm install avoids optional CUDA download.
 Generation remains pending while a local model is evaluated.
+
+Local generation foundation implemented, awaiting real browser validation.
+Model: Unsloth Qwen3 0.6B Q4_K_M; optional ~405 MB plus evidence model.
+22 new unit tests passed. Do not infer answer quality from structural validation.

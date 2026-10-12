@@ -121,3 +121,12 @@ sets that flag. Re-ran 24 unit, 7 PDF/OCR and 9 real embedding checks: 40 passed
 OCR CER unchanged: English 0, Hindi 0.051724, mixed 0.
 No external inference credentials are configured. Investigating optional local
 Qwen3 0.6B GGUF generation with Wllama; inference is not yet implemented or verified.
+
+### Session 3 — local inference foundation
+Added pinned Wllama 3.8.1 and an optional Qwen3 0.6B Q4_K_M adapter, SHA256
+verified 396,705,472-byte GGUF. No provider credentials or paid services used.
+Implemented structured output, citation allowlisting, original source metadata,
+new-numeral rejection, language validation, request limits, cancellation, and
+explicit abstention status. Added 22 boundary unit tests: 46 unit checks now pass.
+Browser inference acceptance gate added; actual model behavior remains unverified
+until that CI gate completes. Model-generated answers are marked experimental.
