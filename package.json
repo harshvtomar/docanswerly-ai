@@ -1,6 +1,6 @@
 {
   "name": "docanswerly-ai",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "DocAnswerly AI — Upload Documents. Ask Questions. Get Answers. Multilingual English/Hindi document intelligence.",
   "main": "index.js",
   "scripts": {

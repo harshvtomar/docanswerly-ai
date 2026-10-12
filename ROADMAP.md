@@ -5,12 +5,12 @@ Repository, tested Pages deployment, local English/Hindi PDF extraction and OCR,
 actual PDF viewer, library, Unicode normalization, page-aware chunks, keyword search,
 fixtures and honest quality reporting.
 
-## Session 2 — retrieval and reliability
-Expand fixtures to multi-column, rotated, noisy and independently authored text
-PDFs. Add OCR cancellation/timeouts and improve ordering and fallback. Integrate
-a pinned multilingual embedding model, preferably opt-in local inference after
-measuring memory/download cost. Evaluate EN→EN, HI→HI, EN→HI, HI→EN, and mixed queries
-with labelled source pages and Recall@K. Add hybrid keyword/vector ranking.
+## Session 2 — implemented retrieval and initial reliability
+Implemented pinned local q8 multilingual MiniLM, semantic search, optional hybrid
+RRF, token-aware source spans, worker isolation and cancellation/timeouts. Evaluated
+25 synthetic queries across five language directions. Hybrid cross-language quality
+and negative-query abstention need improvement. OCR cancellation added; broader
+scan dataset and image-quality improvements remain for Session 3.
 
 ## Session 3 — grounded answers
 Deploy a secure inference backend only with an authorized free account or explicit

@@ -94,3 +94,16 @@ New cancellation browser cases await CI on this checkpoint.
 Packaging fix: onnxruntime-web omits a LICENSE file in its npm tarball; preserved
 the MIT license from its exact upstream __commit.txt revision in docs/licenses.
 No deployed regression occurred. Broader OCR datasets and secure QA remain pending.
+
+### Session 2 release handoff
+
+Reliability deployment run 38230886095 succeeded: 66 checks passed, 0 failed,
+0 skipped. Prepared v0.2.0 version labels and complete Session 3 continuation.
+README, state, architecture, deployment, decisions, roadmap, test results and
+retrieval evaluation reflect actual functionality and known quality gaps.
+Captured public semantic search evidence in docs/screenshots/semantic-search.jpg.
+Final release docs/version commit runs the same gates; inspect current HEAD.
+
+Remaining: secure generated answers/backend, evidence abstention, stronger hybrid
+ranking, independently held-out retrieval, broader OCR fixtures, persistent local
+storage and physical-device memory validation. No private data/secrets committed.

@@ -70,3 +70,8 @@ and process RSS. CPU process RSS includes Node, tokenizer and runtime allocation
 it is NOT a browser peak-memory measurement. Browser tests separately execute real
 WASM inference on desktop Chromium and Pixel 7 emulation. Physical phone memory,
 battery usage, Safari and Firefox remain unmeasured.
+
+Saved local CPU run (2026-10-12 09:30 UTC): initialization 3,927.69 ms,
+30-passage indexing 929.36 ms, mean query 14.35 ms, nearest-rank p95 19.34 ms,
+process RSS snapshot 595.47 MiB. Assets were already downloaded. These are one-run
+measurements, not performance guarantees or end-to-end browser latency.

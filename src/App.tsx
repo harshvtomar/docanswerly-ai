@@ -516,7 +516,7 @@ export default function App() {
           DocAnswerly <b>AI</b>
         </a>
         <p>Upload Documents. Ask Questions. Get Answers.</p>
-        <span>v0.1.0 · Built for English + हिन्दी</span>
+        <span>v0.2.0 · Built for English + हिन्दी</span>
       </footer>
     </>
   );

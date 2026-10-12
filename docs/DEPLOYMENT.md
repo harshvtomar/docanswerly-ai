@@ -5,7 +5,7 @@ Public URL: https://harshvtomar.github.io/docanswerly-ai/
 Branch: main. GitHub Pages Settings → Source: GitHub Actions.
 
 `.github/workflows/deploy.yml` installs from the lockfile on Node 24, runs unit
-and PDF/OCR checks, builds, installs Chromium, runs desktop/mobile browser tests,
+PDF/OCR checks and actual multilingual retrieval evaluation, builds, installs Chromium, runs desktop/mobile browser tests,
 uploads browser evidence, then publishes with official configure-pages,
 upload-pages-artifact and deploy-pages actions. Failed checks prevent deployment.
 Repository permissions: contents read, pages write, id-token write. Deploy job
@@ -15,8 +15,12 @@ Vite base must stay `/docanswerly-ai/`. PDF worker is a Vite asset URL; supporti
 PDF assets and OCR paths use `import.meta.env.BASE_URL`. `prepare-assets.mjs`
 copies package workers/WebAssembly and downloads versioned eng/hin traineddata
 with checksum checks. Fonts are bundled. CI fails if required assets are missing.
-The full static artifact is about 56 MB, mostly OCR/PDF engine resources; browsers
-fetch only the engine variant they need. First OCR use downloads several MB.
+The full static artifact is about 237 MiB including model/tokenizer and multiple
+WASM variants; browsers fetch only the needed engine. Semantic opt-in downloads
+about 160 MB on first use; model/tokenizer total about 135 MB. Public weights are
+not committed in Git. scripts/prepare-model.mjs verifies the pinned checksums.
+First OCR use downloads several MB. Model data may be cached by browser storage;
+changing model revision must also change the runtime URL/cache namespace.
 
 ## Reproduce / deploy
 

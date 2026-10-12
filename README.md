@@ -4,21 +4,25 @@
 
 *An AI-powered multilingual document intelligence platform for extracting knowledge and answering questions from English and Hindi PDF documents.*
 
-**[Open the live demo](https://harshvtomar.github.io/docanswerly-ai/)** · v0.1.0
+**[Open the live demo](https://harshvtomar.github.io/docanswerly-ai/)** · v0.2.0
 
-Session 1 delivers a working, browser-local PDF reader, English/Hindi OCR and
-page-linked keyword search. **Generative question answering and multilingual
-semantic retrieval are pending.** The product vision above is not a claim that
-LLM inference is already connected.
+Session 2 adds genuine browser-local multilingual semantic retrieval and optional
+hybrid search to the English/Hindi PDF reader and OCR pipeline. **Generative
+question answering remains pending.** Retrieved passages are not AI answers.
 
-![DocAnswerly AI live workspace](docs/screenshots/workspace.jpg)
+![DocAnswerly AI semantic search](docs/screenshots/semantic-search.jpg)
 
 ## Try it
 
 1. Open the live demo and choose **Try a bilingual sample**, or upload your PDF.
 2. Inspect extracted text and use the **Original PDF** tab and page arrows.
 3. Search `बुद्धिमत्ता`, `भारत`, or `retrieval`. Click a result to open its page.
-4. For broken embedded encoding or mixed text/image pages, select **Force OCR**
+4. Choose **Enable local semantic search**, allow the ~160 MB model/runtime
+   download, then select **Semantic**. Try `Where is artificial intelligence usage
+   growing rapidly?` and open the page-3 result. All inference stays on your device.
+5. **Hybrid** combines keyword and semantic ranks but performed worse for
+   cross-language queries in our small evaluation. It is optional, not the default.
+6. For broken embedded encoding or mixed text/image pages, select **Force OCR**
    before uploading again. English and Hindi OCR run together.
 
 Files and extracted text stay in tab memory. Refreshing clears the workspace.
@@ -26,7 +30,7 @@ No account or API key is required. No uploaded documents are sent to an AI servi
 
 ## Verified features
 
-| Feature | v0.1.0 status |
+| Feature | v0.2.0 status |
 |---|---|
 | React/TypeScript responsive frontend | Deployed on GitHub Pages |
 | English, Hindi and mixed searchable PDFs | Verified on synthetic fixtures |
@@ -35,8 +39,10 @@ No account or API key is required. No uploaded documents are sent to an AI servi
 | Upload, library, delete, progress and errors | Implemented and browser-tested |
 | Original PDF viewer and page navigation | Implemented and browser-tested |
 | Local keyword search and page-linked excerpts | Implemented in English/Hindi |
-| Page-aware chunks and semantic provider interface | Implemented foundation |
-| Cross-language semantic model, RAG answers | Not integrated |
+| Multilingual semantic retrieval, including English ↔ Hindi | Real local q8 MiniLM, browser-tested |
+| Optional hybrid RRF search | Implemented; known cross-language ranking weakness |
+| Token-aware chunks and original-page citations | Implemented |
+| AI-generated RAG answers | Pending secure inference |
 | External AI backend and persistence | Not deployed |
 
 ## Architecture and technologies
@@ -48,8 +54,9 @@ Exact versions/integrity are pinned in package-lock.json. Plain CSS with bundled
 DM Sans, Manrope and Noto Sans Devanagari. GitHub Pages serves static assets;
 there is no backend execution on Pages.
 
-Future RAG: chunks → genuine multilingual embeddings → hybrid retrieval/reranking
-→ secure LLM inference → validated citations and abstention. See
+Implemented retrieval: page chunks → token-aware splitting → local multilingual
+embeddings → semantic / optional hybrid ranking → source pages.
+Future work: reranking → secure LLM inference → validated citations and abstention. See
 [architecture](docs/ARCHITECTURE.md) and [roadmap](ROADMAP.md).
 
 ## Local development
@@ -60,11 +67,13 @@ Use Node.js 24 and npm. From a clean checkout:
 npm ci
 npm test
 npm run test:pdf
+npm run test:retrieval
 npm run dev
 ```
 
 `npm run dev` prepares local PDF/OCR assets first. Initial preparation downloads
-versioned English/Hindi language data and verifies SHA-256 hashes. It requires
+versioned English/Hindi language data and pinned model assets, verifying SHA-256
+hashes. Model details are in [retrieval evaluation](docs/RETRIEVAL_EVALUATION.md). It requires
 network access; processing in the deployed app uses same-origin assets.
 
 ```bash
@@ -79,12 +88,13 @@ an existing build. Open the printed URL with `/docanswerly-ai/` appended.
 
 ## Reproducible checks
 
-15 unit tests + 7 PDF evaluation checks + 20 desktop/mobile browser tests passed;
-0 failures and 0 skipped in the verified Session 1 run. [Full results and limitations](docs/TEST_RESULTS.md).
-OCR CER on one clean synthetic sentence per language: English 0%, Hindi 5.17%,
-mixed 0%. This is **not** general OCR accuracy. Source references and actual outputs
-are saved in [evaluation.json](docs/evaluation.json). Retrieval Recall@K is not
-reported because no real semantic model is integrated.
+Session 1's 42-check baseline is preserved. Session 2 adds real inference,
+retrieval integrity and cancellation checks. See [actual counts](docs/TEST_RESULTS.md).
+OCR CER on the original clean synthetic sentences: English 0%, Hindi 5.17%, mixed
+0%; not general OCR accuracy. Semantic Recall@1/3/5 and MRR were 1.0 on 25 simple
+synthetic development queries. Keyword Recall@1 was 0.60; hybrid also 0.60, so
+hybrid is not recommended for cross-language queries. No held-out generalization
+or negative-query abstention is claimed. [Full evaluation and failures](docs/RETRIEVAL_EVALUATION.md).
 
 Fixtures and regeneration instructions: [public/fixtures](public/fixtures/README.md).
 The CI workflow repeats tests, PDF evaluation, build, and Chromium desktop/mobile
@@ -98,8 +108,11 @@ checks before official Pages deployment. Browser artifacts are retained 14 days.
 - Text-overlay fixtures are small and synthetic; arbitrary Hindi font encodings,
   table reconstruction, multi-column ordering and rotated pages are not validated.
 - Mixed text/image content within one page may require force OCR.
-- OCR cancellation and timeout recovery are pending; large scans can be slow.
-- No password-protected PDF support. No semantic/cross-language search or AI answers.
+- OCR cancellation and timeouts are implemented; initialization cleanup waits for
+  the worker handle. Large scans can be slow. Cancelling discards the unfinished PDF.
+- No password-protected PDF support or generated AI answers.
+- Semantic model: 128 tokens per passage/query, 500 token-sized passages per index.
+  Large download/memory footprint; unsupported questions still return ranked passages.
 - Chrome and emulated Pixel 7 were tested; Safari and physical mobile testing remain.
 
 ## Security and deployment

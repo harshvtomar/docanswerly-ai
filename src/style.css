@@ -1050,3 +1050,24 @@ footer > span {
     transition: none !important;
   }
 }
+
+.search-panel > button {
+  margin: 0 24px;
+}
+.search-panel > label:not(.search-input) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 24px;
+  font-size: 14px;
+}
+.search-panel select {
+  max-width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #d8ded4;
+  border-radius: 8px;
+  background: white;
+  color: inherit;
+  font: inherit;
+}

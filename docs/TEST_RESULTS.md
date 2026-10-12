@@ -55,3 +55,43 @@ stub vectors only. Physical mobile devices, Safari/Firefox, handwriting, rotatio
 noisy/multi-column scans, arbitrary legacy Hindi encodings, corrupted individual
 page recovery and maximum-size resource exhaustion require further validation.
 No tests were skipped in the executed suites; these gaps are not covered tests.
+
+# Session 2 test results
+
+Verified reliability commit: 708dcd33512179ea9ac1e3ce33bc51ff2ceb9b3c.
+Actions: https://github.com/harshvtomar/docanswerly-ai/actions/runs/38230886095
+Build and deployment succeeded. Check the current HEAD for later release runs.
+
+| Suite | Passed | Failed | Skipped |
+|---|---:|---:|---:|
+| Vitest unit tests | 24 | 0 | 0 |
+| Real PDF/OCR checks | 7 | 0 | 0 |
+| Real model/tokenizer acceptance checks | 9 | 0 | 0 |
+| Playwright desktop Chromium | 13 | 0 | 0 |
+| Playwright Pixel 7 emulation | 13 | 0 | 0 |
+| Total | 66 | 0 | 0 |
+
+The original 42-check baseline remains intact. New checks cover RRF ranking, span
+deduplication, document-index replacement, failed-provider atomicity, cancellation
+and timeout cleanup. Real model checks cover dimensions, token budgets/source
+offsets, empty/long query rejection and five language-direction acceptance cases.
+Browser tests execute real WASM cross-language search, hybrid mode, correct source
+navigation, deletion, model-load failure with keyword fallback, and OCR cancellation
+followed by a successful new upload. Browser suite: 26 passed in 49.7 seconds on CI.
+
+25-query ranking quality measurements are evaluation rows, not 25 extra passing
+tests. Hybrid ranking failures and all three unsupported-query non-abstentions
+remain recorded in RETRIEVAL_EVALUATION.md; passing engineering checks do not erase
+these quality limitations. Hindi OCR CER stays 5.1724% on the original single-line
+fixture. No new noisy/rotated/multi-column accuracy claim is made.
+
+Public smoke check on the retrieval deployment: model initialized from same-origin
+assets, indexed three pages, ranked the Hindi/mixed page 3 first for the English
+question about rapidly growing AI usage, and navigated to that page. No app-origin
+JavaScript error observed; browser extension metadata errors were unrelated.
+
+Local verification used Node 24: npm ci baseline, npm test, npm run test:pdf,
+npm run test:retrieval, npm run build. CI repeats npm ci and all suites, installing
+Chromium for the browser tests. Saved Node timing/RSS measurements are not browser
+performance benchmarks. Safari/Firefox, physical devices, broad scan quality,
+peak-memory stress, calibrated abstention and genuine QA remain untested.
