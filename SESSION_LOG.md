@@ -107,3 +107,17 @@ Final release docs/version commit runs the same gates; inspect current HEAD.
 Remaining: secure generated answers/backend, evidence abstention, stronger hybrid
 ranking, independently held-out retrieval, broader OCR fixtures, persistent local
 storage and physical-device memory validation. No private data/secrets committed.
+
+
+## Session 3 — restoration checkpoint (2026-10-12 UTC)
+
+Remote main verified at 03c6001e21d7714d3dba61d3fe20134c8348e82f.
+Restored existing source and documentation without replacing history.
+`npm ci` initially failed fetching optional ONNX CUDA binaries. The documented
+`ONNXRUNTIME_NODE_INSTALL_CUDA=skip npm ci` CPU-only installation succeeds; CI now
+sets that flag. Re-ran 24 unit, 7 PDF/OCR and 9 real embedding checks: 40 passed,
+0 failed, 0 skipped; production build passed. Existing release Actions run
+38231588343 has successful build (including 26 browser tests) and deployment.
+OCR CER unchanged: English 0, Hindi 0.051724, mixed 0.
+No external inference credentials are configured. Investigating optional local
+Qwen3 0.6B GGUF generation with Wllama; inference is not yet implemented or verified.

@@ -63,3 +63,10 @@ OCR CER: English 0%, Hindi 5.1724%, mixed 0% on original clean single-line scans
 - No paid services activated. No credentials needed for currently working features.
 
 Continue with NEXT_SESSION_PROMPT.md (Session 3). Never restart or replace this repo.
+
+
+### Session 3 restoration in progress
+Current remote baseline verified: 03c6001e21d7714d3dba61d3fe20134c8348e82f.
+40 local checks rerun successfully; baseline browser/deployment gates verified
+in Actions 38231588343. CPU-only npm install avoids optional CUDA download.
+Generation remains pending while a local model is evaluated.
