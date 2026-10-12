@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ONNXRUNTIME_NODE_INSTALL_CUDA: skip
+      RAG_EVALUATION: "1"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -25,6 +26,7 @@ jobs:
       - run: npm test
       - run: npm run test:pdf
       - run: npm run test:retrieval
+      - run: npm run test:hybrid
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
@@ -37,7 +39,10 @@ jobs:
             test-results/
             docs/evaluation.json
             docs/retrieval-evaluation.json
+            docs/hybrid-evaluation.json
+            docs/rag-evaluation.json
           retention-days: 14
+      - run: rm -f dist/evaluation.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

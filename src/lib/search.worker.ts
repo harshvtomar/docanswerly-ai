@@ -1,5 +1,5 @@
 import { LocalEmbeddings } from "./embeddings";
-import { SemanticIndex, reciprocalRankFusion, deduplicate } from "./rag";
+import { SemanticIndex, semanticFirstFusion, deduplicate } from "./rag";
 import { keywordSearch } from "./text";
 import type { Chunk } from "./types";
 let model: LocalEmbeddings | undefined,
@@ -35,10 +35,10 @@ self.onmessage = ({ data }) => {
         const semantic = await index.search(data.query, 40);
         const hits =
           data.mode === "hybrid"
-            ? reciprocalRankFusion([
-                keywordSearch(chunks, data.query, 40),
+            ? semanticFirstFusion(
                 semantic,
-              ])
+                keywordSearch(chunks, data.query, 40),
+              )
             : deduplicate(semantic);
         self.postMessage({ id, result: hits });
       }

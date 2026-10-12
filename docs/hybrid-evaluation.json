@@ -1,0 +1,871 @@
+{
+  "generatedAt": "2026-10-12T17:50:41.576Z",
+  "parameters": {
+    "semanticWeight": 1,
+    "lexicalWeight": 0.15,
+    "rankConstant": 10,
+    "frozenBeforeHeldout": true
+  },
+  "reports": [
+    {
+      "split": "development",
+      "note": "Authored synthetic development corpus, not held-out or representative. One relevant passage per positive query; no training or tuning performed. Negatives have no supported answer.",
+      "metrics": {
+        "keyword": {
+          "count": 25,
+          "recallAt1": 0.6,
+          "recallAt3": 0.6,
+          "recallAt5": 0.6,
+          "mrr": 0.6
+        },
+        "semantic": {
+          "count": 25,
+          "recallAt1": 1,
+          "recallAt3": 1,
+          "recallAt5": 1,
+          "mrr": 1
+        },
+        "originalHybrid": {
+          "count": 25,
+          "recallAt1": 0.6,
+          "recallAt3": 0.6,
+          "recallAt5": 0.6,
+          "mrr": 0.6333535353535354
+        },
+        "improvedHybrid": {
+          "count": 25,
+          "recallAt1": 0.8,
+          "recallAt3": 1,
+          "recallAt5": 1,
+          "mrr": 0.9
+        }
+      },
+      "byCategory": {
+        "en-en": {
+          "keyword": {
+            "count": 5,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          },
+          "semantic": {
+            "count": 5,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          },
+          "originalHybrid": {
+            "count": 5,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          },
+          "improvedHybrid": {
+            "count": 5,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          }
+        },
+        "hi-hi": {
+          "keyword": {
+            "count": 5,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          },
+          "semantic": {
+            "count": 5,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          },
+          "originalHybrid": {
+            "count": 5,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          },
+          "improvedHybrid": {
+            "count": 5,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          }
+        },
+        "en-hi": {
+          "keyword": {
+            "count": 5,
+            "recallAt1": 0,
+            "recallAt3": 0,
+            "recallAt5": 0,
+            "mrr": 0
+          },
+          "semantic": {
+            "count": 5,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          },
+          "originalHybrid": {
+            "count": 5,
+            "recallAt1": 0,
+            "recallAt3": 0,
+            "recallAt5": 0,
+            "mrr": 0.10454545454545454
+          },
+          "improvedHybrid": {
+            "count": 5,
+            "recallAt1": 0.8,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 0.9
+          }
+        },
+        "hi-en": {
+          "keyword": {
+            "count": 5,
+            "recallAt1": 0,
+            "recallAt3": 0,
+            "recallAt5": 0,
+            "mrr": 0
+          },
+          "semantic": {
+            "count": 5,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          },
+          "originalHybrid": {
+            "count": 5,
+            "recallAt1": 0,
+            "recallAt3": 0,
+            "recallAt5": 0,
+            "mrr": 0.062222222222222213
+          },
+          "improvedHybrid": {
+            "count": 5,
+            "recallAt1": 0.2,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 0.6
+          }
+        },
+        "mixed": {
+          "keyword": {
+            "count": 5,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          },
+          "semantic": {
+            "count": 5,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          },
+          "originalHybrid": {
+            "count": 5,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          },
+          "improvedHybrid": {
+            "count": 5,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          }
+        }
+      },
+      "rows": [
+        {
+          "category": "en-en",
+          "query": "What do machine learning models identify?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "en-en",
+          "query": "How long can I borrow a telescope from Cedar library?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "en-en",
+          "query": "At what temperature are the Aster blood samples kept?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "en-en",
+          "query": "When does the Willow Island boat depart?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "en-en",
+          "query": "How much does replacing a missing transit card cost?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "hi-hi",
+          "query": "मशीन लर्निंग मॉडल क्या पहचानते हैं?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "hi-hi",
+          "query": "शनिवार को नीलम विद्यालय का पुस्तकालय कब बंद होता है?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "hi-hi",
+          "query": "सूर्या बाग में सिंचाई कितनी बार होती है?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "hi-hi",
+          "query": "किरण अस्पताल में रक्तदाता की न्यूनतम उम्र क्या है?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "hi-hi",
+          "query": "दक्षिण संग्रहालय में बच्चों को कितने रुपये देने होंगे?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "en-hi",
+          "query": "What is the capital of India?",
+          "ranks": {
+            "keyword": null,
+            "semantic": 1,
+            "originalHybrid": 11,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "en-hi",
+          "query": "How long is the sewing course at Amal training centre?",
+          "ranks": {
+            "keyword": null,
+            "semantic": 1,
+            "originalHybrid": 12,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "en-hi",
+          "query": "Why is the old bridge across the Dev river closed?",
+          "ranks": {
+            "keyword": null,
+            "semantic": 1,
+            "originalHybrid": 11,
+            "improvedHybrid": 2
+          }
+        },
+        {
+          "category": "en-hi",
+          "query": "On which days is organic waste collected in Chandra Nagar?",
+          "ranks": {
+            "keyword": null,
+            "semantic": 1,
+            "originalHybrid": 6,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "en-hi",
+          "query": "What is the application deadline for Ravi bank agricultural loans?",
+          "ranks": {
+            "keyword": null,
+            "semantic": 1,
+            "originalHybrid": 11,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "hi-en",
+          "query": "पृथ्वी किसके चारों ओर घूमती है?",
+          "ranks": {
+            "keyword": null,
+            "semantic": 1,
+            "originalHybrid": 15,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "hi-en",
+          "query": "लोटस क्लिनिक में मुफ्त आँखों की जाँच कब होती है?",
+          "ranks": {
+            "keyword": null,
+            "semantic": 1,
+            "originalHybrid": 18,
+            "improvedHybrid": 2
+          }
+        },
+        {
+          "category": "hi-en",
+          "query": "मैपल में काँच की बोतल किस रंग के डिब्बे में रखनी चाहिए?",
+          "ranks": {
+            "keyword": null,
+            "semantic": 1,
+            "originalHybrid": 18,
+            "improvedHybrid": 2
+          }
+        },
+        {
+          "category": "hi-en",
+          "query": "ओरायन छात्रवृत्ति में किन खर्चों का भुगतान नहीं होता?",
+          "ranks": {
+            "keyword": null,
+            "semantic": 1,
+            "originalHybrid": 15,
+            "improvedHybrid": 2
+          }
+        },
+        {
+          "category": "hi-en",
+          "query": "गाँव का पानी का पंप किस ऊर्जा से चलता है?",
+          "ranks": {
+            "keyword": null,
+            "semantic": 1,
+            "originalHybrid": 15,
+            "improvedHybrid": 2
+          }
+        },
+        {
+          "category": "mixed",
+          "query": "AI का उपयोग किस क्षेत्र में बढ़ रहा है?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "mixed",
+          "query": "Robotics की class किस दिन है?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "mixed",
+          "query": "मेघा farm में sensors क्या measure करते हैं?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "mixed",
+          "query": "सारथी offline maps download करने के लिए क्या चाहिए?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "mixed",
+          "query": "अंबर accounts की security policy क्या require करती है?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "query": "What is the password for the Orion scholarship administrator?",
+          "topScore": 0.3955048574544135,
+          "automaticAbstention": false
+        },
+        {
+          "query": "कल मंगल ग्रह पर कितनी बारिश होगी?",
+          "topScore": 0.3949570314042191,
+          "automaticAbstention": false
+        },
+        {
+          "query": "अंबर office के CEO का private phone number क्या है?",
+          "topScore": 0.21464831531315143,
+          "automaticAbstention": false
+        }
+      ]
+    },
+    {
+      "split": "heldout",
+      "note": "Synthetic Session 3 held-out corpus. Weights (semantic 1, lexical .15, rank constant 10) frozen before first execution. Authored separately from Session 2 development and RAG answer cases. Not an independently collected real-world benchmark.",
+      "metrics": {
+        "keyword": {
+          "count": 20,
+          "recallAt1": 0.5,
+          "recallAt3": 0.6,
+          "recallAt5": 0.6,
+          "mrr": 0.55
+        },
+        "semantic": {
+          "count": 20,
+          "recallAt1": 0.95,
+          "recallAt3": 1,
+          "recallAt5": 1,
+          "mrr": 0.975
+        },
+        "originalHybrid": {
+          "count": 20,
+          "recallAt1": 0.6,
+          "recallAt3": 0.7,
+          "recallAt5": 0.75,
+          "mrr": 0.6639583333333333
+        },
+        "improvedHybrid": {
+          "count": 20,
+          "recallAt1": 0.85,
+          "recallAt3": 1,
+          "recallAt5": 1,
+          "mrr": 0.9166666666666667
+        }
+      },
+      "byCategory": {
+        "en-en": {
+          "keyword": {
+            "count": 4,
+            "recallAt1": 0.75,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 0.875
+          },
+          "semantic": {
+            "count": 4,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          },
+          "originalHybrid": {
+            "count": 4,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          },
+          "improvedHybrid": {
+            "count": 4,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          }
+        },
+        "hi-hi": {
+          "keyword": {
+            "count": 4,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          },
+          "semantic": {
+            "count": 4,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          },
+          "originalHybrid": {
+            "count": 4,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          },
+          "improvedHybrid": {
+            "count": 4,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          }
+        },
+        "en-hi": {
+          "keyword": {
+            "count": 4,
+            "recallAt1": 0,
+            "recallAt3": 0,
+            "recallAt5": 0,
+            "mrr": 0
+          },
+          "semantic": {
+            "count": 4,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          },
+          "originalHybrid": {
+            "count": 4,
+            "recallAt1": 0,
+            "recallAt3": 0.5,
+            "recallAt5": 0.5,
+            "mrr": 0.22291666666666665
+          },
+          "improvedHybrid": {
+            "count": 4,
+            "recallAt1": 0.5,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 0.75
+          }
+        },
+        "hi-en": {
+          "keyword": {
+            "count": 4,
+            "recallAt1": 0,
+            "recallAt3": 0,
+            "recallAt5": 0,
+            "mrr": 0
+          },
+          "semantic": {
+            "count": 4,
+            "recallAt1": 0.75,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 0.875
+          },
+          "originalHybrid": {
+            "count": 4,
+            "recallAt1": 0,
+            "recallAt3": 0,
+            "recallAt5": 0.25,
+            "mrr": 0.096875
+          },
+          "improvedHybrid": {
+            "count": 4,
+            "recallAt1": 0.75,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 0.8333333333333334
+          }
+        },
+        "mixed": {
+          "keyword": {
+            "count": 4,
+            "recallAt1": 0.75,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 0.875
+          },
+          "semantic": {
+            "count": 4,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          },
+          "originalHybrid": {
+            "count": 4,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          },
+          "improvedHybrid": {
+            "count": 4,
+            "recallAt1": 1,
+            "recallAt3": 1,
+            "recallAt5": 1,
+            "mrr": 1
+          }
+        }
+      },
+      "rows": [
+        {
+          "category": "en-en",
+          "query": "When can visitors access Mira's roof?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "en-en",
+          "query": "Which day is reserved for fragile map deliveries at Pine?",
+          "ranks": {
+            "keyword": 2,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "en-en",
+          "query": "Does Acorn cover damage to cables under warranty?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "en-en",
+          "query": "What storage temperature limit applies to Nectar seeds?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "hi-hi",
+          "query": "अवनि में चित्रकला सीखने के लिए किस दिन जाना चाहिए?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "hi-hi",
+          "query": "सरोवर पार्क में कौन से प्रवेश द्वार से जा सकते हैं?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "hi-hi",
+          "query": "तरंग बस में किन बच्चों को टिकट नहीं खरीदना पड़ता?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "hi-hi",
+          "query": "दीपक से औजार लेने के लिए क्या जमा करना होगा?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "en-hi",
+          "query": "When does the science exhibition begin at Archana school?",
+          "ranks": {
+            "keyword": null,
+            "semantic": 1,
+            "originalHybrid": 10,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "en-hi",
+          "query": "How often does Badal water plant replace its filter?",
+          "ranks": {
+            "keyword": null,
+            "semantic": 1,
+            "originalHybrid": 3,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "en-hi",
+          "query": "Can I take Uday library reference books home?",
+          "ranks": {
+            "keyword": null,
+            "semantic": 1,
+            "originalHybrid": 3,
+            "improvedHybrid": 2
+          }
+        },
+        {
+          "category": "en-hi",
+          "query": "Who pays for meals under the Palash training scheme?",
+          "ranks": {
+            "keyword": null,
+            "semantic": 1,
+            "originalHybrid": 8,
+            "improvedHybrid": 2
+          }
+        },
+        {
+          "category": "hi-en",
+          "query": "फिंच प्रयोगशाला में काँच के बर्तनों को कैसे कीटाणुरहित किया जाता है?",
+          "ranks": {
+            "keyword": null,
+            "semantic": 1,
+            "originalHybrid": 16,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "hi-en",
+          "query": "हार्बर रसोई में पंजीकरण किस समय बंद होता है?",
+          "ranks": {
+            "keyword": null,
+            "semantic": 1,
+            "originalHybrid": 16,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "hi-en",
+          "query": "एल्म फंड किन मरम्मत के खर्चों की प्रतिपूर्ति करता है?",
+          "ranks": {
+            "keyword": null,
+            "semantic": 2,
+            "originalHybrid": 16,
+            "improvedHybrid": 3
+          }
+        },
+        {
+          "category": "hi-en",
+          "query": "जुनिपर नाव पर कौन सा दोपहिया वाहन मुफ्त ले जा सकते हैं?",
+          "ranks": {
+            "keyword": null,
+            "semantic": 1,
+            "originalHybrid": 5,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "mixed",
+          "query": "रोहन studio में editing किस दिन available है?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "mixed",
+          "query": "सुमन backup के लिए कौन सा network चाहिए?",
+          "ranks": {
+            "keyword": 2,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "mixed",
+          "query": "ईशा sensor कौन सी quantity measure करता है?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        },
+        {
+          "category": "mixed",
+          "query": "विहान maintenance window कब खत्म होती है?",
+          "ranks": {
+            "keyword": 1,
+            "semantic": 1,
+            "originalHybrid": 1,
+            "improvedHybrid": 1
+          }
+        }
+      ],
+      "negatives": [
+        {
+          "query": "What is the bank account password of the Mira observatory director?",
+          "topScore": 0.35696418649842365,
+          "automaticAbstention": false
+        },
+        {
+          "query": "अवनि केंद्र की वर्ष 2030 की आय कितनी है?",
+          "topScore": 0.26537254514957637,
+          "automaticAbstention": false
+        },
+        {
+          "query": "ईशा lab के employees की private salary क्या है?",
+          "topScore": 0.3640650874677572,
+          "automaticAbstention": false
+        }
+      ]
+    }
+  ]
+}

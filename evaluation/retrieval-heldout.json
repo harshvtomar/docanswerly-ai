@@ -1,0 +1,36 @@
+{
+ "note":"Synthetic Session 3 held-out corpus. Weights (semantic 1, lexical .15, rank constant 10) frozen before first execution. Authored separately from Session 2 development and RAG answer cases. Not an independently collected real-world benchmark.",
+ "cases":[
+ ["en-en","Mira observatory opens its rooftop only after sunset. Daytime visitors stay in the ground-floor gallery.","When can visitors access Mira's roof?"],
+ ["en-en","Pine archive accepts fragile maps on Thursdays by appointment. Ordinary books can be delivered any weekday.","Which day is reserved for fragile map deliveries at Pine?"],
+ ["en-en","The Acorn warranty covers motor failures for 18 months but excludes damaged cables.","Does Acorn cover damage to cables under warranty?"],
+ ["en-en","Nectar seed packets must be stored below 15 degrees Celsius in a dry cupboard.","What storage temperature limit applies to Nectar seeds?"],
+ ["hi-hi","अवनि केंद्र में संगीत की कक्षाएँ सोमवार को और चित्रकला की कक्षाएँ बुधवार को होती हैं।","अवनि में चित्रकला सीखने के लिए किस दिन जाना चाहिए?"],
+ ["hi-hi","सरोवर पार्क का पूर्वी प्रवेश द्वार बंद है। पर्यटक पश्चिमी द्वार से प्रवेश कर सकते हैं।","सरोवर पार्क में कौन से प्रवेश द्वार से जा सकते हैं?"],
+ ["hi-hi","तरंग बस सेवा में छह वर्ष से कम उम्र के बच्चों का किराया माफ है।","तरंग बस में किन बच्चों को टिकट नहीं खरीदना पड़ता?"],
+ ["hi-hi","दीपक कार्यशाला में उपकरण लेने के लिए पहचान पत्र और पचास रुपये की जमानत आवश्यक है।","दीपक से औजार लेने के लिए क्या जमा करना होगा?"],
+ ["en-hi","अर्चना विद्यालय में विज्ञान प्रदर्शनी शुक्रवार को दोपहर दो बजे शुरू होगी।","When does the science exhibition begin at Archana school?"],
+ ["en-hi","बादल जल संयंत्र में फिल्टर हर छह महीने में बदला जाता है।","How often does Badal water plant replace its filter?"],
+ ["en-hi","उदय पुस्तकालय में संदर्भ पुस्तकें घर ले जाने की अनुमति नहीं है।","Can I take Uday library reference books home?"],
+ ["en-hi","पलाश प्रशिक्षण योजना में यात्रा का खर्च शामिल है, लेकिन भोजन का खर्च प्रतिभागी को देना होगा।","Who pays for meals under the Palash training scheme?"],
+ ["hi-en","The Finch laboratory sterilizes reusable glassware with steam. Plastic containers are not included in this procedure.","फिंच प्रयोगशाला में काँच के बर्तनों को कैसे कीटाणुरहित किया जाता है?"],
+ ["hi-en","Harbor community kitchen serves dinner at 19:30 and closes registration at 18:00.","हार्बर रसोई में पंजीकरण किस समय बंद होता है?"],
+ ["hi-en","The Elm accessibility fund reimburses wheelchair repairs, but does not fund vehicle purchases.","एल्म फंड किन मरम्मत के खर्चों की प्रतिपूर्ति करता है?"],
+ ["hi-en","Juniper ferry passengers can bring one bicycle free of charge. Motorcycles are prohibited.","जुनिपर नाव पर कौन सा दोपहिया वाहन मुफ्त ले जा सकते हैं?"],
+ ["mixed","रोहन studio में audio recording मंगलवार को होती है और video editing शुक्रवार को।","रोहन studio में editing किस दिन available है?"],
+ ["mixed","सुमन app में backup केवल Wi-Fi पर होता है; mobile data पर sync बंद रहता है।","सुमन backup के लिए कौन सा network चाहिए?"],
+ ["mixed","ईशा lab का sensor humidity मापता है, temperature नहीं।","ईशा sensor कौन सी quantity measure करता है?"],
+ ["mixed","विहान server की maintenance रविवार 02:00 से 03:00 तक चलती है।","विहान maintenance window कब खत्म होती है?"]
+ ],
+ "distractors":[
+ "Mira observatory's daytime gallery opens at nine and closes at sunset.",
+ "The old Acorn warranty covered cables until 2020. This policy is no longer valid.",
+ "अर्चना विद्यालय की खेल प्रतियोगिता शनिवार सुबह नौ बजे शुरू होगी।",
+ "बादल संयंत्र में पानी की जाँच हर दिन होती है।",
+ "Harbor community kitchen serves dinner at 19:30. Registration for a different programme closes at 17:00.",
+ "सुमन app mobile data की खपत दिखाता है।",
+ "The Finch laboratory receives plastic containers every Thursday.",
+ "विहान कार्यालय रविवार को बंद रहता है।"
+ ],
+ "negatives":["What is the bank account password of the Mira observatory director?","अवनि केंद्र की वर्ष 2030 की आय कितनी है?","ईशा lab के employees की private salary क्या है?"]
+}

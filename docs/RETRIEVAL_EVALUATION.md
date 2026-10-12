@@ -75,3 +75,24 @@ Saved local CPU run (2026-10-12 09:30 UTC): initialization 3,927.69 ms,
 30-passage indexing 929.36 ms, mean query 14.35 ms, nearest-rank p95 19.34 ms,
 process RSS snapshot 595.47 MiB. Assets were already downloaded. These are one-run
 measurements, not performance guarantees or end-to-end browser latency.
+
+## Session 3 frozen-weight comparison
+
+`npm run test:hybrid` compares all four methods on the original 25 development
+queries and a new, separate 20-query synthetic held-out corpus with eight
+near-topic distractors. Parameters frozen before execution: semantic weight 1,
+lexical weight 0.15, rank constant 10. No tuning after seeing held-out results.
+
+| Held-out method | Recall@1 | Recall@3 | Recall@5 | MRR |
+|---|---:|---:|---:|---:|
+| Keyword | .50 | .60 | .60 | .5500 |
+| Semantic | .95 | 1.00 | 1.00 | .9750 |
+| Original equal RRF | .60 | .70 | .75 | .6640 |
+| Semantic-first RRF | .85 | 1.00 | 1.00 | .9167 |
+
+Development improved hybrid: .80 / 1.00 / 1.00, MRR .90, versus original .60 /
+.60 / .60, MRR .6334. The improved method still loses to semantic-only rank 1;
+keep it optional. Lexical overlap can still promote distractors. Six negative
+queries across the two sets still retrieve passages; ranking is not abstention.
+See `hybrid-evaluation.json` for full rows and per-language categories. This is
+an authored held-out split, not an external or representative benchmark.

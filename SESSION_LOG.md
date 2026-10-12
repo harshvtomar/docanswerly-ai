@@ -130,3 +130,12 @@ new-numeral rejection, language validation, request limits, cancellation, and
 explicit abstention status. Added 22 boundary unit tests: 46 unit checks now pass.
 Browser inference acceptance gate added; actual model behavior remains unverified
 until that CI gate completes. Model-generated answers are marked experimental.
+
+### Session 3 — retrieval/evaluation checkpoint
+Frozen semantic-first fusion (1/.15, rank constant 10) improves held-out
+Recall@1 from .60 to .85, @3/.5 to 1.00; semantic-only remains .95 at rank 1.
+No held-out tuning; hybrid remains optional. Added independent 20-query corpus
+and full machine-readable evaluation. Unit total now 49 passing.
+Added a 30-case oracle-context real-model browser evaluation, distinct from
+retrieval data, with raw outputs and explicit proxy metric definitions. Awaiting
+CI execution; no generation-quality results claimed at this checkpoint.

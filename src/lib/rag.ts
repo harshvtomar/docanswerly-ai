@@ -82,3 +82,31 @@ export function deduplicate(hits: SearchHit[], limit = 12): SearchHit[] {
   }
   return result;
 }
+
+// Frozen Session 3 choice: semantic ranks dominate; lexical ranks can break close
+// ties. This is ranking, never a calibrated answer-confidence score.
+export function semanticFirstFusion(
+  semantic: SearchHit[],
+  lexical: SearchHit[],
+  limit = 12,
+): SearchHit[] {
+  const scores = new Map<string, SearchHit>();
+  for (const [list, weight] of [
+    [semantic, 1],
+    [lexical, 0.15],
+  ] as const) {
+    const seen = new Set<string>();
+    list.forEach((hit, i) => {
+      if (seen.has(hit.chunk.id)) return;
+      seen.add(hit.chunk.id);
+      scores.set(hit.chunk.id, {
+        chunk: hit.chunk,
+        score: (scores.get(hit.chunk.id)?.score ?? 0) + weight / (10 + i + 1),
+      });
+    });
+  }
+  return deduplicate(
+    [...scores.values()].sort((a, b) => b.score - a.score),
+    limit,
+  );
+}

@@ -74,3 +74,7 @@ Generation remains pending while a local model is evaluated.
 Local generation foundation implemented, awaiting real browser validation.
 Model: Unsloth Qwen3 0.6B Q4_K_M; optional ~405 MB plus evidence model.
 22 new unit tests passed. Do not infer answer quality from structural validation.
+
+Retrieval comparison executed: semantic-first held-out Recall@1/3/5
+.85/1/1, MRR .9167; semantic-only .95/1/1, MRR .975.
+49 unit checks passed. Thirty-case real generation evaluation is pending CI.

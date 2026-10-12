@@ -69,3 +69,19 @@ describe("retrieval integrity", () => {
     expect((await index.search("test"))[0].chunk.id).toBe("safe");
   });
 });
+
+import { semanticFirstFusion } from './rag';
+describe('semantic-first hybrid',()=>{
+ it('recovers semantic leader with no lexical overlap among distant distractors',()=>{
+  const hits=Array.from({length:20},(_,i)=>({chunk:chunk(String(i),0,100,String(i)),score:20-i}));
+  expect(semanticFirstFusion(hits,hits.slice(10).reverse())[0].chunk.id).toBe('0');
+ });
+ it('preserves semantic ordering when lexical search is empty',()=>{
+  const hits=[{chunk:chunk('a'),score:.8},{chunk:chunk('b',0,100,'b'),score:.6}];
+  expect(semanticFirstFusion(hits,[]).map(h=>h.chunk.id)).toEqual(['a','b']);
+ });
+ it('retains both original document identities for identical wording',()=>{
+  const hits=[{chunk:chunk('a'),score:1},{chunk:chunk('b',0,100,'b'),score:1}];
+  expect(semanticFirstFusion(hits,hits)).toHaveLength(2);
+ });
+});

@@ -18,3 +18,4 @@ if (!existing || hash(existing) !== sha) {
 await copyFile('node_modules/@wllama/wllama/esm/wasm/wllama.wasm', 'public/generation/wllama.wasm');
 await copyFile('node_modules/@wllama/wllama/LICENCE', 'public/generation/WLLAMA-LICENSE.txt');
 console.log('Pinned generation model and WASM ready.');
+await copyFile('docs/licenses/Qwen3-Apache-2.0.txt', 'public/generation/QWEN-LICENSE.txt');

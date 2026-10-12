@@ -24,3 +24,13 @@ are preserved in scripts/model-manifest.json and docs/RETRIEVAL_EVALUATION.md.
 Transformers.js: Apache-2.0. ONNX Runtime: MIT. The build copies their license
 texts into the public licenses directory alongside the existing dependencies.
 Model weights are downloaded during the build, not committed to Git history.
+
+## Optional local answer generation (Session 3)
+
+- Wllama 3.8.1: MIT, bundled license copied to `/generation/WLLAMA-LICENSE.txt`.
+- Qwen3-0.6B: Apache-2.0, license in `docs/licenses/Qwen3-Apache-2.0.txt`.
+- GGUF quantization: `unsloth/Qwen3-0.6B-GGUF`, revision
+  `50968a4468ef4233ed78cd7c3de230dd1d61a56b`, file `Qwen3-0.6B-Q4_K_M.gguf`,
+  396,705,472 bytes, SHA256
+  `ac2d97712095a558e31573f62f466a3f9d93990898b0ec79d7c974c1780d524a`.
+  Build verifies bytes/hash. Weights are downloaded during build, never committed.
