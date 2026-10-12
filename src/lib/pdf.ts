@@ -7,6 +7,7 @@ import {
 import workerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 import { createWorker, type Worker } from "tesseract.js";
 import { needsOcr, normalizeText } from "./text";
+import { bounded } from "./operation";
 import type { PageText } from "./types";
 GlobalWorkerOptions.workerSrc = workerUrl;
 const base = import.meta.env.BASE_URL;
@@ -48,6 +49,7 @@ export async function extractPdf(
   file: File,
   onProgress: (message: string) => void,
   forceOcr = false,
+  signal?: AbortSignal,
 ): Promise<PageText[]> {
   validateFile(file);
   const bytes = new Uint8Array(await file.arrayBuffer());
@@ -56,17 +58,29 @@ export async function extractPdf(
   let pdf: PDFDocumentProxy | undefined, worker: Worker | undefined;
   const pages: PageText[] = [];
   try {
-    pdf = await loadPdf(bytes);
+    let loadingExpired = false;
+    const loading = loadPdf(bytes);
+    loading.then(
+      (p) => {
+        if (loadingExpired || signal?.aborted) void p.loadingTask.destroy();
+      },
+      () => {},
+    );
+    pdf = await bounded(loading, signal, 30000, () => {
+      loadingExpired = true;
+    });
+    signal?.throwIfAborted();
     if (pdf.numPages > MAX_PAGES)
       throw new Error(
         "This demo accepts up to 40 pages. Split this PDF into smaller files.",
       );
     for (let n = 1; n <= pdf.numPages; n++) {
+      signal?.throwIfAborted();
       onProgress(`Reading page ${n} of ${pdf.numPages}`);
       let page: PDFPageProxy | undefined;
       try {
-        page = await pdf.getPage(n);
-        const content = await page.getTextContent();
+        page = await bounded(pdf.getPage(n), signal, 30000);
+        const content = await bounded(page.getTextContent(), signal, 30000);
         let text = normalizeText(
           content.items
             .map((item) =>
@@ -78,30 +92,57 @@ export async function extractPdf(
           onProgress(
             `OCR · page ${n} of ${pdf.numPages} · loading English + Hindi`,
           );
-          worker ??= await createWorker(["eng", "hin"], 1, {
-            workerPath: `${base}ocr/worker.min.js`,
-            corePath: `${base}ocr/core`,
-            langPath: `${base}ocr/lang`,
-            logger: (m) => {
-              if (m.status === "recognizing text")
-                onProgress(
-                  `OCR · page ${n} of ${pdf!.numPages} · ${Math.round(m.progress * 100)}%`,
-                );
-            },
-          });
+          if (!worker) {
+            let expired = false;
+            const creating = createWorker(["eng", "hin"], 1, {
+              workerPath: `${base}ocr/worker.min.js`,
+              corePath: `${base}ocr/core`,
+              langPath: `${base}ocr/lang`,
+              logger: (m) => {
+                if (m.status === "recognizing text")
+                  onProgress(
+                    `OCR · page ${n} of ${pdf!.numPages} · ${Math.round(m.progress * 100)}%`,
+                  );
+              },
+            });
+            creating.then(
+              (w) => {
+                if (expired) void w.terminate();
+              },
+              () => {},
+            );
+            worker = await bounded(creating, signal, 120000, () => {
+              expired = true;
+            });
+          }
           const canvas = document.createElement("canvas");
-          await renderPage(page, canvas, 2);
-          const result = await worker.recognize(canvas);
-          text = normalizeText(result.data.text);
-          canvas.width = canvas.height = 0;
-          pages.push({
-            page: n,
-            text,
-            method: "ocr",
-            confidence: result.data.confidence,
-          });
+          try {
+            await bounded(renderPage(page, canvas, 2), signal, 30000, () => {
+              void pdf?.loadingTask.destroy();
+            });
+            const result = await bounded(
+              worker.recognize(canvas),
+              signal,
+              120000,
+              () => {
+                void worker?.terminate();
+                worker = undefined;
+              },
+            );
+            text = normalizeText(result.data.text);
+            pages.push({
+              page: n,
+              text,
+              method: "ocr",
+              confidence: result.data.confidence,
+            });
+          } finally {
+            canvas.width = canvas.height = 0;
+          }
         } else pages.push({ page: n, text, method: "text" });
       } catch (err) {
+        if (signal?.aborted)
+          throw new DOMException("Processing cancelled", "AbortError");
         pages.push({
           page: n,
           text: "",

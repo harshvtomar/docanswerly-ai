@@ -75,3 +75,22 @@ MRR = 0.63335. These are easy development cases, not a general quality claim.
 Hybrid has cross-language failures from generic lexical matches; not default.
 Negative queries still return ranked passages; no abstention or QA claim.
 Browser validation of new inference follows through CI before deployment.
+
+### Verified inference deployment and reliability checkpoint
+
+Remote 454e6c83e18019a3d9e810b424d19d7f03f3ce08, Actions 38203217575:
+build and deployment successful; 21 unit + 7 PDF/OCR + 6 real-model checks +
+24 browser cases passed (58 total at this checkpoint). Public Pages loaded the
+model, indexed 3 sample pages and ranked page 3 first for the English question
+"Where is artificial intelligence usage growing rapidly?". Clicking opened the
+correct original page text. No app-origin JavaScript errors observed.
+
+Added PDF/OCR cancellation and bounded operations, three lifecycle unit tests and
+a cancellation/recovery browser case per viewport. Added real-tokenizer budget,
+source-span and invalid-query checks (real-model suite now 9 checks). Local unit
+suite now 24 passed, PDF suite 7 passed, real-model suite 9 passed; build succeeds.
+New cancellation browser cases await CI on this checkpoint.
+
+Packaging fix: onnxruntime-web omits a LICENSE file in its npm tarball; preserved
+the MIT license from its exact upstream __commit.txt revision in docs/licenses.
+No deployed regression occurred. Broader OCR datasets and secure QA remain pending.

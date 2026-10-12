@@ -34,3 +34,12 @@ for (const file of [
   await cp(`node_modules/onnxruntime-web/dist/${file}`, `public/onnx/${file}`);
 }
 console.log("Pinned multilingual model and WASM assets ready.");
+await mkdir("public/licenses", { recursive: true });
+await cp(
+  "node_modules/@huggingface/transformers/LICENSE",
+  "public/licenses/transformers-Apache-2.0.txt",
+);
+await cp(
+  "docs/licenses/onnxruntime-MIT.txt",
+  "public/licenses/onnxruntime-MIT.txt",
+);

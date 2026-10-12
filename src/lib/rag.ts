@@ -6,7 +6,7 @@ export function cosine(a: number[], b: number[]): number {
   const norm = Math.hypot(...a) * Math.hypot(...b);
   return norm ? dot / norm : 0;
 }
-// Provider-neutral foundation. No model is configured, and the UI never labels keyword results semantic.
+// Provider-neutral index. Production uses the pinned LocalEmbeddings provider.
 export class SemanticIndex {
   private vectors: number[][] = [];
   private chunks: Chunk[] = [];

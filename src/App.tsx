@@ -15,6 +15,7 @@ export default function App() {
     [force, setForce] = useState(false),
     [activity, setActivity] = useState<string[]>([]),
     [drag, setDrag] = useState(false);
+  const uploadAbort = useRef<AbortController | null>(null);
   const lock = useRef(false),
     input = useRef<HTMLInputElement>(null);
   const doc = docs.find((d) => d.id === selected);
@@ -30,6 +31,7 @@ export default function App() {
   async function upload(files: File[]) {
     if (lock.current) return;
     lock.current = true;
+    uploadAbort.current = new AbortController();
     setBusy(true);
     setError("");
     try {
@@ -38,9 +40,15 @@ export default function App() {
           "Keep up to 8 documents in this workspace. Remove one to add more.",
         );
       for (const file of files) {
+        if (uploadAbort.current.signal.aborted) break;
         try {
           validateFile(file);
-          const result = await extractPdf(file, setProgress, force);
+          const result = await extractPdf(
+            file,
+            setProgress,
+            force,
+            uploadAbort.current.signal,
+          );
           const d: DocumentRecord = {
             id: crypto.randomUUID(),
             name: file.name,
@@ -266,6 +274,9 @@ export default function App() {
                 <div role="status" className="processing">
                   <span className="spinner" />
                   {progress || "Preparing…"}
+                  <button onClick={() => uploadAbort.current?.abort()}>
+                    Cancel processing
+                  </button>
                   <small>
                     Large scans can take a few minutes. Keep this tab open.
                   </small>

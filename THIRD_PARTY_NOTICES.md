@@ -14,3 +14,13 @@ Exact versions and dependency license metadata are recorded in package-lock.json
 - PDF standard font and decoder license files are retained in copied asset folders.
 
 Synthetic fixture sentences are project-authored; no private documents are in the repository.
+
+## Session 2 retrieval
+
+Multilingual MiniLM base model: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+(Apache-2.0). ONNX conversion: Xenova/paraphrase-multilingual-MiniLM-L12-v2,
+revision 2c4055b12046f11709e9df2c122e59ffbdc2f900. Model source and attribution
+are preserved in scripts/model-manifest.json and docs/RETRIEVAL_EVALUATION.md.
+Transformers.js: Apache-2.0. ONNX Runtime: MIT. The build copies their license
+texts into the public licenses directory alongside the existing dependencies.
+Model weights are downloaded during the build, not committed to Git history.

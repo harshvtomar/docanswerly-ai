@@ -24,6 +24,28 @@ const index = new SemanticIndex(model);
 const indexing = performance.now();
 await index.build(model.split(chunks));
 const indexMs = performance.now() - indexing;
+// Exercise token budget and exact source offsets with the real tokenizer.
+const longText = "भारत में विज्ञान और तकनीक का विकास हो रहा है। ".repeat(35);
+const longChunk = { ...chunks[0], text: longText, end: [...longText].length };
+const split = model.split([longChunk]);
+if (
+  split.length < 2 ||
+  split.some(
+    (c) =>
+      model.tokenCount(c.text) > 128 ||
+      c.text !== [...longText].slice(c.start, c.end).join(""),
+  )
+)
+  throw new Error("Tokenizer/source span regression");
+for (const invalid of ["", longText]) {
+  let rejected = false;
+  try {
+    await model.embed([invalid]);
+  } catch {
+    rejected = true;
+  }
+  if (!rejected) throw new Error("Invalid query accepted");
+}
 const vector = (await model.embed(["भारत की राजधानी नई दिल्ली है।"]))[0];
 if (vector.length !== 384) throw new Error("Vector dimensionality mismatch");
 const results = [];
@@ -106,5 +128,5 @@ for (const i of [0, 5, 10, 15, 20])
   if (!results[i].semanticRank || results[i].semanticRank! > 3)
     throw new Error(`Cross-language acceptance failed: ${i}`);
 console.log(
-  "Real inference: dimensions plus 5 multilingual acceptance checks passed. Full 25-query metrics recorded.",
+  "Real inference: 9 checks passed: dimensions, token/source spans, empty/long queries, and 5 multilingual acceptance cases. Full 25-query metrics recorded.",
 );

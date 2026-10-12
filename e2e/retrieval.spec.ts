@@ -52,3 +52,14 @@ test("model load failure is explicit and keyword search survives retry", async (
   await page.getByLabel("Search documents").fill("बुद्धिमत्ता");
   await expect(page.locator(".result").first()).toContainText("Page 2");
 });
+
+test("cancel OCR then recover with a fresh document", async ({ page }) => {
+  await page.goto("./");
+  await page.getByLabel("Force OCR for new uploads").check();
+  await page.getByRole("button", { name: "Try a bilingual sample ↗" }).click();
+  await page.getByRole("button", { name: "Cancel processing" }).click();
+  await expect(page.getByRole("alert")).toContainText("cancelled");
+  await page.getByLabel("Force OCR for new uploads").uncheck();
+  await page.getByRole("button", { name: "Try a bilingual sample ↗" }).click();
+  await expect(page.getByText("Page 1 of 3")).toBeVisible();
+});

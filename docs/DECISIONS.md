@@ -35,3 +35,21 @@
 - https://github.com/actions/deploy-pages
 - https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages
 - Candidate for Session 2 only: https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+
+## Session 2
+
+10. Local q8 MiniLM avoids API credentials and document transmission. Pinned
+    Transformers.js 3.8.1 runs the ONNX conversion in a dedicated WASM worker;
+    Node CPU runs reproducible evaluation with the same weights/tokenizer.
+11. Build-time model downloads verify SHA-256 and produce same-origin assets.
+    Opt-in UI discloses ~160 MB first download and substantial memory. Page load
+    and keyword search do not require this download. No paid service activated.
+12. Token-aware subdivision avoids silently truncating Hindi. Queries over 128
+    tokens are rejected. Source offsets remain original normalized page code points.
+13. Equal-weight RRF is intentionally reported with its observed failures. Hybrid
+    is optional; keyword stays default. No threshold was fitted to the tiny corpus.
+14. Source passage retrieval is not answer generation or evidence sufficiency.
+    Unsupported queries still produce rankings; no fabricated answers/citations.
+15. OCR cancellation discards only the unfinished document/remaining queue. Completed
+    documents survive. OCR timeouts release available worker handles; late-created
+    handles are terminated. Broader scan-quality work remains for Session 3.
