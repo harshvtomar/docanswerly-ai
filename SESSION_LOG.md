@@ -63,3 +63,15 @@ Existing Actions run 38201513927 has successful build and deployment (20 browser
 cases from Session 1). Public homepage loaded and sample processing rechecked.
 Session 2 work begins with pinned local multilingual embeddings and measured
 retrieval; generation remains pending. No paid services activated.
+
+### Real retrieval implementation checkpoint
+
+Added Transformers.js 3.8.1, pinned q8 MiniLM ONNX assets (SHA-256 verified),
+384-dimensional normalized mean pooling, actual 128-token-aware splitting,
+worker isolation, opt-in search controls, timeouts/cancel and RRF hybrid ranking.
+25-query/30-passage synthetic development evaluation: semantic Recall@1/3/5
+and MRR = 1.0; keyword Recall@1/3/5 and MRR = 0.6; hybrid Recall@1/3/5 = 0.6,
+MRR = 0.63335. These are easy development cases, not a general quality claim.
+Hybrid has cross-language failures from generic lexical matches; not default.
+Negative queries still return ranked passages; no abstention or QA claim.
+Browser validation of new inference follows through CI before deployment.

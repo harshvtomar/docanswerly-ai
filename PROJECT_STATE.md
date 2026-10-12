@@ -57,3 +57,10 @@ needs authorized provider access and server-side secrets; no paid activation is
 authorized. Next session: reliability and diverse fixtures, real multilingual
 embeddings, labelled retrieval evaluation, then secure evidence-grounded answering.
 Read NEXT_SESSION_PROMPT.md and all docs before editing.
+
+## Session 2 in progress
+
+Restoration checkpoint 97d4b5f156a9e35225cefdd75dc40961c44b4c7a verified remotely.
+Real local embeddings and optional semantic/hybrid search added; browser inference
+verification pending CI. Version remains 0.1.0 until verified. See SESSION_LOG and
+docs/retrieval-evaluation.json for actual CPU evaluation; no secure QA backend.

@@ -1,0 +1,32 @@
+{
+  "note": "Authored synthetic development corpus, not held-out or representative. One relevant passage per positive query; no training or tuning performed. Negatives have no supported answer.",
+  "cases": [
+    ["en-en","Machine learning models identify patterns in historical data.","What do machine learning models identify?"],
+    ["en-en","The Cedar library lends telescopes for seven nights. Borrowers must return them at the front desk.","How long can I borrow a telescope from Cedar library?"],
+    ["en-en","Aster laboratory stores blood samples at minus twenty degrees Celsius before analysis.","At what temperature are the Aster blood samples kept?"],
+    ["en-en","The ferry to Willow Island leaves the north pier every Tuesday at 08:15.","When does the Willow Island boat depart?"],
+    ["en-en","For a lost transit card, visit the central office with a photo identity document. Replacement costs 40 rupees.","How much does replacing a missing transit card cost?"],
+    ["hi-hi","मशीन लर्निंग मॉडल ऐतिहासिक डेटा में पैटर्न पहचानते हैं।","मशीन लर्निंग मॉडल क्या पहचानते हैं?"],
+    ["hi-hi","नीलम विद्यालय का पुस्तकालय शनिवार को सुबह नौ बजे से दोपहर एक बजे तक खुलता है।","शनिवार को नीलम विद्यालय का पुस्तकालय कब बंद होता है?"],
+    ["hi-hi","सूर्या बाग में पौधों को हर दूसरे दिन शाम को पानी दिया जाता है।","सूर्या बाग में सिंचाई कितनी बार होती है?"],
+    ["hi-hi","किरण अस्पताल में रक्तदान के लिए न्यूनतम आयु अठारह वर्ष है।","किरण अस्पताल में रक्तदाता की न्यूनतम उम्र क्या है?"],
+    ["hi-hi","दक्षिण संग्रहालय में बच्चों का प्रवेश निःशुल्क है और वयस्कों का टिकट पचास रुपये है।","दक्षिण संग्रहालय में बच्चों को कितने रुपये देने होंगे?"],
+    ["en-hi","भारत की राजधानी नई दिल्ली है।","What is the capital of India?"],
+    ["en-hi","अमल प्रशिक्षण केंद्र में सिलाई पाठ्यक्रम तीन महीने चलता है।","How long is the sewing course at Amal training centre?"],
+    ["en-hi","देव नदी पर बना पुराना पुल मरम्मत के कारण दिसंबर तक बंद रहेगा।","Why is the old bridge across the Dev river closed?"],
+    ["en-hi","चंद्र नगर में जैविक कचरा सोमवार और गुरुवार को इकट्ठा किया जाता है।","On which days is organic waste collected in Chandra Nagar?"],
+    ["en-hi","रवि सहकारी बैंक की कृषि ऋण योजना में आवेदन की अंतिम तारीख पंद्रह जून है।","What is the application deadline for Ravi bank agricultural loans?"],
+    ["hi-en","The Earth revolves around the Sun.","पृथ्वी किसके चारों ओर घूमती है?"],
+    ["hi-en","The Lotus clinic offers free eye examinations on the first Friday of each month.","लोटस क्लिनिक में मुफ्त आँखों की जाँच कब होती है?"],
+    ["hi-en","In the Maple recycling guide, glass bottles belong in the green container, while paper belongs in the blue one.","मैपल में काँच की बोतल किस रंग के डिब्बे में रखनी चाहिए?"],
+    ["hi-en","The Orion scholarship covers tuition fees but excludes accommodation and transport costs.","ओरायन छात्रवृत्ति में किन खर्चों का भुगतान नहीं होता?"],
+    ["hi-en","The village water pump uses solar electricity and stores excess water in an elevated tank.","गाँव का पानी का पंप किस ऊर्जा से चलता है?"],
+    ["mixed","Artificial Intelligence का उपयोग स्वास्थ्य सेवाओं में बढ़ रहा है।","AI का उपयोग किस क्षेत्र में बढ़ रहा है?"],
+    ["mixed","नव्या workshop में robotics की class रविवार को होती है और coding की class मंगलवार को।","Robotics की class किस दिन है?"],
+    ["mixed","मेघा farm के sensors मिट्टी की moisture मापते हैं और सूखने पर irrigation चालू करते हैं।","मेघा farm में sensors क्या measure करते हैं?"],
+    ["mixed","सारथी app में offline maps डाउनलोड करने के लिए पहले Wi-Fi connection चाहिए।","सारथी offline maps download करने के लिए क्या चाहिए?"],
+    ["mixed","अंबर कार्यालय की password policy हर account में two-factor authentication अनिवार्य करती है।","अंबर accounts की security policy क्या require करती है?"]
+  ],
+  "distractors": ["The Cedar library holds poetry readings on Wednesday evenings.","भारत का सबसे बड़ा राज्य क्षेत्रफल के आधार पर राजस्थान है।","A solar eclipse occurs when the Moon passes between the Sun and Earth.","लोटस अस्पताल की कैंटीन रोज सुबह सात बजे खुलती है।","सारथी app के premium themes का रंग बदला जा सकता है।"],
+  "negatives": ["What is the password for the Orion scholarship administrator?","कल मंगल ग्रह पर कितनी बारिश होगी?","अंबर office के CEO का private phone number क्या है?"]
+}

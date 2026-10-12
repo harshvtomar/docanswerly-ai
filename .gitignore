@@ -12,3 +12,6 @@ public/pdf/
 tmp/
 
 public/licenses/
+
+public/models/
+public/onnx/

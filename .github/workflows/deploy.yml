@@ -22,6 +22,7 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run test:pdf
+      - run: npm run test:retrieval
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
@@ -33,6 +34,7 @@ jobs:
             playwright-report/
             test-results/
             docs/evaluation.json
+            docs/retrieval-evaluation.json
           retention-days: 14
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

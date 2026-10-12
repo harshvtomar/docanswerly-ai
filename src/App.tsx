@@ -1,7 +1,8 @@
 import { useMemo, useRef, useState } from "react";
+import { SearchPanel } from "./components/SearchPanel";
 import { Viewer } from "./components/Viewer";
 import { extractPdf, validateFile } from "./lib/pdf";
-import { chunkDocument, keywordSearch } from "./lib/text";
+import { chunkDocument } from "./lib/text";
 import type { DocumentRecord, SearchHit } from "./lib/types";
 export default function App() {
   const [docs, setDocs] = useState<DocumentRecord[]>([]),
@@ -11,7 +12,6 @@ export default function App() {
   const [busy, setBusy] = useState(false),
     [progress, setProgress] = useState(""),
     [error, setError] = useState(""),
-    [query, setQuery] = useState(""),
     [force, setForce] = useState(false),
     [activity, setActivity] = useState<string[]>([]),
     [drag, setDrag] = useState(false);
@@ -20,7 +20,6 @@ export default function App() {
   const doc = docs.find((d) => d.id === selected);
   const current = doc?.pages.find((p) => p.page === page);
   const chunks = useMemo(() => docs.flatMap((d) => chunkDocument(d)), [docs]);
-  const hits = useMemo(() => keywordSearch(chunks, query), [chunks, query]);
   const pages = docs.reduce((n, d) => n + d.pages.length, 0);
   const ocr = docs.reduce(
     (n, d) => n + d.pages.filter((p) => p.method === "ocr").length,
@@ -431,60 +430,7 @@ export default function App() {
             </section>
           </div>
           <div className="bottom-grid">
-            <section className="panel search-panel">
-              <div className="panel-title">
-                <h3>Find the right passage</h3>
-                <span className="chip">Keyword search</span>
-              </div>
-              <p>Search all processed documents in English or Hindi.</p>
-              <label className="search-input">
-                <span>⌕</span>
-                <input
-                  aria-label="Search documents"
-                  placeholder="Try information, भारत, or Artificial Intelligence…"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                />
-                {query && (
-                  <button
-                    onClick={() => setQuery("")}
-                    aria-label="Clear search"
-                  >
-                    ×
-                  </button>
-                )}
-              </label>
-              <small>
-                Matches words in the same language. Cross-language semantic
-                retrieval is pending.
-              </small>
-              <div className="results" aria-live="polite">
-                {query.trim() ? (
-                  hits.length ? (
-                    hits.map((h) => (
-                      <button
-                        className="result"
-                        key={h.chunk.id}
-                        onClick={() => source(h)}
-                      >
-                        <span>
-                          {h.chunk.documentName} <b>Page {h.chunk.page} ↗</b>
-                        </span>
-                        <p>{h.chunk.text}</p>
-                      </button>
-                    ))
-                  ) : (
-                    <p className="empty-search">
-                      No matching passage. Try a word from the document.
-                    </p>
-                  )
-                ) : (
-                  <p className="empty-search">
-                    Source passages and page references appear here.
-                  </p>
-                )}
-              </div>
-            </section>
+            <SearchPanel chunks={chunks} onSource={source} />
             <section className="panel ask-panel">
               <div className="panel-title">
                 <h3>Ask your documents</h3>

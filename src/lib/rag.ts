@@ -31,3 +31,54 @@ export class SemanticIndex {
     this.vectors = [];
   }
 }
+
+// Rank fusion avoids mixing cosine and lexical scores on incompatible scales.
+export function reciprocalRankFusion(
+  lists: SearchHit[][],
+  limit = 12,
+): SearchHit[] {
+  const scores = new Map<string, SearchHit>();
+  for (const list of lists) {
+    const seen = new Set<string>();
+    list.forEach((hit, i) => {
+      if (seen.has(hit.chunk.id)) return;
+      seen.add(hit.chunk.id);
+      const previous = scores.get(hit.chunk.id);
+      scores.set(hit.chunk.id, {
+        chunk: hit.chunk,
+        score: (previous?.score ?? 0) + 1 / (60 + i + 1),
+      });
+    });
+  }
+  return deduplicate(
+    [...scores.values()].sort((a, b) => b.score - a.score),
+    limit,
+  );
+}
+export function deduplicate(hits: SearchHit[], limit = 12): SearchHit[] {
+  const result: SearchHit[] = [];
+  for (const hit of hits) {
+    if (
+      result.some(
+        ({ chunk: c }) =>
+          c.documentId === hit.chunk.documentId &&
+          c.page === hit.chunk.page &&
+          (c.id === hit.chunk.id ||
+            Math.max(
+              0,
+              Math.min(c.end, hit.chunk.end) -
+                Math.max(c.start, hit.chunk.start),
+            ) /
+              Math.max(
+                1,
+                Math.min(c.end - c.start, hit.chunk.end - hit.chunk.start),
+              ) >
+              0.5),
+      )
+    )
+      continue;
+    result.push(hit);
+    if (result.length === limit) break;
+  }
+  return result;
+}

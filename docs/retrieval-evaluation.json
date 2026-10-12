@@ -1,0 +1,427 @@
+{
+  "generatedAt": "2026-10-12T04:16:36.554Z",
+  "model": {
+    "id": "Xenova/paraphrase-multilingual-MiniLM-L12-v2",
+    "revision": "2c4055b12046f11709e9df2c122e59ffbdc2f900",
+    "dimensions": 384,
+    "maxTokens": 128
+  },
+  "runtime": "Transformers.js 3.8.1 / ONNX Runtime Node CPU q8",
+  "note": "Authored synthetic development corpus, not held-out or representative. One relevant passage per positive query; no training or tuning performed. Negatives have no supported answer.",
+  "initMs": 1864.076657,
+  "indexMs": 580.1940610000001,
+  "rssBytes": 618139648,
+  "summary": {
+    "all": {
+      "keyword": {
+        "count": 25,
+        "recallAt1": 0.6,
+        "recallAt3": 0.6,
+        "recallAt5": 0.6,
+        "mrr": 0.6
+      },
+      "semantic": {
+        "count": 25,
+        "recallAt1": 1,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 1
+      },
+      "hybrid": {
+        "count": 25,
+        "recallAt1": 0.6,
+        "recallAt3": 0.6,
+        "recallAt5": 0.6,
+        "mrr": 0.6333535353535354
+      }
+    },
+    "en-en": {
+      "keyword": {
+        "count": 5,
+        "recallAt1": 1,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 1
+      },
+      "semantic": {
+        "count": 5,
+        "recallAt1": 1,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 1
+      },
+      "hybrid": {
+        "count": 5,
+        "recallAt1": 1,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 1
+      }
+    },
+    "hi-hi": {
+      "keyword": {
+        "count": 5,
+        "recallAt1": 1,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 1
+      },
+      "semantic": {
+        "count": 5,
+        "recallAt1": 1,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 1
+      },
+      "hybrid": {
+        "count": 5,
+        "recallAt1": 1,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 1
+      }
+    },
+    "en-hi": {
+      "keyword": {
+        "count": 5,
+        "recallAt1": 0,
+        "recallAt3": 0,
+        "recallAt5": 0,
+        "mrr": 0
+      },
+      "semantic": {
+        "count": 5,
+        "recallAt1": 1,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 1
+      },
+      "hybrid": {
+        "count": 5,
+        "recallAt1": 0,
+        "recallAt3": 0,
+        "recallAt5": 0,
+        "mrr": 0.10454545454545454
+      }
+    },
+    "hi-en": {
+      "keyword": {
+        "count": 5,
+        "recallAt1": 0,
+        "recallAt3": 0,
+        "recallAt5": 0,
+        "mrr": 0
+      },
+      "semantic": {
+        "count": 5,
+        "recallAt1": 1,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 1
+      },
+      "hybrid": {
+        "count": 5,
+        "recallAt1": 0,
+        "recallAt3": 0,
+        "recallAt5": 0,
+        "mrr": 0.062222222222222213
+      }
+    },
+    "mixed": {
+      "keyword": {
+        "count": 5,
+        "recallAt1": 1,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 1
+      },
+      "semantic": {
+        "count": 5,
+        "recallAt1": 1,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 1
+      },
+      "hybrid": {
+        "count": 5,
+        "recallAt1": 1,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 1
+      }
+    }
+  },
+  "results": [
+    {
+      "category": "en-en",
+      "query": "What do machine learning models identify?",
+      "relevant": "fixture-0:1:0",
+      "keywordRank": 1,
+      "semanticRank": 1,
+      "hybridRank": 1,
+      "latencyMs": 11.372468000000481,
+      "semanticTop": "fixture-0:1:0:s0"
+    },
+    {
+      "category": "en-en",
+      "query": "How long can I borrow a telescope from Cedar library?",
+      "relevant": "fixture-1:1:0",
+      "keywordRank": 1,
+      "semanticRank": 1,
+      "hybridRank": 1,
+      "latencyMs": 10.521735999999692,
+      "semanticTop": "fixture-1:1:0:s0"
+    },
+    {
+      "category": "en-en",
+      "query": "At what temperature are the Aster blood samples kept?",
+      "relevant": "fixture-2:1:0",
+      "keywordRank": 1,
+      "semanticRank": 1,
+      "hybridRank": 1,
+      "latencyMs": 12.092928999999458,
+      "semanticTop": "fixture-2:1:0:s0"
+    },
+    {
+      "category": "en-en",
+      "query": "When does the Willow Island boat depart?",
+      "relevant": "fixture-3:1:0",
+      "keywordRank": 1,
+      "semanticRank": 1,
+      "hybridRank": 1,
+      "latencyMs": 9.865085999999792,
+      "semanticTop": "fixture-3:1:0:s0"
+    },
+    {
+      "category": "en-en",
+      "query": "How much does replacing a missing transit card cost?",
+      "relevant": "fixture-4:1:0",
+      "keywordRank": 1,
+      "semanticRank": 1,
+      "hybridRank": 1,
+      "latencyMs": 9.507181999999375,
+      "semanticTop": "fixture-4:1:0:s0"
+    },
+    {
+      "category": "hi-hi",
+      "query": "मशीन लर्निंग मॉडल क्या पहचानते हैं?",
+      "relevant": "fixture-5:1:0",
+      "keywordRank": 1,
+      "semanticRank": 1,
+      "hybridRank": 1,
+      "latencyMs": 7.925881000000118,
+      "semanticTop": "fixture-5:1:0:s0"
+    },
+    {
+      "category": "hi-hi",
+      "query": "शनिवार को नीलम विद्यालय का पुस्तकालय कब बंद होता है?",
+      "relevant": "fixture-6:1:0",
+      "keywordRank": 1,
+      "semanticRank": 1,
+      "hybridRank": 1,
+      "latencyMs": 9.874112999999852,
+      "semanticTop": "fixture-6:1:0:s0"
+    },
+    {
+      "category": "hi-hi",
+      "query": "सूर्या बाग में सिंचाई कितनी बार होती है?",
+      "relevant": "fixture-7:1:0",
+      "keywordRank": 1,
+      "semanticRank": 1,
+      "hybridRank": 1,
+      "latencyMs": 9.21809100000064,
+      "semanticTop": "fixture-7:1:0:s0"
+    },
+    {
+      "category": "hi-hi",
+      "query": "किरण अस्पताल में रक्तदाता की न्यूनतम उम्र क्या है?",
+      "relevant": "fixture-8:1:0",
+      "keywordRank": 1,
+      "semanticRank": 1,
+      "hybridRank": 1,
+      "latencyMs": 8.93905100000029,
+      "semanticTop": "fixture-8:1:0:s0"
+    },
+    {
+      "category": "hi-hi",
+      "query": "दक्षिण संग्रहालय में बच्चों को कितने रुपये देने होंगे?",
+      "relevant": "fixture-9:1:0",
+      "keywordRank": 1,
+      "semanticRank": 1,
+      "hybridRank": 1,
+      "latencyMs": 7.716099999999642,
+      "semanticTop": "fixture-9:1:0:s0"
+    },
+    {
+      "category": "en-hi",
+      "query": "What is the capital of India?",
+      "relevant": "fixture-10:1:0",
+      "keywordRank": null,
+      "semanticRank": 1,
+      "hybridRank": 11,
+      "latencyMs": 7.400385999999344,
+      "semanticTop": "fixture-10:1:0:s0"
+    },
+    {
+      "category": "en-hi",
+      "query": "How long is the sewing course at Amal training centre?",
+      "relevant": "fixture-11:1:0",
+      "keywordRank": null,
+      "semanticRank": 1,
+      "hybridRank": 12,
+      "latencyMs": 10.133060000000114,
+      "semanticTop": "fixture-11:1:0:s0"
+    },
+    {
+      "category": "en-hi",
+      "query": "Why is the old bridge across the Dev river closed?",
+      "relevant": "fixture-12:1:0",
+      "keywordRank": null,
+      "semanticRank": 1,
+      "hybridRank": 11,
+      "latencyMs": 8.704545999999937,
+      "semanticTop": "fixture-12:1:0:s0"
+    },
+    {
+      "category": "en-hi",
+      "query": "On which days is organic waste collected in Chandra Nagar?",
+      "relevant": "fixture-13:1:0",
+      "keywordRank": null,
+      "semanticRank": 1,
+      "hybridRank": 6,
+      "latencyMs": 9.07884600000034,
+      "semanticTop": "fixture-13:1:0:s0"
+    },
+    {
+      "category": "en-hi",
+      "query": "What is the application deadline for Ravi bank agricultural loans?",
+      "relevant": "fixture-14:1:0",
+      "keywordRank": null,
+      "semanticRank": 1,
+      "hybridRank": 11,
+      "latencyMs": 10.201250999999502,
+      "semanticTop": "fixture-14:1:0:s0"
+    },
+    {
+      "category": "hi-en",
+      "query": "पृथ्वी किसके चारों ओर घूमती है?",
+      "relevant": "fixture-15:1:0",
+      "keywordRank": null,
+      "semanticRank": 1,
+      "hybridRank": 15,
+      "latencyMs": 6.426489000000402,
+      "semanticTop": "fixture-15:1:0:s0"
+    },
+    {
+      "category": "hi-en",
+      "query": "लोटस क्लिनिक में मुफ्त आँखों की जाँच कब होती है?",
+      "relevant": "fixture-16:1:0",
+      "keywordRank": null,
+      "semanticRank": 1,
+      "hybridRank": 18,
+      "latencyMs": 28.815198999999666,
+      "semanticTop": "fixture-16:1:0:s0"
+    },
+    {
+      "category": "hi-en",
+      "query": "मैपल में काँच की बोतल किस रंग के डिब्बे में रखनी चाहिए?",
+      "relevant": "fixture-17:1:0",
+      "keywordRank": null,
+      "semanticRank": 1,
+      "hybridRank": 18,
+      "latencyMs": 14.628563000000213,
+      "semanticTop": "fixture-17:1:0:s0"
+    },
+    {
+      "category": "hi-en",
+      "query": "ओरायन छात्रवृत्ति में किन खर्चों का भुगतान नहीं होता?",
+      "relevant": "fixture-18:1:0",
+      "keywordRank": null,
+      "semanticRank": 1,
+      "hybridRank": 15,
+      "latencyMs": 8.389897999999448,
+      "semanticTop": "fixture-18:1:0:s0"
+    },
+    {
+      "category": "hi-en",
+      "query": "गाँव का पानी का पंप किस ऊर्जा से चलता है?",
+      "relevant": "fixture-19:1:0",
+      "keywordRank": null,
+      "semanticRank": 1,
+      "hybridRank": 15,
+      "latencyMs": 16.932917999999518,
+      "semanticTop": "fixture-19:1:0:s0"
+    },
+    {
+      "category": "mixed",
+      "query": "AI का उपयोग किस क्षेत्र में बढ़ रहा है?",
+      "relevant": "fixture-20:1:0",
+      "keywordRank": 1,
+      "semanticRank": 1,
+      "hybridRank": 1,
+      "latencyMs": 6.795799000000443,
+      "semanticTop": "fixture-20:1:0:s0"
+    },
+    {
+      "category": "mixed",
+      "query": "Robotics की class किस दिन है?",
+      "relevant": "fixture-21:1:0",
+      "keywordRank": 1,
+      "semanticRank": 1,
+      "hybridRank": 1,
+      "latencyMs": 30.718630000000303,
+      "semanticTop": "fixture-21:1:0:s0"
+    },
+    {
+      "category": "mixed",
+      "query": "मेघा farm में sensors क्या measure करते हैं?",
+      "relevant": "fixture-22:1:0",
+      "keywordRank": 1,
+      "semanticRank": 1,
+      "hybridRank": 1,
+      "latencyMs": 9.248739999999998,
+      "semanticTop": "fixture-22:1:0:s0"
+    },
+    {
+      "category": "mixed",
+      "query": "सारथी offline maps download करने के लिए क्या चाहिए?",
+      "relevant": "fixture-23:1:0",
+      "keywordRank": 1,
+      "semanticRank": 1,
+      "hybridRank": 1,
+      "latencyMs": 7.236206999999922,
+      "semanticTop": "fixture-23:1:0:s0"
+    },
+    {
+      "category": "mixed",
+      "query": "अंबर accounts की security policy क्या require करती है?",
+      "relevant": "fixture-24:1:0",
+      "keywordRank": 1,
+      "semanticRank": 1,
+      "hybridRank": 1,
+      "latencyMs": 12.885643999999957,
+      "semanticTop": "fixture-24:1:0:s0"
+    }
+  ],
+  "negatives": [
+    {
+      "query": "What is the password for the Orion scholarship administrator?",
+      "topScore": 0.3955048574544135,
+      "topSource": "fixture-18:1:0:s0",
+      "abstained": false
+    },
+    {
+      "query": "कल मंगल ग्रह पर कितनी बारिश होगी?",
+      "topScore": 0.3949570314042191,
+      "topSource": "fixture-13:1:0:s0",
+      "abstained": false
+    },
+    {
+      "query": "अंबर office के CEO का private phone number क्या है?",
+      "topScore": 0.21464831531315143,
+      "topSource": "fixture-24:1:0:s0",
+      "abstained": false
+    }
+  ],
+  "negativePolicy": "Retriever ranks passages even for unsupported questions. No answer or automatic abstention is claimed."
+}
