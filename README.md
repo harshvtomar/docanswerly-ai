@@ -7,8 +7,7 @@
 **[Open the live demo](https://harshvtomar.github.io/docanswerly-ai/)** · v0.2.0
 
 Session 2 adds genuine browser-local multilingual semantic retrieval and optional
-hybrid search to the English/Hindi PDF reader and OCR pipeline. **Generative
-question answering remains pending.** Retrieved passages are not AI answers.
+hybrid search to the English/Hindi PDF reader and OCR pipeline. **Experimental opt-in local Qwen3 generation is implemented.** Its 30-case evaluation completed, but cross-language answers and abstention remain unreliable. See [actual RAG results](docs/RAG_EVALUATION.md). Retrieved passages alone are not AI answers.
 
 ![DocAnswerly AI semantic search](docs/screenshots/semantic-search.jpg)
 
@@ -42,7 +41,7 @@ No account or API key is required. No uploaded documents are sent to an AI servi
 | Multilingual semantic retrieval, including English ↔ Hindi | Real local q8 MiniLM, browser-tested |
 | Optional hybrid RRF search | Implemented; known cross-language ranking weakness |
 | Token-aware chunks and original-page citations | Implemented |
-| AI-generated RAG answers | Pending secure inference |
+| AI-generated RAG answers | Experimental local Qwen3; known Hindi/abstention failures |
 | External AI backend and persistence | Not deployed |
 
 ## Architecture and technologies
@@ -56,7 +55,7 @@ there is no backend execution on Pages.
 
 Implemented retrieval: page chunks → token-aware splitting → local multilingual
 embeddings → semantic / optional hybrid ranking → source pages.
-Future work: reranking → secure LLM inference → validated citations and abstention. See
+Experimental generation: selected passages → local Qwen3/Wllama → structural citation validation. Reliable grounding and abstention remain future work. See
 [architecture](docs/ARCHITECTURE.md) and [roadmap](ROADMAP.md).
 
 ## Local development
@@ -64,7 +63,7 @@ Future work: reranking → secure LLM inference → validated citations and abst
 Use Node.js 24 and npm. From a clean checkout:
 
 ```bash
-npm ci
+ONNXRUNTIME_NODE_INSTALL_CUDA=skip npm ci
 npm test
 npm run test:pdf
 npm run test:retrieval
@@ -110,7 +109,7 @@ checks before official Pages deployment. Browser artifacts are retained 14 days.
 - Mixed text/image content within one page may require force OCR.
 - OCR cancellation and timeouts are implemented; initialization cleanup waits for
   the worker handle. Large scans can be slow. Cancelling discards the unfinished PDF.
-- No password-protected PDF support or generated AI answers.
+- No password-protected PDF support. Generated answers can be wrong despite valid citation IDs.
 - Semantic model: 128 tokens per passage/query, 500 token-sized passages per index.
   Large download/memory footprint; unsupported questions still return ranked passages.
 - Chrome and emulated Pixel 7 were tested; Safari and physical mobile testing remain.

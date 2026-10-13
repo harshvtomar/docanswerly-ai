@@ -95,3 +95,17 @@ npm run test:retrieval, npm run build. CI repeats npm ci and all suites, install
 Chromium for the browser tests. Saved Node timing/RSS measurements are not browser
 performance benchmarks. Safari/Firefox, physical devices, broad scan quality,
 peak-memory stress, calibrated abstention and genuine QA remain untested.
+
+# Session 3A evaluation recovery
+
+Run 38331700774 at 3ccf320: **93 passed, 1 failed, 0 skipped** engineering checks
+(49 unit + 7 PDF/OCR + 9 embedding + 28 browser passed; one evaluation assertion
+failed). Crucially, all 30 real-model rows were produced before the assertion.
+Failure: HEAD model request ERR_ABORTED after HTTP 200. No page errors. Deployment
+skipped. Original raw results/diagnostics: `runs/38331700774/`.
+
+New recovery local checks: **56 unit + 7 PDF/OCR + 9 embedding = 72 passed,
+0 failed, 0 skipped**. CPU-only npm ci on Node 24 succeeded. Hybrid evaluation
+reproduced prior metrics. Seven unit cases protect narrow request classification;
+new browser negative-path tests still require CI confirmation at this checkpoint.
+No quality failure was reclassified as a pass. See RAG_EVALUATION.md.

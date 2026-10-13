@@ -1,80 +1,55 @@
 # DocAnswerly AI — Project state
 
-- Project: DocAnswerly AI
-- Tagline: Upload Documents. Ask Questions. Get Answers.
-- Technical description: Multilingual RAG-Based Document Question Answering System
-- Version: v0.2.0
-- Repository: https://github.com/harshvtomar/docanswerly-ai
-- Public frontend: https://harshvtomar.github.io/docanswerly-ai/
-- Default branch: main
-- Starting Session 2 SHA: e57c20cd11be56a263e86e12586ad37e9ab0a7af
-- Last verified feature SHA: 708dcd33512179ea9ac1e3ce33bc51ff2ceb9b3c
-- Verified feature CI: run 38230886095, all 66 checks passed; build and deploy succeeded.
+Tagline: Upload Documents. Ask Questions. Get Answers.
+Version: v0.2.0. Default branch: main. No v0.3.0 release.
+Repository: https://github.com/harshvtomar/docanswerly-ai
+Live: https://harshvtomar.github.io/docanswerly-ai/
+Last verified remote baseline: 3ccf32043db6c57941eb19124465bb9cf57513e9.
+This checkpoint follows that baseline; inspect remote HEAD for its own SHA.
 
-This release documentation follows the verified feature checkpoint. A commit cannot
-contain its own SHA: inspect current remote main HEAD and its Actions run. The final
-release version/docs run uses the same mandatory gates before deployment.
+## Session 3A findings — 13 October 2026 UTC
 
-## Implemented status
+Recovery run 38331700774 completed all 30 real Qwen3 cases. The separate Vite
+build fixed React #299. Initialization took 21,793.3 ms; no browser page errors.
+The workflow failed only on a HEAD model request marked ERR_ABORTED after HTTP
+200. Trace also shows successful model GET and all actual inference outputs.
+Deployment was skipped; last successful public deployment is 0237ad17ecf318727b830f9e0f87ba26107720ce.
 
-| Area | Status |
-|---|---|
-| React frontend, library, viewer, upload/deletion | Working on public Pages |
-| English/Hindi/mixed selectable PDF extraction | Verified on existing synthetic fixtures |
-| English/Hindi/mixed OCR | Genuine Tesseract, baseline preserved |
-| OCR cancellation and timeouts | Implemented; cancellation/recovery browser-tested |
-| Keyword search | Local Unicode term matching, immediate default |
-| English/Hindi semantic and cross-language retrieval | Genuine local model, evaluated and browser-tested |
-| Hybrid retrieval | Optional RRF mode; weak cross-language ranking in evaluation |
-| Original document/page citations | Working source navigation; no generated answer claims |
-| RAG generated answers | Pending, UI disabled |
-| Secure external backend | Pending; none deployed, no credentials configured |
-| Persistence/shared document storage | None; refresh clears tab memory |
+Saved original results, diagnostics and three focused cases in
+`docs/runs/38331700774/`. No repeated inference was needed to inspect these cases.
+30 rows: 11 reference matches; 13 validation errors (11 invalid abstention,
+2 requested-Hindi failures); no valid abstentions on 13 unsupported cases.
+These are quality failures, not successful refusals. Original labels unchanged.
 
-## Model / metrics
+## This recovery checkpoint
 
-Xenova/paraphrase-multilingual-MiniLM-L12-v2 q8 ONNX, revision
-2c4055b12046f11709e9df2c122e59ffbdc2f900, Apache-2.0 base model.
-Transformers.js 3.8.1 with browser worker WASM; Node CPU evaluation uses same weights.
-384 dimensions, normalized mean pooling, max 128 tokens. Build downloads/checksums
-assets; browser uses same-origin files only. Opt-in ~160 MB download, substantial
-memory; no uploaded PDF/text sent externally. 500 token-sized passages per index.
+Narrow diagnostic classification permits only exact model HEAD / HTTP 200 /
+ERR_ABORTED after proven initialization and thirty nonempty model outputs.
+All raw request failures stay in diagnostic artifacts. GET failures, other URLs,
+missing/error responses and browser exceptions remain fatal. Added seven unit
+checks and two negative-path browser checks. Partial output and console diagnostics
+are retained. Both evaluation HTML and bundle are removed before Pages upload.
+Production app, prompt, validation and retrieval algorithms are unchanged.
 
-24 unit + 7 PDF/OCR + 9 real-model checks + 26 browser = 66 passed, 0 failed,
-0 skipped at verified feature gate. See docs/TEST_RESULTS.md for historical results.
+Local Node 24 CPU-only npm ci succeeded. 56 unit, 7 PDF/OCR and 9 real embedding
+checks passed (72 total, zero failed/skipped). Hybrid evaluation reproduced prior
+metrics. Browser/CI confirmation of this new checkpoint must be inspected in Actions.
 
-25-query synthetic development evaluation: semantic Recall@1/3/5 = 1.00,
-MRR = 1.00. Keyword Recall@1/3/5 = 0.60, MRR = 0.60. Hybrid Recall@1/3/5 = 0.60,
-MRR = 0.6334. All ten cross-language hybrid queries fall below rank 5. No held-out
-or general accuracy claim. Unsupported queries: 0/3 automatic abstentions.
-OCR CER: English 0%, Hindi 5.1724%, mixed 0% on original clean single-line scans.
+## Feature status and limits
 
-## Known limits / priorities
+- English/Hindi/mixed text and scan PDFs, viewer, library, search and citations work
+  on existing synthetic fixtures. OCR CER EN 0%, HI 5.1724%, mixed 0%.
+- Real local multilingual MiniLM semantic retrieval works. Optional revised hybrid
+  held-out Recall@1 .85 versus semantic .95; both @3/@5 1.0. No new tuning.
+- Experimental local Qwen3 0.6B Q4_K_M answers exist, with serious cross-language,
+  grounding and abstention limits. Source identity checks are not claim verification.
+- No external backend, private API credentials, paid service or shared storage.
+- Optional generation downloads ~405 MB plus ~160 MB retrieval; device memory,
+  low-end physical phones, Safari and Firefox remain unverified.
+- No persistence, handwriting/layout accuracy claim or noisy-scan expansion.
+- Public UI may retain “Generating” progress wording after an answer error;
+  this is deferred to Session 3B, not repaired through prompt changes here.
 
-- Improve lexical/hybrid fusion using independently split harder retrieval data.
-- Implement calibrated evidence sufficiency; retrieval rankings do not prove support.
-- Secure grounded generation requires authorized inference access and server-side
-  secrets, authentication/rate limits, validated citations and prompt-injection tests.
-- Expand noisy, rotated, mixed-region, multi-column and independently authored PDFs.
-- OCR cancellation discards unfinished PDF; completed documents survive. Initializing
-  worker cleanup waits for a handle. No claim of perfect termination of stuck runtime.
-- No table/handwriting guarantee, password entry, persisted workspace, Safari or
-  physical low-memory mobile validation. 25 MiB / 40 pages / 8 docs limits remain.
-- No paid services activated. No credentials needed for currently working features.
-
-Continue with NEXT_SESSION_PROMPT.md (Session 3). Never restart or replace this repo.
-
-
-### Session 3 restoration in progress
-Current remote baseline verified: 03c6001e21d7714d3dba61d3fe20134c8348e82f.
-40 local checks rerun successfully; baseline browser/deployment gates verified
-in Actions 38231588343. CPU-only npm install avoids optional CUDA download.
-Generation remains pending while a local model is evaluated.
-
-Local generation foundation implemented, awaiting real browser validation.
-Model: Unsloth Qwen3 0.6B Q4_K_M; optional ~405 MB plus evidence model.
-22 new unit tests passed. Do not infer answer quality from structural validation.
-
-Retrieval comparison executed: semantic-first held-out Recall@1/3/5
-.85/1/1, MRR .9167; semantic-only .95/1/1, MRR .975.
-49 unit checks passed. Thirty-case real generation evaluation is pending CI.
+Next: inspect this checkpoint's CI and public deployment, finish any infrastructure
+regression first, then plan separately authorized answer-quality work. Read
+NEXT_SESSION_PROMPT.md. Never restart or replace the repository.

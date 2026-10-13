@@ -28,3 +28,11 @@ and cost monitoring, representative corpus evaluation and accessibility review.
 Pinned asset hashes, dependency/security updates, abuse testing, large-document
 resource budgets, Safari/Firefox and low-memory device testing, security headers
 where hosting supports them, failure recovery and documented data lifecycle.
+
+## Session 3A / 3B adjustment
+
+Local Qwen generation now exists, so an external provider is not required for
+inference demonstrations. 3A is evaluation/CI recovery only; keep v0.2.0.
+3B starts by verifying current CI, then addresses separately approved quality work.
+Hindi, cross-language translation and abstention remain unaccepted. No new release
+or storage/OCR/UI expansion is part of the recovery checkpoint.

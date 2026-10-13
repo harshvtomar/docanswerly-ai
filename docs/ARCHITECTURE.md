@@ -65,3 +65,18 @@ timeouts and cost ceilings. Do not treat CORS as authentication. Treat PDFs as
 untrusted evidence, validate citation IDs against supplied chunks and test claim
 support, contradiction and abstention. No document-triggered privileged actions.
 Shared storage requires document ownership checks. No paid service is authorized.
+
+## Session 3 / 3A current additions (supersede pending-generation notes above)
+
+Optional AnswerPanel uses real browser-local Qwen3 0.6B Q4_K_M through Wllama 3.8.1.
+Semantic retrieval selects up to three whole source chunks / 2100 characters.
+GroundedAnswerProvider validates structured output, source IDs, numbers and Hindi
+script presence; these checks do not establish semantic grounding. No remote
+backend or secrets are used. User-visible failures remain explicit.
+
+Evaluation builds independently from React, preventing missing-root side effects.
+Ready must appear within 15 seconds; browser completion is bounded at 20 minutes.
+Model load signal is 240 seconds and each inference signal 180 seconds; underlying
+runtime cancellation is cooperative. Partial per-case results survive validation
+failures. Browser diagnostics record page/console/HTTP/request failures. Only an
+exact model HEAD abort after HTTP 200 and demonstrated model execution is non-fatal.

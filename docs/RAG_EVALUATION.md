@@ -1,13 +1,14 @@
 # RAG evaluation — Session 3
 
-Real model integration is under browser validation. Do not treat the unit tests
-as real generation or claim the pending results below as successful inference.
+Real browser inference completed 30 cases in run 38331700774 at commit
+3ccf32043db6c57941eb19124465bb9cf57513e9. Runner initialization is verified;
+answer quality is not accepted. Saved raw results: [historical run](runs/38331700774/rag-evaluation.json).
 
 ## Reproduction
 
 `ONNXRUNTIME_NODE_INSTALL_CUDA=skip npm ci`
 `npm test && npm run test:pdf && npm run test:retrieval && npm run test:hybrid`
-`RAG_EVALUATION=1 npm run build`
+`npm run build && npm run build:evaluation`
 `RAG_EVALUATION=1 npm run test:e2e`
 
 CI installs Chromium and runs the same commands. The CI-only evaluation HTML is
@@ -47,3 +48,43 @@ tokens, structured schema, allowed source labels, original metadata and numeric
 consistency checks. UI renders plain React text. Any validation failure rejects
 an answer; it is never replaced with a fabricated answer. Small-model abstention
 and prompt following need empirical evaluation and are not guaranteed.
+
+## Actual recovered results — 13 October 2026
+
+Initialization: 21,793.3 ms. All 30 rows contain actual model output. Browser page
+errors: none. CI failed after evaluation on HEAD / model GGUF / HTTP 200 followed
+by net::ERR_ABORTED. Trace also records a successful GET. This is retained as a
+warning only when successful model execution is independently demonstrated.
+Other failed resources remain fatal. The full evaluation test is still enabled.
+
+| Observation | Actual value |
+|---|---:|
+| Reference-term matches | 11/30 (36.67%) |
+| Source-set matches | 14/30 (46.67%) |
+| Supported cases returning an answer | 14/17 (82.35%) |
+| Supported explicit refusals | 0/17 |
+| Unsupported valid abstentions | 0/13 |
+| Unsupported answers | 3/13 (23.08%) |
+| Validation errors | 13/30 |
+
+Errors: 11 invalid abstention responses, two missing requested Hindi. Ten of the
+errors are on unsupported cases, three on supported cases. Error and refusal are
+not interchangeable. Source IDs can be valid while factual content is wrong:
+cross-en-2 says six years where evidence says six weeks. Source-set matching's
+current refusal branch only checks empty citations; historical results are kept
+unchanged and this metric requires review before broader claims. No manual
+semantic-faithfulness score is asserted.
+
+Focused evidence reused from the completed corpus, without another inference run:
+
+| Case | Actual result | Inference time |
+|---|---|---:|
+| en-1 | The Lumen workshop takes place in room 24. | 36,902.5 ms |
+| hi-1 | कमल केंद्र में योग गुरुवार को होता है। | 36,848 ms |
+| absent-1 | Invalid abstention; raw output includes an irrelevant founding-year sentence | 19,668.1 ms |
+
+See [focused cases](runs/38331700774/focused-cases.json), original full JSON,
+[evaluation diagnostics](runs/38331700774/evaluation-diagnostics.json), and both
+UI generation observations in the same directory. These are synthetic fixtures,
+not personal documents. The UI Hindi sample failed language validation even
+though the oracle hi-1 case succeeds. No broad Hindi quality claim follows.

@@ -43,7 +43,7 @@ jobs:
             docs/hybrid-evaluation.json
             docs/rag-evaluation.json
           retention-days: 14
-      - run: rm -f dist/evaluation.html
+      - run: rm -f dist/evaluation.html dist/assets/evaluation-*.js
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

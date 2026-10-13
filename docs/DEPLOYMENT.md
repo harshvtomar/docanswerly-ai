@@ -48,3 +48,12 @@ runtime compatibility and model access only when selecting a real provider. No
 paid service or inference account was activated. Require schema validation, request
 limits, origin policy, abuse controls, timeouts and server-side secrets. Do not
 store documents remotely until authentication and ownership checks exist.
+
+## Session 3A recovery
+
+Use `ONNXRUNTIME_NODE_INSTALL_CUDA=skip npm ci` on Node 24. Build now includes
+pinned optional local Qwen3/Wllama assets (~405 MB additional), without backend
+credentials. Production and evaluation are separate Vite builds, in that order.
+Evaluation HTML and `assets/evaluation-*.js` are removed before Pages upload.
+Run 38331700774 completed inference but failed its request assertion, so did not
+deploy. All regression gates and the full evaluation remain enabled for the fix.

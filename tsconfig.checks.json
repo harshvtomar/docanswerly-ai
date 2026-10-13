@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "types": ["vite/client", "node"]
+  },
+  "include": [
+    "evaluation",
+    "e2e",
+    "playwright.config.ts",
+    "vite.evaluation.config.ts"
+  ]
+}

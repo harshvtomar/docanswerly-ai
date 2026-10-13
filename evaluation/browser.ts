@@ -19,7 +19,7 @@ document.querySelector<HTMLButtonElement>("#run")!.onclick = async () => {
   try {
     await runtime.load(
       new URL(import.meta.env.BASE_URL, location.origin).href,
-      (s) => (status.textContent = s),
+      (s) => (status.textContent = `Loading model: ${s}`),
       AbortSignal.timeout(240000),
     );
     const initializationMs = performance.now() - initStart;
@@ -87,7 +87,12 @@ document.querySelector<HTMLButtonElement>("#run")!.onclick = async () => {
           latencyMs: performance.now() - start,
         });
       }
-      result.textContent = JSON.stringify({ partial: true, rows });
+      result.textContent = JSON.stringify({
+        partial: true,
+        initializationMs,
+        model: GENERATION_MODEL,
+        rows,
+      });
     }
     const supported = rows.filter((r) => r.expectedStatus === "answer"),
       unsupported = rows.filter((r) => r.expectedStatus !== "answer");
@@ -126,6 +131,13 @@ document.querySelector<HTMLButtonElement>("#run")!.onclick = async () => {
     });
     status.textContent = "Complete";
   } catch (error) {
+    result.textContent = JSON.stringify({
+      partial: true,
+      model: GENERATION_MODEL,
+      elapsedMs: performance.now() - initStart,
+      error: String(error),
+      rows,
+    });
     status.textContent = "Failed: " + String(error);
   } finally {
     await runtime.dispose();

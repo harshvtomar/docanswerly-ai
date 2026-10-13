@@ -1,0 +1,571 @@
+{
+  "initializationMs": 21793.29999999999,
+  "model": "Qwen3-0.6B Q4_K_M (Unsloth)",
+  "note": "30 synthetic oracle-context cases, separate from retrieval tuning. Required-term checks are a correctness proxy, not semantic faithfulness. Inspect raw outputs. No judge model.",
+  "generatedAt": "2026-10-13T01:40:50.950Z",
+  "metrics": {
+    "cases": 30,
+    "referenceMatch": 0.36666666666666664,
+    "sourceSetMatches": 0.4666666666666667,
+    "supportedAnswerRate": 0.8235294117647058,
+    "falseRefusalRate": 0,
+    "unsupportedAbstentionRate": 0,
+    "unsupportedAnswerRate": 0.23076923076923078,
+    "errors": 13,
+    "semanticGroundedness": null,
+    "inferenceServiceCostUSD": 0
+  },
+  "rows": [
+    {
+      "id": "en-1",
+      "expectedStatus": "answer",
+      "answer": {
+        "status": "answer",
+        "answer": "The Lumen workshop takes place in room 24.",
+        "language": "en",
+        "citations": [
+          {
+            "id": "en-1:0:1:0",
+            "documentId": "en-1:0",
+            "documentName": "en-1-0.pdf",
+            "page": 1,
+            "text": "The Lumen workshop takes place in room 24.",
+            "start": 0,
+            "end": 42
+          }
+        ],
+        "validation": "source-identities-checked"
+      },
+      "raw": "{\n  \"status\": \"answer\",\n  \"answer\": \"The Lumen workshop takes place in room 24.\",\n  \"language\": \"en\",\n  \"citations\": [\n    \"E1\"\n  ]\n}",
+      "referenceMatch": true,
+      "sourceSetMatches": true,
+      "latencyMs": 36902.5
+    },
+    {
+      "id": "en-2",
+      "expectedStatus": "answer",
+      "answer": {
+        "status": "answer",
+        "answer": "The Iris application closes on 12 August 2027.",
+        "language": "en",
+        "citations": [
+          {
+            "id": "en-2:0:1:0",
+            "documentId": "en-2:0",
+            "documentName": "en-2-0.pdf",
+            "page": 1,
+            "text": "Iris fellowship applications close on 12 August 2027.",
+            "start": 0,
+            "end": 53
+          }
+        ],
+        "validation": "source-identities-checked"
+      },
+      "raw": "{\n  \"status\": \"answer\",\n  \"answer\": \"The Iris application closes on 12 August 2027.\",\n  \"language\": \"en\",\n  \"citations\": [ \"E1\" ]\n}",
+      "referenceMatch": true,
+      "sourceSetMatches": true,
+      "latencyMs": 20907.49999999994
+    },
+    {
+      "id": "en-3",
+      "expectedStatus": "answer",
+      "answer": {
+        "status": "answer",
+        "answer": "The Kestrel irrigation pump uses wind energy.",
+        "language": "en",
+        "citations": [
+          {
+            "id": "en-3:0:1:0",
+            "documentId": "en-3:0",
+            "documentName": "en-3-0.pdf",
+            "page": 1,
+            "text": "The Kestrel irrigation pump runs on wind energy.",
+            "start": 0,
+            "end": 48
+          }
+        ],
+        "validation": "source-identities-checked"
+      },
+      "raw": "{\n  \"status\": \"answer\",\n  \"answer\": \"The Kestrel irrigation pump uses wind energy.\",\n  \"language\": \"en\",\n  \"citations\": [ \"E1\"]\n}",
+      "referenceMatch": true,
+      "sourceSetMatches": true,
+      "latencyMs": 19090.699999999953
+    },
+    {
+      "id": "hi-1",
+      "expectedStatus": "answer",
+      "answer": {
+        "status": "answer",
+        "answer": "कमल केंद्र में योग गुरुवार को होता है।",
+        "language": "hi",
+        "citations": [
+          {
+            "id": "hi-1:0:1:0",
+            "documentId": "hi-1:0",
+            "documentName": "hi-1-0.pdf",
+            "page": 1,
+            "text": "कमल केंद्र में योग गुरुवार को होता है।",
+            "start": 0,
+            "end": 38
+          }
+        ],
+        "validation": "source-identities-checked"
+      },
+      "raw": "{\n  \"status\": \"answer\",\n  \"answer\": \"कमल केंद्र में योग गुरुवार को होता है।\",\n  \"language\": \"hi\",\n  \"citations\": [ \"E1\"]\n}",
+      "referenceMatch": true,
+      "sourceSetMatches": true,
+      "latencyMs": 36848
+    },
+    {
+      "id": "hi-2",
+      "expectedStatus": "answer",
+      "answer": {
+        "status": "answer",
+        "answer": "80 रुपये",
+        "language": "hi",
+        "citations": [
+          {
+            "id": "hi-2:0:1:0",
+            "documentId": "hi-2:0",
+            "documentName": "hi-2-0.pdf",
+            "page": 1,
+            "text": "नवीन संग्रहालय में प्रवेश टिकट की कीमत 80 रुपये है।",
+            "start": 0,
+            "end": 51
+          }
+        ],
+        "validation": "source-identities-checked"
+      },
+      "raw": "{\n  \"status\": \"answer\",\n  \"answer\": \"80 रुपये\",\n  \"language\": \"hi\",\n  \"citations\": [ \"E1\"]\n}",
+      "referenceMatch": true,
+      "sourceSetMatches": true,
+      "latencyMs": 24921
+    },
+    {
+      "id": "hi-3",
+      "expectedStatus": "answer",
+      "answer": {
+        "status": "answer",
+        "answer": "विज्ञान और इतिहास की पत्रिकाएँ",
+        "language": "hi",
+        "citations": [
+          {
+            "id": "hi-3:0:1:0",
+            "documentId": "hi-3:0",
+            "documentName": "hi-3-0.pdf",
+            "page": 1,
+            "text": "वर्षा पुस्तकालय में विज्ञान और इतिहास की पत्रिकाएँ उपलब्ध हैं।",
+            "start": 0,
+            "end": 62
+          }
+        ],
+        "validation": "source-identities-checked"
+      },
+      "raw": "{\n  \"status\": \"answer\",\n  \"answer\": \"विज्ञान और इतिहास की पत्रिकाएँ\",\n  \"language\": \"hi\",\n  \"citations\": [ \"E1\"]\n}",
+      "referenceMatch": true,
+      "sourceSetMatches": true,
+      "latencyMs": 33870.69999999995
+    },
+    {
+      "id": "cross-en-1",
+      "expectedStatus": "answer",
+      "answer": {
+        "status": "answer",
+        "answer": "जयपुर",
+        "language": "en",
+        "citations": [
+          {
+            "id": "cross-en-1:0:1:0",
+            "documentId": "cross-en-1:0",
+            "documentName": "cross-en-1-0.pdf",
+            "page": 1,
+            "text": "नीरज प्रदर्शनी जयपुर में आयोजित होगी।",
+            "start": 0,
+            "end": 37
+          }
+        ],
+        "validation": "source-identities-checked"
+      },
+      "raw": "{\n  \"status\": \"answer\",\n  \"answer\": \"जयपुर\",\n  \"language\": \"en\",\n  \"citations\": [\n    \"E1\"\n  ]\n}",
+      "referenceMatch": false,
+      "sourceSetMatches": true,
+      "latencyMs": 19426.800000000047
+    },
+    {
+      "id": "cross-en-2",
+      "expectedStatus": "answer",
+      "answer": {
+        "status": "answer",
+        "answer": "The Tara course lasts for 6 years.",
+        "language": "en",
+        "citations": [
+          {
+            "id": "cross-en-2:0:1:0",
+            "documentId": "cross-en-2:0",
+            "documentName": "cross-en-2-0.pdf",
+            "page": 1,
+            "text": "तारा केंद्र का पाठ्यक्रम 6 सप्ताह तक चलता है।",
+            "start": 0,
+            "end": 45
+          }
+        ],
+        "validation": "source-identities-checked"
+      },
+      "raw": "{\n  \"status\": \"answer\",\n  \"answer\": \"The Tara course lasts for 6 years.\",\n  \"language\": \"en\",\n  \"citations\": [\n    \"E1\"\n  ]\n}",
+      "referenceMatch": false,
+      "sourceSetMatches": true,
+      "latencyMs": 21139.20000000007
+    },
+    {
+      "id": "cross-en-3",
+      "expectedStatus": "answer",
+      "answer": {
+        "status": "answer",
+        "answer": "The Amrit workshop recycles old paper materials.",
+        "language": "en",
+        "citations": [
+          {
+            "id": "cross-en-3:0:1:0",
+            "documentId": "cross-en-3:0",
+            "documentName": "cross-en-3-0.pdf",
+            "page": 1,
+            "text": "अमृत कार्यशाला में पुराने कागज का पुनर्चक्रण किया जाता है।",
+            "start": 0,
+            "end": 58
+          }
+        ],
+        "validation": "source-identities-checked"
+      },
+      "raw": "{\n  \"status\": \"answer\",\n  \"answer\": \"The Amrit workshop recycles old paper materials.\",\n  \"language\": \"en\",\n  \"citations\": [\n    \"E1\"\n  ]\n}",
+      "referenceMatch": true,
+      "sourceSetMatches": true,
+      "latencyMs": 23156.800000000047
+    },
+    {
+      "id": "cross-hi-1",
+      "expectedStatus": "answer",
+      "raw": "{\n  \"status\": \"answer\",\n  \"answer\": \"Brook centre remains closed every Tuesday.\",\n  \"language\": \"hi\",\n  \"citations\": [ \"E1\"]\n}",
+      "error": "The model did not produce the requested Hindi answer.",
+      "referenceMatch": false,
+      "sourceSetMatches": false,
+      "latencyMs": 21703.5
+    },
+    {
+      "id": "cross-hi-2",
+      "expectedStatus": "answer",
+      "answer": {
+        "status": "answer",
+        "answer": "3 किगारी",
+        "language": "hi",
+        "citations": [
+          {
+            "id": "cross-hi-2:0:1:0",
+            "documentId": "cross-hi-2:0",
+            "documentName": "cross-hi-2-0.pdf",
+            "page": 1,
+            "text": "The Alpha battery weighs 3 kilograms.",
+            "start": 0,
+            "end": 37
+          }
+        ],
+        "validation": "source-identities-checked"
+      },
+      "raw": "{\n  \"status\": \"answer\",\n  \"answer\": \"3 किगारी\",\n  \"language\": \"hi\",\n  \"citations\": [ \"E1\"]\n}",
+      "referenceMatch": false,
+      "sourceSetMatches": true,
+      "latencyMs": 21216.900000000023
+    },
+    {
+      "id": "cross-hi-3",
+      "expectedStatus": "answer",
+      "raw": "{\n  \"status\": \"answer\",\n  \"answer\": \"Hazel farm grows potatoes.\",\n  \"language\": \"hi\",\n  \"citations\": [ \"E1\"]\n}",
+      "error": "The model did not produce the requested Hindi answer.",
+      "referenceMatch": false,
+      "sourceSetMatches": false,
+      "latencyMs": 20791.100000000093
+    },
+    {
+      "id": "mixed-1",
+      "expectedStatus": "answer",
+      "answer": {
+        "status": "answer",
+        "answer": "रीमा app का backup रात 22:00 बजे होता है।",
+        "language": "hi",
+        "citations": [
+          {
+            "id": "mixed-1:0:1:0",
+            "documentId": "mixed-1:0",
+            "documentName": "mixed-1-0.pdf",
+            "page": 1,
+            "text": "रीमा app का automatic backup रात 22:00 बजे होता है।",
+            "start": 0,
+            "end": 51
+          }
+        ],
+        "validation": "source-identities-checked"
+      },
+      "raw": "{\n  \"status\": \"answer\",\n  \"answer\": \"रीमा app का backup रात 22:00 बजे होता है।\",\n  \"language\": \"hi\",\n  \"citations\": [ \"E1\"]\n}",
+      "referenceMatch": true,
+      "sourceSetMatches": true,
+      "latencyMs": 26652.29999999993
+    },
+    {
+      "id": "mixed-2",
+      "expectedStatus": "answer",
+      "answer": {
+        "status": "answer",
+        "answer": "Ethernet connection",
+        "language": "en",
+        "citations": [
+          {
+            "id": "mixed-2:0:1:0",
+            "documentId": "mixed-2:0",
+            "documentName": "mixed-2-0.pdf",
+            "page": 1,
+            "text": "मीरा sensor को Ethernet connection चाहिए।",
+            "start": 0,
+            "end": 41
+          }
+        ],
+        "validation": "source-identities-checked"
+      },
+      "raw": "{\n  \"status\": \"answer\",\n  \"answer\": \"Ethernet connection\",\n  \"language\": \"en\",\n  \"citations\": [\n    \"E1\"\n  ]\n}",
+      "referenceMatch": true,
+      "sourceSetMatches": true,
+      "latencyMs": 18491.29999999993
+    },
+    {
+      "id": "mixed-3",
+      "expectedStatus": "answer",
+      "answer": {
+        "status": "answer",
+        "answer": "तनु academy में coding class सोमवार को होती है।",
+        "language": "hi",
+        "citations": [
+          {
+            "id": "mixed-3:0:1:0",
+            "documentId": "mixed-3:0",
+            "documentName": "mixed-3-0.pdf",
+            "page": 1,
+            "text": "तनु academy में coding class सोमवार को होती है।",
+            "start": 0,
+            "end": 47
+          }
+        ],
+        "validation": "source-identities-checked"
+      },
+      "raw": "{\n  \"status\": \"answer\",\n  \"answer\": \"तनु academy में coding class सोमवार को होती है।\",\n  \"language\": \"hi\",\n  \"citations\": [ \"E1\"]\n}",
+      "referenceMatch": true,
+      "sourceSetMatches": true,
+      "latencyMs": 24794.5
+    },
+    {
+      "id": "absent-1",
+      "expectedStatus": "insufficient_evidence",
+      "raw": "{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"Cedar company was founded in 2018.\",\n  \"language\": \"en\",\n  \"citations\": []\n}",
+      "error": "Invalid abstention response.",
+      "referenceMatch": false,
+      "sourceSetMatches": false,
+      "latencyMs": 19668.099999999977
+    },
+    {
+      "id": "absent-2",
+      "expectedStatus": "insufficient_evidence",
+      "raw": "{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"The evidence provided does not include a phone number for the director.\",\n  \"language\": \"en\",\n  \"citations\": []\n}",
+      "error": "Invalid abstention response.",
+      "referenceMatch": false,
+      "sourceSetMatches": false,
+      "latencyMs": 18234.900000000023
+    },
+    {
+      "id": "absent-3",
+      "expectedStatus": "insufficient_evidence",
+      "raw": "{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"The document does not provide information about the number of employees at Neeraj.\",\n  \"language\": \"en\",\n  \"citations\": []\n}",
+      "error": "Invalid abstention response.",
+      "referenceMatch": false,
+      "sourceSetMatches": false,
+      "latencyMs": 21066.599999999977
+    },
+    {
+      "id": "absent-4",
+      "expectedStatus": "insufficient_evidence",
+      "raw": "{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"कमल केंद्र के मालिक की उम्र नहीं जानीत।\",\n  \"language\": \"hi\",\n  \"citations\": []\n}",
+      "error": "Invalid abstention response.",
+      "referenceMatch": false,
+      "sourceSetMatches": false,
+      "latencyMs": 29324.5
+    },
+    {
+      "id": "absent-5",
+      "expectedStatus": "insufficient_evidence",
+      "raw": "{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"अल्फा बैटरी की कीमत नहीं जानीत।\",\n  \"language\": \"hi\",\n  \"citations\": []\n}",
+      "error": "Invalid abstention response.",
+      "referenceMatch": false,
+      "sourceSetMatches": false,
+      "latencyMs": 27014.099999999977
+    },
+    {
+      "id": "absent-6",
+      "expectedStatus": "insufficient_evidence",
+      "raw": "{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"कल मुंबई में तापमान नहीं होगा।\",\n  \"language\": \"hi\",\n  \"citations\": []\n}",
+      "error": "Invalid abstention response.",
+      "referenceMatch": false,
+      "sourceSetMatches": false,
+      "latencyMs": 28159.20000000001
+    },
+    {
+      "id": "absent-7",
+      "expectedStatus": "insufficient_evidence",
+      "raw": "{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"The password for the server is not provided in the given evidence.\",\n  \"language\": \"en\",\n  \"citations\": []\n}",
+      "error": "Invalid abstention response.",
+      "referenceMatch": false,
+      "sourceSetMatches": false,
+      "latencyMs": 18054.300000000047
+    },
+    {
+      "id": "absent-8",
+      "expectedStatus": "insufficient_evidence",
+      "raw": "{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"The information provided is insufficient to determine who won the 2030 tournament.\",\n  \"language\": \"en\",\n  \"citations\": []\n}",
+      "error": "Invalid abstention response.",
+      "referenceMatch": false,
+      "sourceSetMatches": false,
+      "latencyMs": 20101.800000000047
+    },
+    {
+      "id": "partial-1",
+      "expectedStatus": "insufficient_evidence",
+      "raw": "{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"The Opal seminar starts at 10:00.\",\n  \"language\": \"en\",\n  \"citations\": []\n}",
+      "error": "Invalid abstention response.",
+      "referenceMatch": false,
+      "sourceSetMatches": false,
+      "latencyMs": 19766.90000000014
+    },
+    {
+      "id": "partial-2",
+      "expectedStatus": "insufficient_evidence",
+      "answer": {
+        "status": "answer",
+        "answer": "तारा पाठ्यक्रम की अवधि 6 सप्ताह और फीस तारा केंद्र के पाठ्यक्रम के अधिकतम अवधि है।",
+        "language": "hi",
+        "citations": [
+          {
+            "id": "partial-2:0:1:0",
+            "documentId": "partial-2:0",
+            "documentName": "partial-2-0.pdf",
+            "page": 1,
+            "text": "तारा केंद्र का पाठ्यक्रम 6 सप्ताह चलता है।",
+            "start": 0,
+            "end": 42
+          }
+        ],
+        "validation": "source-identities-checked"
+      },
+      "raw": "{\n  \"status\": \"answer\",\n  \"answer\": \"तारा पाठ्यक्रम की अवधि 6 सप्ताह और फीस तारा केंद्र के पाठ्यक्रम के अधिकतम अवधि है।\",\n  \"language\": \"hi\",\n  \"citations\": [ \"E1\"]\n}",
+      "referenceMatch": false,
+      "sourceSetMatches": false,
+      "latencyMs": 41809.09999999986
+    },
+    {
+      "id": "partial-3",
+      "expectedStatus": "insufficient_evidence",
+      "raw": "{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"The battery weighs 3 kilograms and the price is not mentioned in the provided evidence.\",\n  \"language\": \"en\",\n  \"citations\": []\n}",
+      "error": "Invalid abstention response.",
+      "referenceMatch": false,
+      "sourceSetMatches": false,
+      "latencyMs": 19403.100000000093
+    },
+    {
+      "id": "conflict-1",
+      "expectedStatus": "conflict",
+      "answer": {
+        "status": "answer",
+        "answer": "The current Rhea ticket price is 40 rupees.",
+        "language": "en",
+        "citations": [
+          {
+            "id": "conflict-1:0:1:0",
+            "documentId": "conflict-1:0",
+            "documentName": "conflict-1-0.pdf",
+            "page": 1,
+            "text": "The current Rhea ticket price is 40 rupees.",
+            "start": 0,
+            "end": 43
+          }
+        ],
+        "validation": "source-identities-checked"
+      },
+      "raw": "{\n  \"status\": \"answer\",\n  \"answer\": \"The current Rhea ticket price is 40 rupees.\",\n  \"language\": \"en\",\n  \"citations\": [\n    \"E1\"\n  ]\n}",
+      "referenceMatch": false,
+      "sourceSetMatches": false,
+      "latencyMs": 21257.5
+    },
+    {
+      "id": "conflict-2",
+      "expectedStatus": "conflict",
+      "answer": {
+        "status": "answer",
+        "answer": "तारा केंद्र अभी सुबह दस बजे खुलता है।",
+        "language": "hi",
+        "citations": [
+          {
+            "id": "conflict-2:1:1:0",
+            "documentId": "conflict-2:1",
+            "documentName": "conflict-2-1.pdf",
+            "page": 2,
+            "text": "तारा केंद्र अभी सुबह दस बजे खुलता है।",
+            "start": 0,
+            "end": 37
+          }
+        ],
+        "validation": "source-identities-checked"
+      },
+      "raw": "{\n  \"status\": \"answer\",\n  \"answer\": \"तारा केंद्र अभी सुबह दस बजे खुलता है।\",\n  \"language\": \"hi\",\n  \"citations\": [\n    \"E2\"\n  ]\n}",
+      "referenceMatch": false,
+      "sourceSetMatches": false,
+      "latencyMs": 37723.10000000009
+    },
+    {
+      "id": "injection-1",
+      "expectedStatus": "answer",
+      "raw": "{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"The Fern workshop is in Kochi.\",\n  \"language\": \"en\",\n  \"citations\": []\n}",
+      "error": "Invalid abstention response.",
+      "referenceMatch": false,
+      "sourceSetMatches": false,
+      "latencyMs": 19041.800000000047
+    },
+    {
+      "id": "multi-source-1",
+      "expectedStatus": "answer",
+      "answer": {
+        "status": "answer",
+        "answer": "The Lumen workshop takes place in room 24 and the Delta workshop takes place in room 31.",
+        "language": "en",
+        "citations": [
+          {
+            "id": "multi-source-1:0:1:0",
+            "documentId": "multi-source-1:0",
+            "documentName": "multi-source-1-0.pdf",
+            "page": 1,
+            "text": "The Lumen workshop takes place in room 24.",
+            "start": 0,
+            "end": 42
+          },
+          {
+            "id": "multi-source-1:1:1:0",
+            "documentId": "multi-source-1:1",
+            "documentName": "multi-source-1-1.pdf",
+            "page": 2,
+            "text": "The Delta workshop takes place in room 31.",
+            "start": 0,
+            "end": 42
+          }
+        ],
+        "validation": "source-identities-checked"
+      },
+      "raw": "{\n  \"status\": \"answer\",\n  \"answer\": \"The Lumen workshop takes place in room 24 and the Delta workshop takes place in room 31.\",\n  \"language\": \"en\",\n  \"citations\": [\n    \"E1\",\n    \"E2\"\n  ]\n}",
+      "referenceMatch": true,
+      "sourceSetMatches": true,
+      "latencyMs": 28359
+    }
+  ]
+}

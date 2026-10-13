@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-12T17:39:20.364Z",
+  "generatedAt": "2026-10-13T07:53:26.505Z",
   "model": {
     "id": "Xenova/paraphrase-multilingual-MiniLM-L12-v2",
     "revision": "2c4055b12046f11709e9df2c122e59ffbdc2f900",
@@ -8,9 +8,9 @@
   },
   "runtime": "Transformers.js 3.8.1 / ONNX Runtime Node CPU q8",
   "note": "Authored synthetic development corpus, not held-out or representative. One relevant passage per positive query; no training or tuning performed. Negatives have no supported answer.",
-  "initMs": 910.3032700000001,
-  "indexMs": 197.12760400000002,
-  "rssBytes": 622448640,
+  "initMs": 976.7990589999999,
+  "indexMs": 308.98647099999994,
+  "rssBytes": 619032576,
   "summary": {
     "all": {
       "keyword": {
@@ -159,7 +159,7 @@
       "keywordRank": 1,
       "semanticRank": 1,
       "hybridRank": 1,
-      "latencyMs": 4.427457000000004,
+      "latencyMs": 4.937511000000086,
       "semanticTop": "fixture-0:1:0:s0"
     },
     {
@@ -169,7 +169,7 @@
       "keywordRank": 1,
       "semanticRank": 1,
       "hybridRank": 1,
-      "latencyMs": 5.068215999999893,
+      "latencyMs": 4.819983999999977,
       "semanticTop": "fixture-1:1:0:s0"
     },
     {
@@ -179,7 +179,7 @@
       "keywordRank": 1,
       "semanticRank": 1,
       "hybridRank": 1,
-      "latencyMs": 5.177537000000029,
+      "latencyMs": 4.626032000000123,
       "semanticTop": "fixture-2:1:0:s0"
     },
     {
@@ -189,7 +189,7 @@
       "keywordRank": 1,
       "semanticRank": 1,
       "hybridRank": 1,
-      "latencyMs": 4.313597999999956,
+      "latencyMs": 4.496287000000166,
       "semanticTop": "fixture-3:1:0:s0"
     },
     {
@@ -199,7 +199,7 @@
       "keywordRank": 1,
       "semanticRank": 1,
       "hybridRank": 1,
-      "latencyMs": 4.997090999999955,
+      "latencyMs": 4.73802099999989,
       "semanticTop": "fixture-4:1:0:s0"
     },
     {
@@ -209,7 +209,7 @@
       "keywordRank": 1,
       "semanticRank": 1,
       "hybridRank": 1,
-      "latencyMs": 4.885634999999866,
+      "latencyMs": 4.721025000000054,
       "semanticTop": "fixture-5:1:0:s0"
     },
     {
@@ -219,7 +219,7 @@
       "keywordRank": 1,
       "semanticRank": 1,
       "hybridRank": 1,
-      "latencyMs": 17.075897999999825,
+      "latencyMs": 6.588083999999981,
       "semanticTop": "fixture-6:1:0:s0"
     },
     {
@@ -229,7 +229,7 @@
       "keywordRank": 1,
       "semanticRank": 1,
       "hybridRank": 1,
-      "latencyMs": 4.827598999999964,
+      "latencyMs": 5.346527000000151,
       "semanticTop": "fixture-7:1:0:s0"
     },
     {
@@ -239,7 +239,7 @@
       "keywordRank": 1,
       "semanticRank": 1,
       "hybridRank": 1,
-      "latencyMs": 8.187034999999923,
+      "latencyMs": 26.077454999999873,
       "semanticTop": "fixture-8:1:0:s0"
     },
     {
@@ -249,7 +249,7 @@
       "keywordRank": 1,
       "semanticRank": 1,
       "hybridRank": 1,
-      "latencyMs": 5.596919000000071,
+      "latencyMs": 8.275384000000031,
       "semanticTop": "fixture-9:1:0:s0"
     },
     {
@@ -259,7 +259,7 @@
       "keywordRank": null,
       "semanticRank": 1,
       "hybridRank": 11,
-      "latencyMs": 5.195313999999826,
+      "latencyMs": 5.3546180000003005,
       "semanticTop": "fixture-10:1:0:s0"
     },
     {
@@ -269,7 +269,7 @@
       "keywordRank": null,
       "semanticRank": 1,
       "hybridRank": 12,
-      "latencyMs": 21.999198999999862,
+      "latencyMs": 7.896973999999773,
       "semanticTop": "fixture-11:1:0:s0"
     },
     {
@@ -279,7 +279,7 @@
       "keywordRank": null,
       "semanticRank": 1,
       "hybridRank": 11,
-      "latencyMs": 5.5014669999998205,
+      "latencyMs": 7.732766999999967,
       "semanticTop": "fixture-12:1:0:s0"
     },
     {
@@ -289,7 +289,7 @@
       "keywordRank": null,
       "semanticRank": 1,
       "hybridRank": 6,
-      "latencyMs": 5.315472,
+      "latencyMs": 6.934996999999839,
       "semanticTop": "fixture-13:1:0:s0"
     },
     {
@@ -299,7 +299,7 @@
       "keywordRank": null,
       "semanticRank": 1,
       "hybridRank": 11,
-      "latencyMs": 14.80372299999999,
+      "latencyMs": 7.2509219999997185,
       "semanticTop": "fixture-14:1:0:s0"
     },
     {
@@ -309,7 +309,7 @@
       "keywordRank": null,
       "semanticRank": 1,
       "hybridRank": 15,
-      "latencyMs": 5.221613000000161,
+      "latencyMs": 7.7504039999998895,
       "semanticTop": "fixture-15:1:0:s0"
     },
     {
@@ -319,7 +319,7 @@
       "keywordRank": null,
       "semanticRank": 1,
       "hybridRank": 18,
-      "latencyMs": 5.700052000000142,
+      "latencyMs": 8.696668000000045,
       "semanticTop": "fixture-16:1:0:s0"
     },
     {
@@ -329,7 +329,7 @@
       "keywordRank": null,
       "semanticRank": 1,
       "hybridRank": 18,
-      "latencyMs": 7.6490679999997155,
+      "latencyMs": 7.991066000000046,
       "semanticTop": "fixture-17:1:0:s0"
     },
     {
@@ -339,7 +339,7 @@
       "keywordRank": null,
       "semanticRank": 1,
       "hybridRank": 15,
-      "latencyMs": 5.330793999999969,
+      "latencyMs": 12.837339000000156,
       "semanticTop": "fixture-18:1:0:s0"
     },
     {
@@ -349,7 +349,7 @@
       "keywordRank": null,
       "semanticRank": 1,
       "hybridRank": 15,
-      "latencyMs": 4.897547000000031,
+      "latencyMs": 7.005643000000418,
       "semanticTop": "fixture-19:1:0:s0"
     },
     {
@@ -359,7 +359,7 @@
       "keywordRank": 1,
       "semanticRank": 1,
       "hybridRank": 1,
-      "latencyMs": 5.641841000000113,
+      "latencyMs": 6.0534999999999854,
       "semanticTop": "fixture-20:1:0:s0"
     },
     {
@@ -369,7 +369,7 @@
       "keywordRank": 1,
       "semanticRank": 1,
       "hybridRank": 1,
-      "latencyMs": 4.601909999999862,
+      "latencyMs": 10.254171000000042,
       "semanticTop": "fixture-21:1:0:s0"
     },
     {
@@ -379,7 +379,7 @@
       "keywordRank": 1,
       "semanticRank": 1,
       "hybridRank": 1,
-      "latencyMs": 4.543884000000162,
+      "latencyMs": 5.2591449999999895,
       "semanticTop": "fixture-22:1:0:s0"
     },
     {
@@ -389,7 +389,7 @@
       "keywordRank": 1,
       "semanticRank": 1,
       "hybridRank": 1,
-      "latencyMs": 6.166697999999997,
+      "latencyMs": 5.88875199999984,
       "semanticTop": "fixture-23:1:0:s0"
     },
     {
@@ -399,7 +399,7 @@
       "keywordRank": 1,
       "semanticRank": 1,
       "hybridRank": 1,
-      "latencyMs": 5.333364000000074,
+      "latencyMs": 7.342720000000099,
       "semanticTop": "fixture-24:1:0:s0"
     }
   ],

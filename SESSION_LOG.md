@@ -151,3 +151,23 @@ with page errors, failed resource requests and partial outputs in artifacts.
 First UI observations: English supported answer succeeds; Hindi answer rejected
 for missing Devanagari; unsupported query rejected as invalid abstention. Those
 validation errors are not successful abstentions. Release remains v0.2.0.
+
+## Session 3A — 13 October 2026 UTC
+
+Inspected remote main 3ccf32043db6c57941eb19124465bb9cf57513e9 and run
+38331700774 before edits. Build failed, deployment skipped. Contrary to the prior
+pending report, evaluation initialized and completed all 30 genuine cases.
+Only final request assertion failed: model HEAD HTTP 200 then ERR_ABORTED; trace
+shows GET 200 and all predictions. No React/page errors. Preserved artifact
+11783388247 results/diagnostics under docs/runs/38331700774 before expiry.
+Focused English, Hindi and unsupported examples reused from these real outputs.
+13 answer-validation errors remain, no label/prompt/algorithm changes.
+
+Added exact HEAD diagnostic classification, seven unit checks, module-load and
+model-load failure browser checks, partial/console diagnostics, evaluation type
+checking and removal of evaluation JS before publication. Full 30-case test remains
+enabled; one CI rerun will verify the corrected assertion, not tune answer quality.
+Node 24 CPU-only npm ci passed. Local unit 56, PDF/OCR 7, real embedding 9 passed;
+hybrid metrics unchanged. Browser results for the new checkpoint are pending CI.
+Restored stale local scratch from authoritative remote files; no remote history
+reset or force push. Updated README/state and standalone Session 3B handoff.

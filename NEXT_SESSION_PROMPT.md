@@ -1,66 +1,68 @@
-# DOCANSWERLY AI — WORK SESSION 3 CONTINUATION 2
+# DOCANSWERLY AI — WORK SESSION 3B
 
-Continue the existing project. Never restart, replace the repository, reset history,
-force-push, or modify unrelated repositories. No paid services without permission.
+Continue https://github.com/harshvtomar/docanswerly-ai on main. Public site:
+https://harshvtomar.github.io/docanswerly-ai/. Version remains v0.2.0.
+Never restart, create a replacement repository, reset history, force-push, remove
+working features or modify unrelated repositories. No paid services authorized.
 
-Repository: https://github.com/harshvtomar/docanswerly-ai
-Live: https://harshvtomar.github.io/docanswerly-ai/
-Default branch: main. Recorded version: v0.2.0 (v0.3.0 not accepted yet).
-Reference source checkpoint: 16eb6f137df75c1ae8061d5fded919706b3fe69f.
-Last verified deployment: 0237ad17ecf318727b830f9e0f87ba26107720ce.
-These references are historical; inspect CURRENT remote HEAD and Actions first.
+1. Fetch actual remote HEAD and inspect its latest Actions build/deployment.
+2. Read README, PROJECT_STATE, SESSION_LOG, ROADMAP, docs/ARCHITECTURE,
+   DEPLOYMENT, TEST_RESULTS, RAG_EVALUATION and RETRIEVAL_EVALUATION.
+3. Inspect evaluation/browser.ts, evaluation/diagnostics.ts, evaluation.html,
+   e2e/rag-evaluation.spec.ts, e2e/generation.spec.ts and both Vite configs.
+4. Inspect the live public deployment and run existing regressions before editing.
+5. Preserve all existing PDF/OCR, local search, real embeddings and citation flows.
 
-Read README.md, PROJECT_STATE.md, SESSION_LOG.md, ROADMAP.md and all architecture,
-deployment, decisions, test and evaluation documents in docs/. Inspect current
-source, workflow and open changes before editing. GitHub is authoritative.
+## Verified history and findings
 
-## Immediate blockers
+3ccf32043db6c57941eb19124465bb9cf57513e9 is the recovery baseline. Its run
+38331700774 DID initialize and finish 30 genuine Qwen3 cases. Do not repeat the
+React missing-root repair. CI then failed on a model HEAD request ERR_ABORTED
+following HTTP 200. Page errors were empty; actual model GET/inference succeeded.
+Original raw outputs and diagnostics survive in docs/runs/38331700774.
+Last verified deployment before the 3A fix: 0237ad17ecf318727b830f9e0f87ba26107720ce.
+Inspect newer runs instead of assuming this remains the live version.
 
-1. Failed run 38287529836 passed 93 checks (49 unit, 7 PDF/OCR, 9 embedding,
-   28 browser) but the 30-case oracle-context evaluation never initialized.
-   Its trace shows React error #299: a shared application bundle tried to mount
-   into a missing root. Repair separates evaluation and React Vite builds.
-   Verify actual built imports, browser requests and diagnostic artifacts.
-2. English local Qwen3 0.6B Q4_K_M / Wllama 3.8.1 answers and source navigation
-   passed. The Hindi UI case returned no valid Devanagari answer. The unsupported
-   query returned invalid abstention content. Those are errors, not successful
-   refusals. Inspect raw predictions before adjusting prompts/schema.
-3. Run the full 30-case genuine generation corpus. Do not invent results or call
-   runner completion answer-quality acceptance. Keep original labels and failures.
-4. Semantic-first hybrid improves held-out Recall@1 to .85 from .60, but semantic
-   alone is .95. Keep hybrid optional. @3/@5 are 1 for semantic and revised hybrid.
-5. Final docs and v0.3.0 release remain pending actual quality/browser verification.
+Session 3A adds a narrowly tested diagnostic classification for that exact probe,
+retains all request records, adds module/model failure-path browser tests, and
+removes the evaluation HTML AND bundle from Pages artifacts. Production model,
+prompt, labels and validation logic were not changed. Check actual CI confirmation.
 
-## Reproduction
+## Actual model results; do not relabel to hide failures
 
-Node 24. `ONNXRUNTIME_NODE_INSTALL_CUDA=skip npm ci`.
-Run `npm test`, `npm run test:pdf`, `npm run test:retrieval`,
-`npm run test:hybrid`, `npm run build`, `npm run build:evaluation`, then
-`RAG_EVALUATION=1 npm run test:e2e`. Use CI Chromium when local browser testing
-is unavailable. The evaluation page must be removed before Pages upload.
-Do not weaken/remove difficult tests. Capture page errors, resource failures,
-raw synthetic model outputs and partial evaluation progress. No private data logs.
+30 synthetic oracle-context rows; 17 supported / 13 unsupported. Reference matches
+11/30, structural source-set matches 14/30, validation errors 13 (11 abstention
+format, 2 Hindi). Supported answers returned 14/17, not necessarily correct.
+Unsupported: 0/13 valid abstentions; 3/13 returned answers; 10/13 validation errors.
+Three focused saved cases: en-1 correct room 24, hi-1 Hindi Thursday answer,
+absent-1 invalid abstention containing an irrelevant founding-year sentence.
+These were selected from completed real inference, not rerun or fabricated.
+UI Hindi sample still fails requested-language validation; unsupported UI question
+fails abstention format. A status label can remain “Generating” after error.
 
-## Safety and release gates
+## Reproduce
 
-Keep local PDF/OCR, semantic retrieval, document deletion and source navigation.
-Generation is opt-in (~405 MB plus ~160 MB embedding assets). No remote document
-transmission, secrets or paid inference. Source ID checks do not prove grounding.
-Test English, Hindi, both output language overrides, unsupported/partial/conflicting
-evidence, multiple sources, prompt injection and cancellation/retry. Add the
-photosynthesis Hindi acceptance case from the continuation request.
+Node 24: `ONNXRUNTIME_NODE_INSTALL_CUDA=skip npm ci`.
+Run npm test, npm run test:pdf, npm run test:retrieval, npm run test:hybrid,
+npm run build, npm run build:evaluation.
+Use CI Chromium where local browser execution is unavailable.
+`RAG_EVALUATION=1 npx playwright test --project=rag-evaluation --grep 'failure'`
+checks both negative paths without expensive inference.
+`RAG_EVALUATION=1 npm run test:e2e` retains the full corpus and UI regression suite.
+Do not repeatedly run full inference before diagnosing infrastructure. Reuse saved
+outputs when the model/prompt has not changed. Passing the runner is not quality
+acceptance. Do not disable difficult tests to make CI green.
 
-Only release v0.3.0 after genuine inference, completed evaluation, regression CI,
-public Pages smoke tests and accurate documentation. Otherwise retain v0.2.0
-and update this continuation instead of starting Session 4 features.
+## Next priorities
 
-## Preservation
+Resolve any remaining infrastructure failure first. Keep v0.2.0; v0.3.0 requires
+separately verified quality and regression gates. After confirming scope with the
+next request, investigate Hindi/cross-language output and honest abstention using
+raw evidence. Do not silently accept malformed refusals as successful answers.
+The source-set metric's refusal branch only checks empty citations; review before
+claiming broader metric correctness. Preserve original historical JSON unchanged.
+Avoid unrelated UI redesign, OCR expansion, providers or storage during recovery.
 
-Commit verified milestones every 20–30 minutes. Shell pushes may lack credentials;
-GitHub Git Data connector writes have worked. Create trees/commits based on current
-remote HEAD, use expected SHA and non-forced ref updates, verify remote SHA, then
-check Actions. Do not overwrite concurrent work. Keep working public deployment
-when CI fails. Update PROJECT_STATE.md and SESSION_LOG.md each checkpoint.
-
-At completion, save raw/summary evaluation, update documentation and this prompt,
-verify final remote HEAD and successful deployment, and report remaining failures.
+Commit and push verified changes regularly with current HEAD as parent and a
+non-forced expected-SHA update. Verify the remote SHA and Actions. Update state/log
+and this continuation with actual results; GitHub is authoritative, not chat.

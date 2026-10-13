@@ -1,0 +1,32 @@
+{
+  "observations": [
+    {
+      "question": "What improves information retrieval?",
+      "language": "en",
+      "content": [
+        "AI-generated answerArtificial intelligence improves information retrieval.bilingual-text.pdf · Page 1 ↗Artificial intelligence improves information retrieval.Source identities are validated. Factual support is not independently verified. Retrieval can miss relevant passages."
+      ],
+      "alerts": [],
+      "latencyMs": 49216
+    },
+    {
+      "question": "भारत में किसका उपयोग बढ़ रहा है?",
+      "language": "hi",
+      "content": [],
+      "alerts": [
+        "The model did not produce the requested Hindi answer."
+      ],
+      "latencyMs": 42477
+    },
+    {
+      "question": "What was the company revenue in 2025?",
+      "language": "en",
+      "content": [],
+      "alerts": [
+        "Invalid abstention response."
+      ],
+      "latencyMs": 34544
+    }
+  ],
+  "errors": []
+}

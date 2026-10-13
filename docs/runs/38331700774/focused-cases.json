@@ -1,0 +1,67 @@
+{
+  "sourceRun": 38331700774,
+  "sourceCommit": "3ccf32043db6c57941eb19124465bb9cf57513e9",
+  "selection": "Existing real inference reused; not a new run or quality acceptance.",
+  "initializationMs": 21793.29999999999,
+  "rows": [
+    {
+      "id": "en-1",
+      "expectedStatus": "answer",
+      "answer": {
+        "status": "answer",
+        "answer": "The Lumen workshop takes place in room 24.",
+        "language": "en",
+        "citations": [
+          {
+            "id": "en-1:0:1:0",
+            "documentId": "en-1:0",
+            "documentName": "en-1-0.pdf",
+            "page": 1,
+            "text": "The Lumen workshop takes place in room 24.",
+            "start": 0,
+            "end": 42
+          }
+        ],
+        "validation": "source-identities-checked"
+      },
+      "raw": "{\n  \"status\": \"answer\",\n  \"answer\": \"The Lumen workshop takes place in room 24.\",\n  \"language\": \"en\",\n  \"citations\": [\n    \"E1\"\n  ]\n}",
+      "referenceMatch": true,
+      "sourceSetMatches": true,
+      "latencyMs": 36902.5
+    },
+    {
+      "id": "hi-1",
+      "expectedStatus": "answer",
+      "answer": {
+        "status": "answer",
+        "answer": "कमल केंद्र में योग गुरुवार को होता है।",
+        "language": "hi",
+        "citations": [
+          {
+            "id": "hi-1:0:1:0",
+            "documentId": "hi-1:0",
+            "documentName": "hi-1-0.pdf",
+            "page": 1,
+            "text": "कमल केंद्र में योग गुरुवार को होता है।",
+            "start": 0,
+            "end": 38
+          }
+        ],
+        "validation": "source-identities-checked"
+      },
+      "raw": "{\n  \"status\": \"answer\",\n  \"answer\": \"कमल केंद्र में योग गुरुवार को होता है।\",\n  \"language\": \"hi\",\n  \"citations\": [ \"E1\"]\n}",
+      "referenceMatch": true,
+      "sourceSetMatches": true,
+      "latencyMs": 36848
+    },
+    {
+      "id": "absent-1",
+      "expectedStatus": "insufficient_evidence",
+      "raw": "{\n  \"status\": \"insufficient_evidence\",\n  \"answer\": \"Cedar company was founded in 2018.\",\n  \"language\": \"en\",\n  \"citations\": []\n}",
+      "error": "Invalid abstention response.",
+      "referenceMatch": false,
+      "sourceSetMatches": false,
+      "latencyMs": 19668.099999999977
+    }
+  ]
+}
