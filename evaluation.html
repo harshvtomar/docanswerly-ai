@@ -1,1 +1,9 @@
-<!doctype html><html lang="en"><meta charset="utf-8"><title>DocAnswerly CI evaluation</title><body><button id="run">Run local evaluation</button><pre id="status">Ready</pre><pre id="result"></pre><script type="module" src="/evaluation/browser.ts"></script></body></html>
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>DocAnswerly CI evaluation</title>
+<body><button id="run" disabled>Run local evaluation</button><pre id="status">Initializing</pre><pre id="result"></pre>
+<script>
+const reportFailure = (message) => { document.getElementById('status').textContent = 'Failed: ' + message; };
+window.addEventListener('error', e => reportFailure(e.message || 'A resource failed to load'), true);
+window.addEventListener('unhandledrejection', e => reportFailure(String(e.reason)));
+</script>
+<script type="module" src="/evaluation/browser.ts"></script></body></html>

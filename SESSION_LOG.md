@@ -139,3 +139,15 @@ and full machine-readable evaluation. Unit total now 49 passing.
 Added a 30-case oracle-context real-model browser evaluation, distinct from
 retrieval data, with raw outputs and explicit proxy metric definitions. Awaiting
 CI execution; no generation-quality results claimed at this checkpoint.
+
+## Session 3 continuation — 2026-10-13 UTC
+Remote 16eb6f137df75c1ae8061d5fded919706b3fe69f verified. Failed run
+38287529836: 49 unit + 7 PDF/OCR + 9 embedding + 28 browser passed; one
+oracle-context evaluation failed initialization. Trace shows React error #299:
+the shared application entry mounted into a missing root. The evaluation button
+remained Ready without a handler. Absolute script URL was not the root cause.
+Separate Vite evaluation build added; initialization now fails in 15 seconds,
+with page errors, failed resource requests and partial outputs in artifacts.
+First UI observations: English supported answer succeeds; Hindi answer rejected
+for missing Devanagari; unsupported query rejected as invalid abstention. Those
+validation errors are not successful abstentions. Release remains v0.2.0.

@@ -6,21 +6,34 @@ import {
 } from "../src/lib/answers";
 const status = document.querySelector("#status")!,
   result = document.querySelector("#result")!;
+status.textContent = "Ready";
+document.querySelector<HTMLButtonElement>("#run")!.disabled = false;
 document.querySelector<HTMLButtonElement>("#run")!.onclick = async () => {
+  status.textContent = "Loading model";
+  document.querySelector<HTMLButtonElement>("#run")!.disabled = true;
   const runtime = new LocalGeneration(
     new URL(import.meta.env.BASE_URL, location.origin).href,
   );
   const rows = [];
+  const initStart = performance.now();
   try {
     await runtime.load(
       new URL(import.meta.env.BASE_URL, location.origin).href,
       (s) => (status.textContent = s),
       AbortSignal.timeout(240000),
     );
-    const provider = new GroundedAnswerProvider(runtime);
+    const initializationMs = performance.now() - initStart;
+    let raw = "";
+    const provider = new GroundedAnswerProvider({
+      generate: async (...args) => {
+        raw = await runtime.generate(...args);
+        return raw;
+      },
+    });
     for (const c of cases.cases) {
       status.textContent = `Evaluating ${c.id}`;
       const start = performance.now();
+      raw = "";
       try {
         const answer = await provider.answer(
           {
@@ -58,6 +71,7 @@ document.querySelector<HTMLButtonElement>("#run")!.onclick = async () => {
           id: c.id,
           expectedStatus: c.expectedStatus,
           answer,
+          raw,
           referenceMatch,
           sourceSetMatches,
           latencyMs: performance.now() - start,
@@ -66,16 +80,19 @@ document.querySelector<HTMLButtonElement>("#run")!.onclick = async () => {
         rows.push({
           id: c.id,
           expectedStatus: c.expectedStatus,
+          raw,
           error: error instanceof Error ? error.message : String(error),
           referenceMatch: false,
           sourceSetMatches: false,
           latencyMs: performance.now() - start,
         });
       }
+      result.textContent = JSON.stringify({ partial: true, rows });
     }
     const supported = rows.filter((r) => r.expectedStatus === "answer"),
       unsupported = rows.filter((r) => r.expectedStatus !== "answer");
     result.textContent = JSON.stringify({
+      initializationMs,
       model: GENERATION_MODEL,
       note: cases.note,
       generatedAt: new Date().toISOString(),

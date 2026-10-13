@@ -28,6 +28,7 @@ jobs:
       - run: npm run test:retrieval
       - run: npm run test:hybrid
       - run: npm run build
+      - run: npm run build:evaluation
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
       - uses: actions/upload-artifact@v4

@@ -1,62 +1,66 @@
-# DOCANSWERLY AI — WORK SESSION 3
+# DOCANSWERLY AI — WORK SESSION 3 CONTINUATION 2
 
-Continue the existing DocAnswerly AI project. Tagline: Upload Documents. Ask
-Questions. Get Answers. Never restart, create a replacement repository, force-push,
-reset remote history, or modify unrelated repositories.
+Continue the existing project. Never restart, replace the repository, reset history,
+force-push, or modify unrelated repositories. No paid services without permission.
 
-Authoritative repository: https://github.com/harshvtomar/docanswerly-ai
-Default branch: main. Public site: https://harshvtomar.github.io/docanswerly-ai/
-Session 2 target release: v0.2.0; inspect current remote HEAD and PROJECT_STATE.md
-for verified release/deployment results rather than assuming this prompt is current.
+Repository: https://github.com/harshvtomar/docanswerly-ai
+Live: https://harshvtomar.github.io/docanswerly-ai/
+Default branch: main. Recorded version: v0.2.0 (v0.3.0 not accepted yet).
+Reference source checkpoint: 16eb6f137df75c1ae8061d5fded919706b3fe69f.
+Last verified deployment: 0237ad17ecf318727b830f9e0f87ba26107720ce.
+These references are historical; inspect CURRENT remote HEAD and Actions first.
 
-1. Fetch the CURRENT remote main SHA, inspect status/history and preserve uncommitted
-   work. Read README, PROJECT_STATE, SESSION_LOG, ROADMAP, docs/ARCHITECTURE,
-   docs/DEPLOYMENT, docs/DECISIONS, docs/TEST_RESULTS, docs/RETRIEVAL_EVALUATION,
-   docs/evaluation.json and docs/retrieval-evaluation.json. Inspect source and CI.
-2. Verify GitHub Actions build AND deploy jobs. Open the public site. Try a bilingual
-   PDF, Hindi text, actual PDF rendering, keyword search, optional local semantic
-   inference, source navigation, deletion and cancellation. No claims from builds alone.
-3. On Node 24 run npm ci, npm test, npm run test:pdf, npm run test:retrieval and npm
-   run build. Playwright browser tests run via npm run test:e2e; CI installs Chromium.
-   In restricted Work environments, use Actions for browser automation and public
-   browser UI checks. Preserve all existing regression tests.
-4. Fix critical regressions before new features. Current semantic model is pinned
-   Xenova/paraphrase-multilingual-MiniLM-L12-v2 q8 revision
-   2c4055b12046f11709e9df2c122e59ffbdc2f900, Transformers.js 3.8.1. Assets download at
-   build time with checksums; runtime uses same-origin assets in a worker. No text
-   leaves the tab. 384 dimensions, mean pooling/L2, 128-token-aware source spans.
-5. Improve retrieval rigor: current small synthetic set is NOT held out. Semantic
-   R@1/3/5 and MRR were 1.0 on 25 simple queries; hybrid R@1/3/5 was only 0.6,
-   MRR 0.6334. Equal RRF boosts weak lexical matches in cross-language questions.
-   Keep hybrid optional. Create independent development/test splits with harder
-   distractors, near-duplicates, multi-page evidence and unsupported questions.
-   Evaluate BM25/stopwords, weighted fusion or reranking without tuning to the test
-   set. Report failures and category metrics. No blanket accuracy claims.
-6. Retrieval currently returns passages for unsupported queries (0/3 abstained).
-   It does not generate answers. Implement validated evidence sufficiency and
-   secure grounded generation only with available authorized inference access.
-   Do not enable paid services or put secrets in VITE_* / browser bundles.
-7. A future backend must authenticate/rate-limit, validate schemas/body sizes,
-   restrict origins without confusing CORS with authentication, limit costs, enforce
-   timeouts and keep keys server-side. PDFs are untrusted evidence, not instructions.
-   Validate citation IDs and claim support, answer in selected English/Hindi,
-   abstain without evidence, test contradictions, malicious PDF instructions and
-   hallucinations. Require document ownership before any shared server storage.
-8. Preserve English/Hindi/mixed PDF/OCR. Hindi CER remains 5.1724% on one small
-   clean fixture; no accuracy improvement claimed. Expand independently authored,
-   noisy, rotated, multi-column and mixed-region fixtures. Cancellation/timeout
-   primitives exist; cancellation discards the current unfinished PDF, retaining
-   completed documents. Initialization cannot terminate until a worker handle exists.
-9. Measure physical low-memory devices, peak browser memory and cold download
-   latency. Current ~160 MB semantic download and several hundred MB memory may be
-   heavy for mobile. Do not confuse Node process RSS with browser memory.
-10. Keep automatic GitHub Pages deployment and source-page citations working. Save
-    tested milestones regularly; update docs/results and a Session 4 prompt.
+Read README.md, PROJECT_STATE.md, SESSION_LOG.md, ROADMAP.md and all architecture,
+deployment, decisions, test and evaluation documents in docs/. Inspect current
+source, workflow and open changes before editing. GitHub is authoritative.
 
-Git access: shell fetch works; authenticated connector create_blob/create_tree/
-create_commit/update_ref writes worked. Use current remote head as parent and
-expected_sha with force=false. Verify the actual new remote SHA and Actions each
-checkpoint. Never ask for tokens in chat or claim an unverified push.
+## Immediate blockers
 
-No secure inference backend, persistent workspace, accounts or paid service exists.
-AI answer UI must remain explicitly unavailable until genuine inference is verified.
+1. Failed run 38287529836 passed 93 checks (49 unit, 7 PDF/OCR, 9 embedding,
+   28 browser) but the 30-case oracle-context evaluation never initialized.
+   Its trace shows React error #299: a shared application bundle tried to mount
+   into a missing root. Repair separates evaluation and React Vite builds.
+   Verify actual built imports, browser requests and diagnostic artifacts.
+2. English local Qwen3 0.6B Q4_K_M / Wllama 3.8.1 answers and source navigation
+   passed. The Hindi UI case returned no valid Devanagari answer. The unsupported
+   query returned invalid abstention content. Those are errors, not successful
+   refusals. Inspect raw predictions before adjusting prompts/schema.
+3. Run the full 30-case genuine generation corpus. Do not invent results or call
+   runner completion answer-quality acceptance. Keep original labels and failures.
+4. Semantic-first hybrid improves held-out Recall@1 to .85 from .60, but semantic
+   alone is .95. Keep hybrid optional. @3/@5 are 1 for semantic and revised hybrid.
+5. Final docs and v0.3.0 release remain pending actual quality/browser verification.
+
+## Reproduction
+
+Node 24. `ONNXRUNTIME_NODE_INSTALL_CUDA=skip npm ci`.
+Run `npm test`, `npm run test:pdf`, `npm run test:retrieval`,
+`npm run test:hybrid`, `npm run build`, `npm run build:evaluation`, then
+`RAG_EVALUATION=1 npm run test:e2e`. Use CI Chromium when local browser testing
+is unavailable. The evaluation page must be removed before Pages upload.
+Do not weaken/remove difficult tests. Capture page errors, resource failures,
+raw synthetic model outputs and partial evaluation progress. No private data logs.
+
+## Safety and release gates
+
+Keep local PDF/OCR, semantic retrieval, document deletion and source navigation.
+Generation is opt-in (~405 MB plus ~160 MB embedding assets). No remote document
+transmission, secrets or paid inference. Source ID checks do not prove grounding.
+Test English, Hindi, both output language overrides, unsupported/partial/conflicting
+evidence, multiple sources, prompt injection and cancellation/retry. Add the
+photosynthesis Hindi acceptance case from the continuation request.
+
+Only release v0.3.0 after genuine inference, completed evaluation, regression CI,
+public Pages smoke tests and accurate documentation. Otherwise retain v0.2.0
+and update this continuation instead of starting Session 4 features.
+
+## Preservation
+
+Commit verified milestones every 20–30 minutes. Shell pushes may lack credentials;
+GitHub Git Data connector writes have worked. Create trees/commits based on current
+remote HEAD, use expected SHA and non-forced ref updates, verify remote SHA, then
+check Actions. Do not overwrite concurrent work. Keep working public deployment
+when CI fails. Update PROJECT_STATE.md and SESSION_LOG.md each checkpoint.
+
+At completion, save raw/summary evaluation, update documentation and this prompt,
+verify final remote HEAD and successful deployment, and report remaining failures.
