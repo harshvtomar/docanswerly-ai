@@ -367,7 +367,8 @@ describe("grounded answer boundary", () => {
           : output({ language: "hi", answer: "कंपनी की स्थापना हुई।" });
       },
     }).answer(r)).rejects.toThrow("changed the source answer");
-    expect(calls).toBe(2);
+    // A bounded correction must also be rejected if it still omits the numeral.
+    expect(calls).toBe(3);
   });
   it("rejects a translated weight answer with a unit but missing number", () => {
     const r: AnswerRequest = {

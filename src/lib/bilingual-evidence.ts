@@ -26,7 +26,7 @@ function normalizedNumbers(value: string) {
     ?.map(n => n.replace(/^[^\d]+/u, "")) ?? [];
 }
 export function countEvidenceHint(question: string, evidence: {text:string}[]): CountEvidenceHint | null {
-  if (!/\b(?:how\s+many|number\s+of|count\s+of)\b|कितने|कितनी|कुल\s+कितने/u.test(question))
+  if (!/\b(?:how\s+many|number\s+of|count\s+of)\b|कितने|कितनी|कुल\s+कितने/iu.test(question))
     return null;
   const target = topics.filter(t => t.ask.test(question));
   if (target.length !== 1) return null;
