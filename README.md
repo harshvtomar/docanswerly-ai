@@ -130,3 +130,12 @@ continuing; never restart or create a replacement repository.
 
 MIT application license. Third-party libraries/fonts retain their licenses;
 see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+### Stress evaluation (12,000 synthetic cases)
+
+Run `npm run test:stress` to check 12,000 generated bilingual
+citation, number, source-term, and abstention-format fixtures. Results
+are written to `docs/stress-evaluation.json` and preserved in CI artifacts.
+This is a deterministic validation stress test—not 12,000 model inferences,
+not Hindi fluency accuracy, and not Qwen3 fine-tuning. Existing genuine
+model benchmark tests continue separately.

@@ -24,6 +24,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
+      - run: npm run test:stress
       - run: npm run test:pdf
       - run: npm run test:retrieval
       - run: npm run test:hybrid
@@ -42,6 +43,7 @@ jobs:
             docs/retrieval-evaluation.json
             docs/hybrid-evaluation.json
             docs/rag-evaluation.json
+            docs/stress-evaluation.json
           retention-days: 14
       - run: rm -f dist/evaluation.html dist/assets/evaluation-*.js
       - uses: actions/configure-pages@v5

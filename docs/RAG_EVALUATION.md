@@ -286,3 +286,30 @@ Unit tests exercise E3 and reject invalid/duplicate IDs. This is a
 structural correctness improvement, not proof of Hindi semantic fidelity
 or fluent generation; only new saved genuine-model outputs can establish
 whether the bilingual UI switches from an excerpt to a generated answer.
+
+## 12,000-case deterministic validation stress test (19 October 2026)
+
+Run `npm run test:stress` to validate actual application boundary code
+(`validateAnswer`) against 12,000 generated bilingual cases: 12 categories ×
+1,000 cases, including document-linked citations, English/Hindi answers,
+cross-language crops/days, number hallucination, invalid citations,
+question echoes, and malformed/valid structured abstentions. One in five
+generated cases is reserved as a mechanically held-out slice for reporting;
+this is NOT a human-annotated unseen model benchmark.
+
+CI fails if fewer than 10,000 cases execute or a fixture violates its
+independently programmed accept/reject expectation. The report
+`docs/stress-evaluation.json` records every category, failures and total.
+
+**Important:** These are automated app validation checks, **not** 12,000
+genuine Qwen3 generations and **not model training**. They don't change the
+quantized GGUF model or measure fluent Hindi/factual entailment.
+Do not report the script's pass rate as Qwen3 accuracy.
+The actual ~30-case genuine-model browser RAG evaluation remains separate.
+
+To actually train/fine-tune Qwen3, first obtain a legally usable, carefully
+reviewed high-quality instruction dataset and a compatible full/adapter
+training checkpoint, use suitable GPU compute and a supported LoRA/QLoRA
+workflow, evaluate against a truly held-out set, export/quantize carefully
+for Wllama GGUF inference, and then re-run all gates. No such fine-tuning has
+been run or authorized here.

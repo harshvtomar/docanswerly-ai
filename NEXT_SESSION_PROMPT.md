@@ -226,3 +226,15 @@ artifact's `answerMode`. Only an explicit `AI-generated answer` result
 proves that the mixed-Hindi demo improved; a clearly marked source excerpt
 is a safe fallback and not genuine generation quality. Do not weaken
 citation/number checks, and keep v0.2.0.
+
+## New high-volume validation suite — 12,000 cases
+
+A deterministic 12,000-fixture stress suite has been added at
+`scripts/stress-12k.ts`, via `npm run test:stress`, with a JSON report at
+`docs/stress-evaluation.json` uploaded to the CI artifact. It exercises
+application boundary checks (citations, language, numerals, Hindi crop/day
+terms, structured abstentions, question echoes), not model weights.
+Before claiming completion inspect newest Actions, actual report count
+and regression results. **Do not call this 12,000 Qwen3 inferences or model
+training.** To pursue real supervised training, set up a separate human-
+reviewed SFT/LoRA dataset and GPU pipeline; preserve the 0.2.0 local app.
