@@ -248,6 +248,31 @@ export function hindiSourceRepairMessages(
   ];
 }
 
+/**
+ * Narrow the real model's JSON grammar for a source-conditioned Hindi repair.
+ * Source IDs must come from the already-validated first draft; do NOT
+ * synthesize a new citation after inference. The ordinary English/benchmark
+ * schema remains unchanged.
+ */
+export function hindiCitationRepairSchema(allowedLabels: string[]): object {
+  if (!allowedLabels.length || allowedLabels.length > 3 ||
+      new Set(allowedLabels).size !== allowedLabels.length ||
+      allowedLabels.some(label => !/^E[1-3]$/.test(label)))
+    throw Error("Invalid cited evidence labels for Hindi schema.");
+  return {
+    ...ANSWER_SCHEMA,
+    properties: {
+      ...ANSWER_SCHEMA.properties,
+      status: {type: "string", enum: ["answer"]},
+      language: {type: "string", enum: ["hi"]},
+      citations: {
+        type: "array",
+        items: {type: "string", enum: allowedLabels.slice()},
+      },
+    },
+  };
+}
+
 export function refusal(
   language: ResolvedLanguage,
   status: "insufficient_evidence" | "conflict",
@@ -567,9 +592,16 @@ export class GroundedAnswerProvider {
           ? hindiSourceRepairMessages(request, raw)
           : hindiTranslationMessages(request, raw);
       }
+      const sourceConditioned = requestedLanguageFailed && lang === "hi" &&
+        request.evidence.some(c => /\p{Script=Devanagari}/u.test(c.text));
+      const retrySchema = sourceConditioned
+        ? hindiCitationRepairSchema(
+            (JSON.parse(repair[1].content) as {requiredCitationIds: string[]}).requiredCitationIds,
+          )
+        : ANSWER_SCHEMA;
       const retryRaw = await this.client.generate(
         repair,
-        ANSWER_SCHEMA,
+        retrySchema,
         signal,
       );
       if (signal?.aborted) throw new DOMException("Cancelled", "AbortError");

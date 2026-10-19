@@ -373,3 +373,12 @@ fallback **as a fallback** with the original page-3 citation, source text,
 visible honesty label and navigation, and records the mode in the CI artifact.
 Model success is NOT inferred from a fallback. The true mixed-Hindi quality
 issue is open and v0.3.0 release remains blocked on broader quality criteria.
+
+### Priority 1 follow-up — source-bound Hindi JSON grammar
+Latest verified public run 39258708721 remained 3/3 for three English→Hindi
+synthetic cases, but the mixed-Hindi UI still used the visibly labelled
+verbatim source excerpt. Constrained the **second** mixed-Hindi model call's
+JSON Schema to language=hi, status=answer, and original validated citation
+IDs only. Added E3 source-ID tests. This preserves security and avoids
+inventing post-hoc citations. New genuine model tests and deployment are
+required before claiming improved Hindi-generation quality.

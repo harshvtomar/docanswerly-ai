@@ -216,3 +216,13 @@ navigation, and records `answerMode` in the artifact. It never counts that
 fallback as a generated answer. Before a v0.3.0 claim, improve genuine
 mixed-language generation on independently held-out cases; maintain the 3/3
 real model gate and true model-abstention measurement.
+
+## Focused mixed-Hindi inference grammar checkpoint
+After the verified 39258708721 deployment, a new commit restricts the
+source-conditioned second Qwen3 call's structured JSON grammar to original
+valid evidence IDs, Hindi and supported-answer status. The original English
+path stays unchanged. Review next CI and the desktop/mobile generation
+artifact's `answerMode`. Only an explicit `AI-generated answer` result
+proves that the mixed-Hindi demo improved; a clearly marked source excerpt
+is a safe fallback and not genuine generation quality. Do not weaken
+citation/number checks, and keep v0.2.0.

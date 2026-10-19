@@ -264,3 +264,25 @@ successful functionality; it does **not** reclassify source fallback as model
 accuracy. The separate genuine Qwen 3/3 oracle-quality gate and citation
 validation are unchanged. Broader mixed-language generated-answer accuracy
 remains an explicit v0.3.0 acceptance blocker.
+
+## Additional Session 3B Priority 1 — constrained model citation grammar (19 October 2026)
+
+The last successful run 39258708721 reported 3/3 oracle reference matches
+for English-source to Hindi cases but showed a **verbatim source excerpt**
+rather than a genuine model-generated Hindi answer on the bilingual UI sample.
+The runtime formerly supplied a permissive JSON Schema, with citations as
+arbitrary strings, even when the source-conditioned repair selected one exact
+validated passage. The 0.6B model could emit a different label, invalidating
+an otherwise parseable response.
+
+For the mixed-source *second attempt only*, JSON generation is now constrained
+to `status=answer`, `language=hi` and citation IDs drawn only from the
+first model draft's validated source labels (E1/E2/E3). Unknown labels are
+rejected before generation and no source is retroactively fabricated or
+assigned. English-only Qwen3 inference, existing citation validation and
+source-excerpt disclosure remain unchanged.
+
+Unit tests exercise E3 and reject invalid/duplicate IDs. This is a
+structural correctness improvement, not proof of Hindi semantic fidelity
+or fluent generation; only new saved genuine-model outputs can establish
+whether the bilingual UI switches from an excerpt to a generated answer.

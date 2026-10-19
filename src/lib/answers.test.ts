@@ -8,6 +8,7 @@ import {
   selectEvidence,
   hindiTranslationMessages,
   hindiSourceRepairMessages,
+  hindiCitationRepairSchema,
   hindiSourceExcerptFallback,
   type AnswerRequest,
 } from "./answers";
@@ -683,6 +684,50 @@ describe("grounded answer boundary", () => {
       },
     }).answer(mixed)).rejects.toThrow("changed the draft's numeric facts");
     expect(calls).toBe(2);
+  });
+  it("strictly constrains mixed-Hindi generation to real E3 IDs and Hindi language", () => {
+    const schema=hindiCitationRepairSchema(["E3"]) as {
+      properties: {
+        citations: { items: { enum: string[] } };
+        language: {enum: string[]};
+        status: {enum: string[]};
+      };
+    };
+    expect(schema.properties.citations.items.enum).toEqual(["E3"]);
+    expect(schema.properties.language.enum).toEqual(["hi"]);
+    expect(schema.properties.status.enum).toEqual(["answer"]);
+    expect(() => hindiCitationRepairSchema(["E99"])).toThrow("Invalid cited");
+    expect(() => hindiCitationRepairSchema(["E1","E1"])).toThrow("Invalid cited");
+    expect(ANSWER_SCHEMA.properties.citations.items).toEqual({type:"string"});
+  });
+  it("passes E3-only constrained JSON schema to the actual mixed Hindi inference stage", async () => {
+    const r: AnswerRequest = {
+      ...request,language:"hi",question:"उत्तर प्रदेश में किसका उपयोग बढ़ रहा है?",
+      evidence:[
+        {...request.evidence[0],id:"a",text:"यहाँ हिन्दी पुस्तकें उपलब्ध हैं।"},
+        {...request.evidence[0],id:"b",text:"विद्यालय में विज्ञान पढ़ाया जाता है।"},
+        {...request.evidence[0],id:"c",text:"उत्तर प्रदेश में Robotics का उपयोग बढ़ रहा है।"},
+      ],
+    };
+    const schemas:object[]=[];
+    let calls=0;
+    const result=await new GroundedAnswerProvider({
+      generate: async (_,schema) => {
+        schemas.push(schema);
+        calls++;
+        return calls===1
+          ? output({language:"hi",answer:"Robotics use is increasing in Uttar Pradesh.",citations:["E3"]})
+          : output({language:"hi",answer:"उत्तर प्रदेश में Robotics का उपयोग बढ़ रहा है।",citations:["E3"]});
+      },
+    }).answer(r);
+    expect(calls).toBe(2);
+    expect(result.validation).toBe("source-identities-checked");
+    expect(result.citations).toEqual([r.evidence[2]]);
+    const constrained=schemas[1] as {
+      properties: {citations: {items: {enum: string[]}}};
+    };
+    expect(constrained.properties.citations.items.enum).toEqual(["E3"]);
+    expect(schemas[0]).toBe(ANSWER_SCHEMA);
   });
   it("selects bounded whole passages", () => {
     const hits = Array.from({ length: 8 }, (_, i) => ({
