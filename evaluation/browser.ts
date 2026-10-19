@@ -1,4 +1,7 @@
 import cases from "./rag-cases.json";
+import heldoutCases from "./heldout-cases.json";
+const selectedSuite = new URLSearchParams(location.search).get("suite") === "heldout"
+  ? heldoutCases : cases;
 import { LocalGeneration, GENERATION_MODEL } from "../src/lib/local-generation";
 import {
   GroundedAnswerProvider,
@@ -32,7 +35,7 @@ document.querySelector<HTMLButtonElement>("#run")!.onclick = async () => {
         return raw;
       },
     });
-    for (const c of cases.cases) {
+    for (const c of selectedSuite.cases) {
       status.textContent = `Evaluating ${c.id}`;
       const start = performance.now();
       raw = "";
@@ -109,7 +112,7 @@ document.querySelector<HTMLButtonElement>("#run")!.onclick = async () => {
     result.textContent = JSON.stringify({
       initializationMs,
       model: GENERATION_MODEL,
-      note: cases.note,
+      note: selectedSuite.note,
       generatedAt: new Date().toISOString(),
       metrics: {
         cases: rows.length,

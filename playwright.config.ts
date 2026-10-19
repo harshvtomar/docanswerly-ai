@@ -11,14 +11,21 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
-      testIgnore: "**/rag-evaluation.spec.ts",
+      testIgnore: ["**/rag-evaluation.spec.ts", "**/heldout-evaluation.spec.ts"],
       use: { ...devices["Desktop Chrome"] },
     },
     {
       name: "mobile",
-      testIgnore: "**/rag-evaluation.spec.ts",
+      testIgnore: ["**/rag-evaluation.spec.ts", "**/heldout-evaluation.spec.ts"],
       use: { ...devices["Pixel 7"] },
     },
+    ...(process.env.HELDOUT_EVALUATION === "1"
+      ? [{
+          name: "heldout-evaluation",
+          testMatch: "**/heldout-evaluation.spec.ts",
+          use: { ...devices["Desktop Chrome"] },
+        }]
+      : []),
     ...(process.env.RAG_EVALUATION === "1"
       ? [
           {
