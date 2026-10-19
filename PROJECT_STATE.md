@@ -135,3 +135,20 @@ not human-reviewed** example splits. It deliberately excludes the 12k
 stress-test data and 30-case original benchmark from training. CI runs only
 stdlib dataset validation tests, not model weight training. Review dataset,
 secure appropriate GPU, and confirm held-out evaluations before any release.
+
+## Independent model evaluation milestone — 20 October 2026
+
+Genuine Qwen3 browser test 39308746260 completed 28/28 previously unseen,
+manually authored factual/unsupported cases (26 invoked local Qwen inference;
+2 were resolved by pre-inference conflict rules). Source-based audit:
+11/28 strict automatic factual/status/citation term proxy, 11/16 supported
+proxy, 0/12 directly valid model abstentions, 4 errors. Assistant manually
+inspected source and actual answers; 10 supported responses were clearly
+correct, one was factually near-correct but garbled a Hindi unit, and one
+used a labelled source-only fallback. Detailed case-level findings:
+`docs/HELDOUT_SOURCE_AUDIT.md`.
+
+**No independent external human reviewer has signed off**. Do NOT advertise
+human-verified accuracy or 500k model inferences. High-priority blockers:
+unsupported-answer hallucination/prompt injection and cross-language output.
+No weights trained; release remains v0.2.0.

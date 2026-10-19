@@ -149,3 +149,13 @@ common Hindi/English vocabulary legitimately repeats. The JSON report
 `docs/stress-500k.json` is uploaded with GitHub CI. This is a large
 **deterministic validator stress test**, not 500k Qwen3 inferences,
 not model fine-tuning and not a statistically independent accuracy benchmark.
+
+### Real-model bilingual held-out audit (28 independently specified cases)
+
+Actual Qwen3-0.6B browser inference and raw outputs: [Actions 39308746260](https://github.com/harshvtomar/docanswerly-ai/actions/runs/39308746260).
+The **strict automated proxy** passed 11/28 cases; supported questions 11/16;
+genuinely model-valid abstentions 0/12. An assistant source-based audit
+identified 10 clearly correct supported answers and one malformed Hindi-unit
+answer. These are **not independently human-reviewed accuracy** scores.
+[Full transparent review](docs/HELDOUT_SOURCE_AUDIT.md) and
+[blind independent-human review sheet](docs/HELDOUT_BLIND_REVIEW.csv).

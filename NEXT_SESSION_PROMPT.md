@@ -275,3 +275,19 @@ The report is `docs/stress-500k.json`. Inspect actual CI logs
 before stating it passed. The cases derive from twelve templates,
 not 500,000 independent language examples or Qwen3 inferences.
 No model weights are changed. Preserve v0.2.0 and genuine-model tests.
+
+## VERIFIED held-out Qwen3 accuracy evaluation: 39308746260
+
+28 cases completed. Strict automated proxy 11/28 (39.3%), supported proxy
+11/16 (68.8%), zero of 12 true valid model abstentions, 5 app-normalized
+refusals, 2 pre-inference conflict refusals, 4 errors. The assistant performed
+an explicit source-based case audit (10 clearly correct factual outputs and
+1 borderline malformed Hindi unit), but **external independent human review
+is STILL PENDING**. Raw/private model results are in Actions artifact
+12215339172; source audit and blind reviewer template in docs/.
+
+Prioritize false supported answers including one hallucinated fake key from
+prompt-injection text, Hindi cross-language generation failures and raw valid
+refusals. Do not modify the frozen held-out gold answers or use those cases
+for fine-tuning; use a second sealed held-out benchmark for post-fix tests.
+Keep v0.2.0 until genuine independent testing clears blockers.
