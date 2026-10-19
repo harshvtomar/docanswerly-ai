@@ -119,7 +119,7 @@ The private JSON approval record must contain:
 This is a **deliberately unapproved template**. Fill fields only with real
 post-training evaluation and independent reviewer evidence; reusing the
 baseline test's run as new fine-tune proof would be false. The build checks
-true approvals, signed-model SHA-256 correspondence and size before bundling,
+true approvals, signed-model SHA-256 correspondence and size (maximum 650 MB) before bundling,
 publishes a versioned GGUF filename, and preserves a single compatible
 Wllama model for browser inference. Manual public release still requires full
 CI, actual English/Hindi browser/model inference, performance/memory checks

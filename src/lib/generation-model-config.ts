@@ -19,7 +19,7 @@ export function parseGenerationModelConfig(raw: unknown): GenerationModelConfig 
     typeof m.id !== "string" || !/^[a-z0-9][a-z0-9._-]{2,79}$/i.test(m.id) ||
     typeof m.file !== "string" || !/^[a-z0-9][a-z0-9._-]{1,120}\.gguf$/i.test(m.file) ||
     !Number.isSafeInteger(m.bytes) || Number(m.bytes) < 1024 ||
-    Number(m.bytes) > 900_000_000 ||
+    Number(m.bytes) > 650_000_000 ||
     typeof m.sha256 !== "string" || !/^[0-9a-f]{64}$/.test(m.sha256) ||
     typeof m.review !== "string" || !m.review.trim() || m.review.length > 180)
     throw Error("Invalid or unsupported generation model descriptor.");

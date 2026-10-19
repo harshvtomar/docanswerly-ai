@@ -1,7 +1,6 @@
-import { mkdir, readFile, writeFile, copyFile, stat, open } from "node:fs/promises";
+import { mkdir, readFile, writeFile, copyFile, stat, open, readdir, rm } from "node:fs/promises";
 import { createReadStream } from "node:fs";
 import { createHash } from "node:crypto";
-import { basename, resolve } from "node:path";
 const revision = "50968a4468ef4233ed78cd7c3de230dd1d61a56b";
 const baselineFile = "Qwen3-0.6B-Q4_K_M.gguf";
 const baselineSha = "ac2d97712095a558e31573f62f466a3f9d93990898b0ec79d7c974c1780d524a";
@@ -69,8 +68,16 @@ if (!modelFile) {
       !/^[a-z0-9][a-z0-9._-]{2,79}$/i.test(approved.modelId))
     throw Error("Fine-tuned model has no valid independent review and compatibility attestation.");
   const info = await stat(modelFile);
-  if (info.size < 1024 || info.size > 900_000_000)
+  if (info.size < 1024 || info.size > 650_000_000)
     throw Error("Merged GGUF is outside safe browser size range.");
+  // A file named .gguf need not actually be GGUF: reject other formats.
+  const handle = await open(modelFile, "r");
+  try {
+    const header = Buffer.alloc(4);
+    const { bytesRead } = await handle.read(header, 0, 4, 0);
+    if (bytesRead !== 4 || header.toString("ascii") !== "GGUF")
+      throw Error("Approved model is not a valid GGUF file header.");
+  } finally { await handle.close(); }
   const sha = await fileSha256(modelFile);
   if (sha !== approved.sha256) throw Error("Fine-tuned GGUF SHA-256 does not match the approval.");
   const file = `docanswerly-${sha.slice(0,20)}.gguf`;
@@ -80,6 +87,11 @@ if (!modelFile) {
     bytes: info.size, sha256: sha,
     review: `independent review ${approved.reviewDate}`,
   };
+}
+// Prevent stale alternate weights from accidentally bloating Pages uploads.
+for (const file of await readdir("public/generation")) {
+  if (file.endsWith(".gguf") && file !== manifest.file)
+    await rm(`public/generation/${file}`);
 }
 await writeFile("public/generation/active-model.json", JSON.stringify(manifest, null, 2) + "\n");
 await copyFile("node_modules/@wllama/wllama/esm/wasm/wllama.wasm", "public/generation/wllama.wasm");
