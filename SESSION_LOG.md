@@ -343,3 +343,12 @@ Both real browser tests of the mixed-language sample instead needed a
 remained wrong-language after retry. Saved browser artifacts confirm this.
 Do not count the excerpt as genuine generation or semantic entailment.
 The unrelated unsupported-question 0/13 strict abstention issue persists.
+
+### Session 3B Priority 1 follow-up — mixed-evidence Hindi generation
+Introduced a source-conditioned second attempt only when the first Qwen3
+answer is in English despite requested Hindi and the cited evidence contains
+Hindi. It uses the cited Hindi clause and no unrelated prompt examples, while
+preserving the original source IDs and numbers. Added tests for previously
+unseen Robotics / mixed evidence and strengthened real browser acceptance so
+source excerpts do not masquerade as genuine Hindi generation. Keep v0.2.0
+until full CI and model tests independently pass.

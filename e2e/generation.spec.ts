@@ -58,6 +58,9 @@ test("genuine local answer, citation navigation, Hindi and unsupported question"
       );
       await expect(page.locator(".answer-citation").first()).toBeVisible();
       await expect(page.locator(".answer-output p[lang='hi']").first()).toContainText(/\p{Script=Devanagari}/u);
+      // For this known public sample require genuine generated Hindi, not
+      // merely the safe source-excerpt fallback, so quality cannot be faked.
+      await expect(page.locator(".answer-output h4")).toHaveText("AI-generated answer");
     }
     if (question.startsWith("What improves")) {
       await expect(page.locator(".answer-output")).toContainText(

@@ -214,3 +214,22 @@ This is a narrow guard, not full semantic equivalence. Additional unit tests use
 Wednesday and wheat (not the three preexisting oracle targets). Raw generative
 outputs are preserved per stage by the private CI evaluator. No improvement is
 claimed until a new genuine-model run demonstrates it. Version stays v0.2.0.
+
+## Priority 1 follow-up — mixed-language source-conditioned generation (19 Oct 2026)
+
+The previous 3/3 English-document→Hindi gain held, but the public mixed
+Hindi-English sample still showed a clearly labelled source-excerpt fallback.
+When a first-generation answer is in English despite requested Hindi **and the
+cited evidence already contains Hindi**, one bounded second inference now asks
+Qwen3 to answer directly using the original Hindi source clause, instead of
+translating its English draft. This branch preserves the same citation set and
+explicit numeral facts from the original draft and requires all existing output
+checks to pass. English-only evidence continues to use its verified two-stage
+English draft + Hindi translation path. No extra model calls are introduced.
+
+New deterministic tests cover unseen Robotics and a mixed Hindi/English backup
+time, citation swapping and numeric changes. The genuine desktop/mobile sample
+E2E test now requires **AI-generated answer**, not merely a clearly labelled
+source excerpt. If the tiny model still fails, the build must remain blocked
+and the last successful deployment protected. Do not claim model improvement
+from unit tests alone.

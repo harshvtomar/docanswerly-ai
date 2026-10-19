@@ -7,6 +7,7 @@ import {
   GroundedAnswerProvider,
   selectEvidence,
   hindiTranslationMessages,
+  hindiSourceRepairMessages,
   hindiSourceExcerptFallback,
   type AnswerRequest,
 } from "./answers";
@@ -585,6 +586,83 @@ describe("grounded answer boundary", () => {
         {...request.evidence[0],id:"d2",text:"भारत में तकनीक का उपयोग बढ़ रहा है।"},
       ],
     })).toBeNull();
+  });
+  it("uses a source-conditioned Hindi repair for a mixed document, not an unrelated English draft", async () => {
+    const question = "दिल्ली में किसका उपयोग बढ़ रहा है?";
+    const mixed: AnswerRequest = {
+      ...request,question,language:"hi",
+      evidence:[{...request.evidence[0],text:"दिल्ली में Robotics का उपयोग बढ़ रहा है।"}],
+    };
+    let calls=0;
+    const contexts:string[]=[];
+    const p = new GroundedAnswerProvider({
+      generate:async (messages) => {
+        calls++;
+        contexts.push(messages[0].content);
+        return calls===1
+          ? output({answer:"Robotics use is rising in Delhi.",language:"hi"})
+          : output({answer:"दिल्ली में Robotics का उपयोग बढ़ रहा है।",language:"hi"});
+      },
+    });
+    const answer=await p.answer(mixed);
+    expect(answer.validation).toBe("source-identities-checked");
+    expect(answer.answer).toContain("Robotics");
+    expect(calls).toBe(2);
+    expect(contexts[1]).toContain("मूल दस्तावेज़ के हिन्दी वाक्य");
+    expect(contexts[1]).not.toContain("Translate only the draft");
+  });
+  it("keeps the mixed-source Hindi repair restricted to its initial citation labels", () => {
+    const mixed: AnswerRequest={
+      ...request,language:"hi",question:"विद्यालय में किसका उपयोग होता है?",
+      evidence:[
+        {...request.evidence[0],id:"p1",text:"विद्यालय में Robotics का उपयोग होता है।"},
+        {...request.evidence[0],id:"p2",text:"विद्यालय में Machine Learning पढ़ाई जाती है।"},
+      ],
+    };
+    const messages=hindiSourceRepairMessages(mixed,output({
+      language:"hi",answer:"Robotics is used at school.",citations:["E1"],
+    }));
+    const body=JSON.parse(messages[1].content);
+    expect(body.evidence).toHaveLength(1);
+    expect(body.evidence[0].text).toContain("Robotics");
+    expect(body.sourceLabels).toEqual(["E1"]);
+    expect(() => hindiSourceRepairMessages(mixed, output({language:"hi",citations:["E99"]})))
+      .toThrow("Invalid draft citations");
+  });
+  it("rejects Hindi repair that swaps to an unrelated valid evidence citation", async () => {
+    const mixed: AnswerRequest={
+      ...request,language:"hi",question:"विद्यालय में किसका उपयोग होता है?",
+      evidence:[
+        {...request.evidence[0],id:"p1",text:"विद्यालय में Robotics का उपयोग होता है।"},
+        {...request.evidence[0],id:"p2",text:"विद्यालय में Machine Learning पढ़ाई जाती है।"},
+      ],
+    };
+    let calls=0;
+    await expect(new GroundedAnswerProvider({
+      generate:async () => {
+        calls++;
+        return calls===1
+          ? output({language:"hi",answer:"Robotics is used at school.",citations:["E1"]})
+          : output({language:"hi",answer:"विद्यालय में Machine Learning पढ़ाई जाती है।",citations:["E2"]});
+      },
+    }).answer(mixed)).rejects.toThrow("changed the cited source");
+    expect(calls).toBe(2);
+  });
+  it("preserves exact numeral facts during a Hindi source-conditioned correction", async () => {
+    const mixed: AnswerRequest={
+      ...request,language:"hi",question:"रीमा app का backup कब होता है?",
+      evidence:[{...request.evidence[0],text:"रीमा app का backup रात 22:00 बजे होता है।"}],
+    };
+    let calls=0;
+    await expect(new GroundedAnswerProvider({
+      generate:async () => {
+        calls++;
+        return calls===1
+          ? output({language:"hi",answer:"Backup happens at 22:00."})
+          : output({language:"hi",answer:"रीमा app का backup रात में होता है।"});
+      },
+    }).answer(mixed)).rejects.toThrow("changed the draft's numeric facts");
+    expect(calls).toBe(2);
   });
   it("selects bounded whole passages", () => {
     const hits = Array.from({ length: 8 }, (_, i) => ({

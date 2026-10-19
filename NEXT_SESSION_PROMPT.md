@@ -183,3 +183,14 @@ factual accuracy, duration/performance and transparent failure states, then
 handoff to Session 3C for deep abstention/hallucination work. The 30-case
 evaluation still has only 14/30 reference-term matches and 0/13 *valid*
 model abstentions. Version remains v0.2.0; v0.3.0 remains unreleased.
+
+## Priority 1 mixed-language generation experiment
+
+The following checkpoint selectively replaces the second wrong-language model
+attempt with a source-conditioned Hindi answer prompt when cited evidence
+contains Hindi. It keeps the original 2-attempt ceiling and validates cited
+source identities and all explicit numeric facts. The real E2E check for the
+public bilingual sample now REQUIRES a genuine AI-generated Hindi answer,
+not the safe source-excerpt fallback. Inspect latest GitHub Actions and
+per-stage raw output. Do not remove the gate if model quality remains bad.
+Keep v0.2.0 until a release is verifiably ready.
