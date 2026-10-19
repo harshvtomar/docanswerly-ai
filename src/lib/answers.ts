@@ -248,7 +248,7 @@ export function discardInvalidRefusalText(
     v.citations.length !== 0
   ) return null;
   return {
-    ...refusal(language, v.status),
+    ...refusal(language, v.status as "insufficient_evidence" | "conflict"),
     validation: "refusal-content-discarded",
   };
 }

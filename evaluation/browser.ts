@@ -51,13 +51,18 @@ document.querySelector<HTMLButtonElement>("#run")!.onclick = async () => {
           },
           AbortSignal.timeout(180000),
         );
+        // A canonicalized refusal is safe to display but NOT a valid raw-model
+        // abstention. Keep it out of the reference-match quality proxy.
+        const modelCompliant = answer.validation !== "refusal-content-discarded";
         const referenceMatch =
+          modelCompliant &&
           answer.status === c.expectedStatus &&
           c.requiredTerms.every((term) =>
             new RegExp(term, "iu").test(answer.answer),
           );
         const sourceSetMatches =
-          answer.status === "answer"
+          modelCompliant &&
+          (answer.status === "answer"
             ? c.supportingEvidence.every((i) =>
                 answer.citations.some((s) => s.documentId === `${c.id}:${i}`),
               ) &&
@@ -66,7 +71,7 @@ document.querySelector<HTMLButtonElement>("#run")!.onclick = async () => {
                   (i) => s.documentId === `${c.id}:${i}`,
                 ),
               )
-            : answer.citations.length === 0;
+            : answer.citations.length === 0);
         rows.push({
           id: c.id,
           expectedStatus: c.expectedStatus,
@@ -115,7 +120,18 @@ document.querySelector<HTMLButtonElement>("#run")!.onclick = async () => {
           supported.filter(
             (r) => "answer" in r && r.answer?.status !== "answer",
           ).length / supported.length,
+        // Only strictly formatted, direct model abstentions count here.
         unsupportedAbstentionRate:
+          unsupported.filter(
+            (r) => "answer" in r && r.answer?.status !== "answer" &&
+              r.answer?.validation !== "refusal-content-discarded",
+          ).length / unsupported.length,
+        // Display-safe fallback is distinct from the raw model's format quality.
+        canonicalizedRefusals: rows.filter(
+          (r) => "answer" in r &&
+            r.answer?.validation === "refusal-content-discarded",
+        ).length,
+        displayedUnsupportedRefusalRate:
           unsupported.filter(
             (r) => "answer" in r && r.answer?.status !== "answer",
           ).length / unsupported.length,

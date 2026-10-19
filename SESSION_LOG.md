@@ -236,3 +236,10 @@ model-declared refusals now discard all text into a distinct, visibly marked
 application-owned standard refusal; the model's original malformed output is
 not counted as a valid raw-model refusal. Added focused boundary tests.
 Fresh genuine-model performance must be measured before claiming improvement.
+
+### Session 3B — CI type-check repair and honest evaluation metrics
+The first output-boundary checkpoint passed 72 existing unit/PDF/embedding
+checks but failed TypeScript build on a narrow unknown-type cast. Added the
+required explicit discriminator type, and separated canonicalized refusal
+presentation from raw-model abstention-quality metrics. Changes must pass the
+new GitHub Actions gate before claiming a deployment.

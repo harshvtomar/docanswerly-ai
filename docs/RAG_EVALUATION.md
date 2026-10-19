@@ -103,3 +103,18 @@ Hindi and unsupported questions retained explicit validation errors. Desktop
 latencies: 41,620 / 35,939 / 30,008 ms; mobile: 41,673 / 35,925 / 29,511 ms.
 These single-run observations are not performance or answer-quality guarantees.
 Artifacts were recovered unchanged on 19 October; no model rerun was needed.
+
+## Session 3B output-recovery metric boundaries (19 October 2026)
+
+A malformed model-declared refusal with nonempty free text, correct schema
+and zero citations can now have its text **discarded** in favor of an
+application-owned standard refusal. Its `validation` marker is
+`refusal-content-discarded`; it must not be described as model-compliant
+or proof of evidence insufficiency. The UI displays this limitation.
+
+The evaluation reports **`unsupportedAbstentionRate`** for directly valid
+model abstentions only; **`canonicalizedRefusals`** counts safety-converted
+responses; **`displayedUnsupportedRefusalRate`** separately reports how often
+unsupported cases ended in a refusal UI. Canonicalized cases are excluded from
+reference-match and source-set-match quality proxies. Historical evaluation
+artifacts remain untouched. All new figures require fresh genuine inference.
