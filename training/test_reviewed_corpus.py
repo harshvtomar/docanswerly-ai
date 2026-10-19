@@ -8,7 +8,7 @@ from validate_data import validate
 
 def row(split, source_id, question, evidence, status="answer", language="en"):
     expected = {"status": status,
-                "answer": "Measured 9 meters." if status == "answer" else "",
+                "answer": ("लंबाई 9 मीटर है।" if language == "hi" else "Measured 9 meters.") if status == "answer" else "",
                 "language": language,
                 "citations": ["E1"] if status == "answer" else []}
     return {"source_id": source_id, "license": "CC-BY-4.0",
