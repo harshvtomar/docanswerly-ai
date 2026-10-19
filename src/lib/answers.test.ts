@@ -789,3 +789,16 @@ describe("correctly constrained model formatting and Hindi speed units", () => {
     expect(validateAnswer(make("अधिकतम गति 65 किलोमीटर प्रति घंटा है।"),req).status).toBe("answer");
   });
 });
+
+describe("source-scoped English material repair", () => {
+  it("passes relevant Hindi source words as transparent evidence-linked translation hints", () => {
+    const r: AnswerRequest = {
+      question:"What material are the walls made from?", language:"en",
+      evidence:[{id:"g",documentId:"gallery",documentName:"gallery.pdf",page:1,
+        text:"प्रदर्शनी की दीवारें बाँस से बनाई गई हैं। छत पर लकड़ी का काम है।",start:0,end:70}],
+    };
+    const hint=JSON.parse(answerMessages(r,true)[1].content);
+    expect(hint.sourceGlossary).toEqual([{source:"बाँस",english:"bamboo"},{source:"लकड़ी",english:"wood"}]);
+    expect(answerMessages(r,true)[0].content).toContain("Translate the actual Hindi evidence");
+  });
+});

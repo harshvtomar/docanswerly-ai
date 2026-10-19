@@ -2,7 +2,7 @@ import type { Chunk, SearchHit } from "./types";
 import { deduplicate } from "./rag";
 import { evidenceSafetyGate } from "./evidence-sufficiency";
 import { validateIdentifierGrounding } from "./identifier-grounding";
-import { sourceHindiFactHints, repeatedQuestion } from "./hindi-facts";
+import { sourceHindiFactHints, sourceEnglishMaterialGlossary, repeatedQuestion } from "./hindi-facts";
 export type AnswerLanguage = "auto" | "en" | "hi";
 export type ResolvedLanguage = "en" | "hi";
 export interface AnswerRequest {
@@ -135,7 +135,7 @@ export function answerMessages(
   const retryInstruction =
     language === "hi"
       ? " पहले का उत्तर अमान्य था। प्रश्न दोहराना उत्तर नहीं है। केवल स्रोत से देवनागरी हिन्दी में छोटा तथ्यात्मक उत्तर दें। यदि स्रोत में कोई संख्या है तो वही संख्या और उसका सही माप लिखें। यदि संख्या नहीं है तो संख्या न जोड़ें। केवल JSON दें।"
-      : " Your previous language-format attempt was rejected. Answer in English with English words and grammar. Preserve names and numbers and return only the required JSON.";
+      : " Your previous language-format attempt was rejected. Translate the actual Hindi evidence into English words and grammar; use the supplied sourceGlossary for source materials and do not echo Devanagari words. Preserve source names and numbers. JSON only.";
   return [
     {
       role: "system" as const,
@@ -152,6 +152,9 @@ export function answerMessages(
           id: `E${i + 1}`,
           text: c.text,
         })),
+        ...(language === "en" && request.evidence.some(c => /\p{Script=Devanagari}/u.test(c.text))
+          ? {sourceGlossary: sourceEnglishMaterialGlossary(request.question, request.evidence.map(c=>c.text))}
+          : {}),
       }),
     },
   ];

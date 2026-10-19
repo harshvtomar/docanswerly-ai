@@ -64,3 +64,25 @@ export function repeatedQuestion(question: string, answer: string): boolean {
       .replace(/[\p{P}\p{S}\s]+/gu, "");
   return normalize(question) === normalize(answer);
 }
+
+/** Small source-scoped translation aid, not a factual entailment engine. */
+const HINDI_MATERIAL_GLOSSARY = [
+  {source:"बाँस",english:"bamboo",pattern:/बाँस|बांस/u},
+  {source:"लकड़ी",english:"wood",pattern:/लकड़ी|लकडी/u},
+  {source:"ताँबा",english:"copper",pattern:/ताँब|तांब/u},
+  {source:"लोहा",english:"iron",pattern:/लोहा|लोहे/u},
+  {source:"काँच",english:"glass",pattern:/काँच|कांच/u},
+  {source:"पत्थर",english:"stone",pattern:/पत्थर/u},
+  {source:"चाँदी",english:"silver",pattern:/चाँदी|चांदी/u},
+  {source:"ऊन",english:"wool",pattern:/ऊन/u},
+  {source:"कपास",english:"cotton",pattern:/कपास/u},
+  {source:"ईंट",english:"brick",pattern:/ईंट/u},
+  {source:"चमड़ा",english:"leather",pattern:/चमड़ा/u},
+];
+export function sourceEnglishMaterialGlossary(question: string, evidence: string[]) {
+  if (!/\b(?:material|made from|made of|constructed from|walls?|fabric|metal|substance)\b|किस\s+से\s+बना|सामग्री/iu.test(question))
+    return [];
+  const text = evidence.join("\n");
+  return HINDI_MATERIAL_GLOSSARY.filter(x=>x.pattern.test(text))
+    .map(({source,english})=>({source,english}));
+}
