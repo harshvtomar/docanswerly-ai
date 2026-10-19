@@ -630,6 +630,25 @@ describe("grounded answer boundary", () => {
     expect(() => hindiSourceRepairMessages(mixed, output({language:"hi",citations:["E99"]})))
       .toThrow("Invalid draft citations");
   });
+  it("gives the mixed-Hindi model the exact original E3 citation IDs, not a misleading E1 example", () => {
+    const r: AnswerRequest = {
+      ...request,language:"hi",question:"दिल्ली में किसका उपयोग बढ़ रहा है?",
+      evidence: [
+        {...request.evidence[0],id:"a",text:"दिल्ली में हिंदी शिक्षा उपलब्ध है।"},
+        {...request.evidence[0],id:"b",text:"संग्रहालय में हिंदी पुस्तकें हैं।"},
+        {...request.evidence[0],id:"c",text:"दिल्ली में Robotics का उपयोग बढ़ रहा है।"},
+      ],
+    };
+    const messages = hindiSourceRepairMessages(r,output({
+      language:"hi",answer:"Robotics is used more in Delhi.",citations:["E3"],
+    }));
+    const prompt=messages[0].content;
+    const input=JSON.parse(messages[1].content);
+    expect(prompt).toContain('["E3"]');
+    expect(prompt).not.toContain('["E1"]');
+    expect(input.requiredCitationIds).toEqual(["E3"]);
+    expect(input.evidence).toEqual([{id:"E3",text:r.evidence[2].text}]);
+  });
   it("rejects Hindi repair that swaps to an unrelated valid evidence citation", async () => {
     const mixed: AnswerRequest={
       ...request,language:"hi",question:"विद्यालय में किसका उपयोग होता है?",

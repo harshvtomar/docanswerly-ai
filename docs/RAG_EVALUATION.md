@@ -233,3 +233,14 @@ E2E test now requires **AI-generated answer**, not merely a clearly labelled
 source excerpt. If the tiny model still fails, the build must remain blocked
 and the last successful deployment protected. Do not claim model improvement
 from unit tests alone.
+
+## Mixed-Hindi source-ID failure and focused prompt correction
+
+Run 39253185783: 29 browser tests passed; desktop/mobile bilingual UI Hindi
+failed with `The model cited an unknown source.`. Cross-Hindi oracle: 3/3.
+The experimental Hindi source-repair prompt included a generic `E1` JSON
+example unrelated to the actual selected passage. Removed that example and
+supplied exact permitted source labels from the validated draft. A new unit
+test covers a three-passage E3 citation. Unknown/missing model citation IDs
+still fail strict validation. This is not a claim of verified generation quality
+until genuine tests pass.

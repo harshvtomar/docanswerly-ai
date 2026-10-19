@@ -194,3 +194,13 @@ public bilingual sample now REQUIRES a genuine AI-generated Hindi answer,
 not the safe source-excerpt fallback. Inspect latest GitHub Actions and
 per-stage raw output. Do not remove the gate if model quality remains bad.
 Keep v0.2.0 until a release is verifiably ready.
+
+## Mixed-language Hindi source-ID regression correction
+
+Run 39253185783 failed desktop/mobile Hindi UI tests due to **unknown model
+citation IDs**, although the English→Hindi oracle proxy held at 3/3. The
+Hindi source-conditioned prompt had an unrelated literal E1 JSON example.
+The next checkpoint sends the exact original E1/E2/E3 IDs in the system/user
+messages and has a unit test for E3. No post-hoc citation fabrication. Check
+the new CI result and real output, keep the genuine Hindi gate enabled, and
+do not call this verified until the public sample passes.

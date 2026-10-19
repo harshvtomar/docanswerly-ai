@@ -352,3 +352,13 @@ preserving the original source IDs and numbers. Added tests for previously
 unseen Robotics / mixed evidence and strengthened real browser acceptance so
 source excerpts do not masquerade as genuine Hindi generation. Keep v0.2.0
 until full CI and model tests independently pass.
+
+### Priority 1 mixed-source generated citation regression (19 October 2026)
+Run 39253185783: 29 Playwright checks passed, both desktop/mobile Hindi UI
+checks failed with `The model cited an unknown source.`; the English-only
+Hindi oracle cases still scored 3/3. The new source-conditioned prompt included
+an incorrect generic citation example `["E1"]` even when the actual cited
+source was E2 or E3. Replaced the example with the exact validated source
+labels, supplied to Qwen as a literal requiredCitationIds array, and added an
+E3 negative regression. No source IDs are invented or silently repaired;
+existing citation validation remains strict. Fresh real-model CI required.
