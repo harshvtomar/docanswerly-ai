@@ -22,3 +22,9 @@ public/generation/
 training/data/
 training/output/
 training/cache/
+
+# Private user-provided training corpora and converted review datasets
+training/input/
+training/data-reviewed/
+training/mlx/
+training/release/
