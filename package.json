@@ -20,7 +20,8 @@
     "test:hybrid": "npm run prepare:model && node --import tsx scripts/evaluate-hybrid.ts",
     "build:evaluation": "vite build --config vite.evaluation.config.ts",
     "audit:rag": "node scripts/audit-rag.mjs",
-    "test:stress": "node --import tsx scripts/stress-12k.ts"
+    "test:stress": "node --import tsx scripts/stress-12k.ts",
+    "test:stress:500k": "node --import tsx scripts/stress-500k.ts"
   },
   "repository": {
     "type": "git",

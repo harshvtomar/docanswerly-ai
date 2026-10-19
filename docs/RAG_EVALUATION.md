@@ -313,3 +313,25 @@ training checkpoint, use suitable GPU compute and a supported LoRA/QLoRA
 workflow, evaluate against a truly held-out set, export/quantize carefully
 for Wllama GGUF inference, and then re-run all gates. No such fine-tuning has
 been run or authorized here.
+
+## 500,000 distinct-case deterministic stress validation (20 October 2026)
+
+Run `npm run test:stress:500k`. The test uses the **real application
+`validateAnswer` implementation**, checking 500,000 distinct question
+strings and evidence strings plus one globally unique alphabetic nonce
+word per case. It uses the **same twelve semantic case templates** as
+the 12k suite, with varying numbers, crops, weekdays and citations.
+The question/evidence/nonce uniqueness constraints are enforced,
+and CI exits nonzero if any duplicate is found or any case fails
+its specified expectation. A standalone focused GitHub Actions workflow
+provides fast verification, and the full deploy workflow also runs the
+same suite. Report: `docs/stress-500k.json` (workflow artifact).
+
+**Important boundaries:** Unique identifiers and text strings are not
+500,000 semantically independent natural questions. Normal Hindi and
+English vocabulary MUST repeat; requiring every ordinary word to be
+globally unique would invalidate language testing. This is **not**
+500,000 Qwen3 model generations, fine-tuning steps, or empirical
+accuracy measurements. Synthetic test pass rates are not evidence
+that end users' answers are correct. Continue the genuine-model,
+held-out, bilingual and abstention evaluations separately.

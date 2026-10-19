@@ -1,0 +1,35 @@
+name: Unique 500K validation check
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/stress-500k.ts"
+      - "src/lib/answers.ts"
+      - "src/lib/hindi-facts.ts"
+      - "package.json"
+      - ".github/workflows/stress-500k.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  unique-500k:
+    name: 500000 unique synthetic validation cases
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      ONNXRUNTIME_NODE_INSTALL_CUDA: skip
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Execute 500000 distinct cases and enforce uniqueness
+        run: npm run test:stress:500k
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: stress-500k-validation
+          path: docs/stress-500k.json
+          retention-days: 30

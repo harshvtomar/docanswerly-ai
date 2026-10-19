@@ -31,6 +31,7 @@ jobs:
           python3 training/train_lora.py --data training/data --check
       - run: npm test
       - run: npm run test:stress
+      - run: npm run test:stress:500k
       - run: npm run test:pdf
       - run: npm run test:retrieval
       - run: npm run test:hybrid
@@ -50,6 +51,7 @@ jobs:
             docs/hybrid-evaluation.json
             docs/rag-evaluation.json
             docs/stress-evaluation.json
+            docs/stress-500k.json
           retention-days: 14
       - run: rm -f dist/evaluation.html dist/assets/evaluation-*.js
       - uses: actions/configure-pages@v5

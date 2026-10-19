@@ -139,3 +139,13 @@ are written to `docs/stress-evaluation.json` and preserved in CI artifacts.
 This is a deterministic validation stress test—not 12,000 model inferences,
 not Hindi fluency accuracy, and not Qwen3 fine-tuning. Existing genuine
 model benchmark tests continue separately.
+
+### Half-million unique synthetic validation cases
+
+Run `npm run test:stress:500k` to exercise the app's validator with
+**500,000 unique question and evidence strings** across 12 template
+families. A unique per-case alphabetic nonce word prevents exact duplicates;
+common Hindi/English vocabulary legitimately repeats. The JSON report
+`docs/stress-500k.json` is uploaded with GitHub CI. This is a large
+**deterministic validator stress test**, not 500k Qwen3 inferences,
+not model fine-tuning and not a statistically independent accuracy benchmark.

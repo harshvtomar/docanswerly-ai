@@ -263,3 +263,15 @@ fine-tuning still needs an explicitly provisioned CUDA GPU and HF base weights.
 LoRA run for compatible M-series Macs with `mlx-lm[train]`. It has NOT
 been executed and the data is synthetic and unreviewed. Preserve
 the baseline model and require actual checkpoint and held-out evidence.
+
+## Unique 500000-case synthetic stress-check checkpoint
+
+New `scripts/stress-500k.ts` checks 500,000 distinct generated
+question and evidence strings, unique case words, reference/citation
+validation, bilingual word/number drift and abstention formats.
+`npm run test:stress:500k` is enforced in the deployment CI
+and an independent, faster focused GitHub Actions workflow.
+The report is `docs/stress-500k.json`. Inspect actual CI logs
+before stating it passed. The cases derive from twelve templates,
+not 500,000 independent language examples or Qwen3 inferences.
+No model weights are changed. Preserve v0.2.0 and genuine-model tests.
