@@ -193,11 +193,15 @@ describe("grounded answer boundary", () => {
     ).toBe("source-identities-checked");
   });
 
-  it("uses explicit Devanagari output instructions for Hindi requests", () => {
+  it("preserves the short English system prompt and explicitly requests Hindi from English evidence", () => {
+    const en = answerMessages(request)[0].content;
+    expect(en).toContain("You answer questions ONLY from the supplied document evidence.");
+    expect(en).not.toContain("Your previous language-format attempt");
     const hi = answerMessages({ ...request, language: "hi" })[0].content;
-    expect(hi).toContain("देवनागरी");
-    expect(hi).toContain('answer=""');
-    expect(hi).toContain("Preserve the exact units");
+    expect(hi).toContain("Hindi (Devanagari)");
+    expect(hi).toContain("even if evidence is English");
+    expect(hi).toContain("empty answer");
+    expect(answerMessages({ ...request, language: "hi" }, true)[0].content).toContain("पृथ्वी");
   });
   it("rejects English-labelled answers containing only Hindi words", () => {
     expect(() =>
@@ -243,6 +247,44 @@ describe("grounded answer boundary", () => {
       ).rejects.toThrow();
     }
     expect(validateAnswer(cases[0], request).status).toBe("answer");
+  });
+  it("retries an English answer returned for a Hindi request exactly once", async () => {
+    const messages: string[] = [];
+    const p = new GroundedAnswerProvider({
+      generate: async (m) => {
+        messages.push(m[0].content);
+        return messages.length === 1
+          ? output({ answer: "The company was founded in 2018.", language: "hi" })
+          : output({ answer: "कंपनी की स्थापना २०१८ में हुई।", language: "hi" });
+      },
+    });
+    const result = await p.answer({ ...request, language: "hi" });
+    expect(result.language).toBe("hi");
+    expect(result.answer).toContain("स्थापना");
+    expect(messages).toHaveLength(2);
+    expect(messages[1]).toContain("Your previous language-format attempt");
+  });
+  it("does not retry factual or citation validation failures", async () => {
+    let calls = 0;
+    const p = new GroundedAnswerProvider({
+      generate: async () => {
+        calls++;
+        return output({ answer: "Founded in 2025." });
+      },
+    });
+    await expect(p.answer(request)).rejects.toThrow("number absent");
+    expect(calls).toBe(1);
+  });
+  it("fails if a Hindi retry is still English instead of pretending success", async () => {
+    let calls = 0;
+    const p = new GroundedAnswerProvider({
+      generate: async () => {
+        calls++;
+        return output({ answer: "The company was founded in 2018.", language: "hi" });
+      },
+    });
+    await expect(p.answer({ ...request, language: "hi" })).rejects.toThrow("requested Hindi");
+    expect(calls).toBe(2);
   });
   it("selects bounded whole passages", () => {
     const hits = Array.from({ length: 8 }, (_, i) => ({

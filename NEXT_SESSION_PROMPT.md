@@ -95,3 +95,10 @@ output instructions and a guard against numeric duration-unit drift (e.g. weeks
 becoming years). Existing model weights and all historical evaluation outputs
 remain unchanged. Check the new CI, test genuine Hindi and cross-language
 results, and evaluate model failures before any v0.3.0 release claim.
+
+## CI regression recovery
+Run 39192265672 failed English UI inference after a verbose prompt replacement.
+The following checkpoint restores Session 3A's concise English prompt, adds
+Hindi-only language guidance, and bounds one re-prompt to explicit wrong-language
+errors. Verify real UI English/Hindi and abstention behavior with the next Actions
+run. Do not count schema compliance as correctness. No v0.3.0 claim.

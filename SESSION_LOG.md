@@ -249,3 +249,12 @@ GitHub Actions caught another TypeScript narrowing issue: the numeric-unit
 callback captured a JSON property still typed `unknown`. Added an explicitly
 typed local string after the existing schema assertion. These build errors were
 caught before deployment and do not imply working model quality.
+
+### Session 3B — language-prompt regression recovery (19 October 2026)
+GitHub Actions run 39192265672 compiled and completed the 30-case RAG evaluator
+but the longer all-language system prompt regressed the previously verified English
+UI answer on both desktop and mobile; 29 browser checks passed, 2 failed. Reverted
+to the concise Session 3A English prompt; Hindi now has a small language-specific
+instruction. Wrong-language outputs get at most one bounded, separately prompted
+retry under unchanged citation, numeral and structural validation. There is no
+automatic retry of factual errors. Fresh browser acceptance is required.
