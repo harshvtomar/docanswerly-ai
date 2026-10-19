@@ -118,3 +118,12 @@ Numeric source-unit checks now cover Hindi durations and weight questions in
 addition to English duration changes. Observe actual new Qwen3 output; rejected
 mistranslations are safety improvements but do not equal correct Hindi answers.
 No version bump until genuine evaluations and regression tests succeed.
+
+## Gate-aware evaluation CI fix
+
+If checking after commit from this session, inspect latest CI. Run 39194393368
+failed the outdated all-cases-have-raw-LLM assertion; bounded evidence-gate
+rows correctly do not call Qwen3. Updated the 30-case evaluation to report
+`modelInvokedCases` and `precheckedCases`, requiring all non-model rows to
+have exactly labelled, safe heuristic results. Do not interpret quality-run
+completion as accurate answers. Keep v0.2.0 until release criteria pass.

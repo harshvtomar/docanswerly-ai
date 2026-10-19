@@ -272,3 +272,12 @@ Extended answer validation to Hindi numeric durations and source-backed weight
 units so malformed unit translations are rejected rather than presented as
 verified answers. Added focused tests. This is fail-closed validation, not a
 successful regeneration or new model-quality metric. Verify the latest CI.
+
+### Session 3B — 30-case evaluation gate-aware CI repair
+Run 39194393368: production builds and 30 browser checks passed, but the
+30-case evaluator test failed because an old invariant demanded nonempty raw
+LLM output even on new pre-inference heuristic decisions. This is a test
+contract issue, not an inference initialization failure. Updated evaluation
+metrics and acceptance test to require an explicit validated gate label for any
+model-free row, keeping genuine raw-model rows mandatory otherwise. No tests
+were disabled; original historical model outputs remain untouched.

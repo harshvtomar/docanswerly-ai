@@ -132,3 +132,21 @@ Gate decisions are marked `heuristic-evidence-gap` or
 `heuristic-numeric-conflict` and counted separately from the model's valid
 abstentions. Historical raw Qwen outputs remain unchanged. Report observed
 false refusals and false supported answers; no general accuracy claim.
+
+## Session 3B CI test correction — 19 October 2026
+
+Run 39194393368 completed 30 cases but failed the historical assertion requiring
+nonempty *raw generative-model output* on every row. The new safety gate
+intentionally handles some cases **before** inference and therefore returns an
+explicitly labelled non-model decision with empty raw output. That assertion
+was no longer a valid infrastructure invariant.
+
+The regression test now requires every case to have either (a) nonempty raw
+Qwen3 output or (b) a citation-free, explicitly marked heuristic decision
+(`heuristic-evidence-gap` / `heuristic-numeric-conflict`) with no generation
+error. Unexplained empty-output rows still fail. It asserts the exact 30-case
+total, validates the gate count and preserves raw inference outputs unchanged.
+New `modelInvokedCases` and `precheckedCases` metrics distinguish actual
+model evaluation from deterministic bypasses. Inference quality and gate
+accuracy remain distinct concerns; completing this test is not acceptance of
+model correctness or general abstention accuracy.

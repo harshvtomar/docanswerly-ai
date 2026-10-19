@@ -5,7 +5,7 @@ import {
   type FailedRequest,
 } from "../evaluation/diagnostics";
 
-test("record thirty real local-model oracle-context cases", async ({
+test("record thirty oracle-context cases with genuine-model and labelled gate outcomes", async ({
   page,
 }, info) => {
   test.setTimeout(1200000);
@@ -59,11 +59,31 @@ test("record thirty real local-model oracle-context cases", async ({
     console.log("RAG_QUALITY_METRICS " + JSON.stringify(result.metrics));
     expect(result.rows).toHaveLength(30);
     expect(result.initializationMs).toBeGreaterThan(0);
-    expect(
-      result.rows.every(
-        (r: { raw?: string }) => typeof r.raw === "string" && r.raw.length > 0,
-      ),
-    ).toBe(true);
+    // A bounded pre-inference evidence check can return a labelled decision
+    // without calling the model. Every other case MUST have genuine raw model
+    // output, even if that output fails quality validation.
+    const hasRawOutput = (r: { raw?: string }) =>
+      typeof r.raw === "string" && r.raw.length > 0;
+    const isPrechecked = (r: {
+      raw?: string;
+      answer?: { validation?: string; status?: string };
+      error?: string;
+    }) =>
+      r.raw === "" &&
+      !r.error &&
+      ["heuristic-evidence-gap", "heuristic-numeric-conflict"].includes(
+        r.answer?.validation ?? "",
+      ) &&
+      ["insufficient_evidence", "conflict"].includes(
+        r.answer?.status ?? "",
+      );
+    const rawModelRows = result.rows.filter(hasRawOutput);
+    const precheckedRows = result.rows.filter(isPrechecked);
+    expect(rawModelRows.length).toBeGreaterThan(0);
+    expect(rawModelRows.length + precheckedRows.length).toBe(30);
+    expect(precheckedRows.length).toBe(result.metrics.heuristicRefusals);
+    expect(result.metrics.modelInvokedCases).toBe(rawModelRows.length);
+    expect(result.metrics.precheckedCases).toBe(precheckedRows.length);
     modelInitialized = true;
     expect(errors).toEqual([]);
     expect(httpErrors).toEqual([]);

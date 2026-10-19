@@ -108,6 +108,17 @@ document.querySelector<HTMLButtonElement>("#run")!.onclick = async () => {
       generatedAt: new Date().toISOString(),
       metrics: {
         cases: rows.length,
+        // Genuine model rows versus deterministic evidence gate decisions.
+        // Neither category is a claim of answer correctness.
+        modelInvokedCases: rows.filter(
+          (r) => r.raw.length > 0,
+        ).length,
+        precheckedCases: rows.filter(
+          (r) => "answer" in r && (
+            r.answer?.validation === "heuristic-evidence-gap" ||
+            r.answer?.validation === "heuristic-numeric-conflict"
+          ) && r.raw === "",
+        ).length,
         referenceMatch:
           rows.filter((r) => r.referenceMatch).length / rows.length,
         sourceSetMatches:
