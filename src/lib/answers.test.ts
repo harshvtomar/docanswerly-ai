@@ -802,3 +802,90 @@ describe("source-scoped English material repair", () => {
     expect(answerMessages(r,true)[0].content).toContain("Translate the actual Hindi evidence");
   });
 });
+
+
+describe("Session 3B bilingual accuracy regression: verified evidence only", () => {
+  const q=(question:string, language:"hi"|"en", text:string): AnswerRequest => ({
+    question,language,evidence:[{id:"fixture",documentId:"fixture",documentName:"fixture.pdf",page:1,
+      text,start:0,end:[...text].length}],
+  });
+  const answer=(status:string,text:string,language:"hi"|"en") => JSON.stringify({
+    status,answer:text,language,citations:status==="answer"?["E1"]:[],
+  });
+  it("reasks a supported English-source count before Hindi translation",async()=>{
+    let calls=0;
+    const req=q("कार्यशाला में कितने कलपुर्जे उपयोग होते हैं?","hi",
+      "The clock workshop uses 27 components in its standard teaching kit.");
+    const model=new GroundedAnswerProvider({generate:async()=>{
+      calls++;
+      if(calls===1) return answer("insufficient_evidence","","en");
+      if(calls===2) return answer("answer","The kit uses 27 components.","en");
+      return answer("answer","कार्यशाला में २७ कलपुर्जे हैं।","hi");
+    }});
+    const result=await model.answer(req);
+    expect(result.status).toBe("answer");
+    expect(result.answer).toContain("२७");
+    expect(calls).toBe(3);
+  });
+  it("retrieves Hindi-source count only after the local model explicitly answers",async()=>{
+    let calls=0;
+    const req=q("How many folding chairs were purchased?","en",
+      "सभागार ने ५४ मोड़ने वाली कुर्सियाँ खरीदीं। पर्दे पुराने हैं।");
+    const result=await new GroundedAnswerProvider({generate:async()=>{
+      calls++;
+      return calls===1 ? answer("insufficient_evidence","","en")
+        : answer("answer","The hall purchased 54 folding chairs.","en");
+    }}).answer(req);
+    expect(result.status).toBe("answer");
+    expect(result.answer).toContain("54");
+    expect(calls).toBe(2);
+  });
+  it("keeps the first safe refusal if the second model answer invents a count",async()=>{
+    let calls=0;
+    const req=q("How many chairs were purchased?","en","The hall purchased 27 chairs.");
+    const result=await new GroundedAnswerProvider({generate:async()=>{
+      calls++;
+      return calls===1 ? answer("insufficient_evidence","","en")
+        : answer("answer","The hall purchased 29 chairs.","en");
+    }}).answer(req);
+    expect(result.status).toBe("insufficient_evidence");
+    expect(calls).toBe(2);
+  });
+  it("does not retry unverified or explicitly unavailable count claims",async()=>{
+    let calls=0;
+    const req=q("How many samples were shipped?","en",
+      "The team planned to collect 12 samples. The shipment count is not yet available.");
+    const result=await new GroundedAnswerProvider({generate:async()=>{
+      calls++; return answer("insufficient_evidence","","en");
+    }}).answer(req);
+    expect(result.status).toBe("insufficient_evidence");
+    expect(calls).toBeLessThanOrEqual(1);
+  });
+  it("rejects an unrelated roof material and tries a bounded grounded repair",async()=>{
+    let calls=0;
+    const req=q("What material forms the exhibition walls?","en",
+      "प्रदर्शनी की दीवारें बाँस से बनाई गई हैं। छत पर लकड़ी का काम है।");
+    expect(()=>validateAnswer(answer("answer","wood","en"),req))
+      .toThrow("mismatched the cited source material");
+    const result=await new GroundedAnswerProvider({generate:async()=>{
+      calls++;
+      return answer("answer",calls===1?"wood":"The walls use bamboo.","en");
+    }}).answer(req);
+    expect(result.answer).toContain("bamboo");
+    expect(calls).toBe(2);
+  });
+  it("retries one Hindi translation which drops a validated English source numeral",async()=>{
+    let calls=0;
+    const req=q("बस की अधिकतम गति क्या है?","hi",
+      "The maximum speed of the prototype bus is 65 kilometers per hour. The train reaches 90 kilometers per hour.");
+    const p=new GroundedAnswerProvider({generate:async()=>{
+      calls++;
+      if(calls===1) return answer("answer","The bus has a maximum speed of 65 kilometers per hour.","en");
+      if(calls===2) return answer("answer","किलोमीटर प्रति घंटा","hi");
+      return answer("answer","बस की अधिकतम गति ६५ किलोमीटर प्रति घंटा है।","hi");
+    }});
+    const result=await p.answer(req);
+    expect(result.answer).toContain("६५");
+    expect(calls).toBe(3);
+  });
+});
