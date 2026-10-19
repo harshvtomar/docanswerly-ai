@@ -1,10 +1,12 @@
 import { Wllama } from "@wllama/wllama";
 import type { InferenceClient } from "./answers";
+import { parseGenerationModelConfig } from "./generation-model-config";
 export const GENERATION_MODEL = "Qwen3-0.6B Q4_K_M (Unsloth)";
 const quiet = { debug() {}, log() {}, warn() {}, error() {} };
 export class LocalGeneration implements InferenceClient {
   private runtime: Wllama;
   private busy = false;
+  loadedModelDescription = GENERATION_MODEL;
   constructor(base: string) {
     this.runtime = new Wllama(
       { default: `${base}generation/wllama.wasm` },
@@ -18,8 +20,20 @@ export class LocalGeneration implements InferenceClient {
     progress: (text: string) => void,
     signal: AbortSignal,
   ) {
+    // Only a build-time packaged, same-origin model is loadable. This lets
+    // a separately evaluated merged+quantized LoRA GGUF replace the baseline
+    // without a backend, arbitrary URLs, hidden uploads or tokenizer changes.
+    const manifestResponse = await fetch(`${base}generation/active-model.json`, {
+      signal,
+      cache: "no-store",
+    });
+    if (!manifestResponse.ok)
+      throw Error("The local generation model manifest is missing.");
+    const model = parseGenerationModelConfig(await manifestResponse.json());
+    // The manifest is validated by the packaging script, which checks the full
+    // SHA-256. Browser file names are content-versioned for cache correctness.
     await this.runtime.loadModelFromUrl(
-      `${base}generation/Qwen3-0.6B-Q4_K_M.gguf`,
+      `${base}generation/${model.file}`,
       {
         n_ctx: 4096,
         n_batch: 128,
@@ -41,6 +55,7 @@ export class LocalGeneration implements InferenceClient {
       await this.dispose();
       throw new DOMException("Cancelled", "AbortError");
     }
+    this.loadedModelDescription = model.id + (model.kind === "approved-finetune" ? " · separately reviewed fine-tune" : " · pinned baseline");
   }
   async generate(
     messages: Parameters<InferenceClient["generate"]>[0],
