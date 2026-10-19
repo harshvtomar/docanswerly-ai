@@ -200,7 +200,7 @@ describe("grounded answer boundary", () => {
     expect(en).not.toContain("Your previous language-format attempt");
     const hi = answerMessages({ ...request, language: "hi" })[0].content;
     expect(hi).toContain("Hindi (Devanagari)");
-    expect(hi).toContain("चाहे स्रोत अंग्रेज़ी में हो");
+    expect(hi).toContain("स्वाभाविक देवनागरी हिन्दी");
     expect(hi).toContain("empty answer");
     expect(answerMessages({ ...request, language: "hi" }, true)[0].content).toContain("किलोग्राम");
   });
@@ -259,7 +259,10 @@ describe("grounded answer boundary", () => {
           : output({ answer: "कंपनी की स्थापना २०१८ में हुई।", language: "hi" });
       },
     });
-    const result = await p.answer({ ...request, language: "hi" });
+    const result = await p.answer({
+      ...request, language: "hi",
+      evidence: [{ ...request.evidence[0], text: "कंपनी की स्थापना २०१८ में हुई थी।" }],
+    });
     expect(result.language).toBe("hi");
     expect(result.answer).toContain("स्थापना");
     expect(messages).toHaveLength(2);
@@ -308,6 +311,64 @@ describe("grounded answer boundary", () => {
       evidence: [{ ...request.evidence[0], text: "AI का उपयोग बढ़ रहा है।" }],
     })).rejects.toThrow("number absent");
     expect(calls).toBe(2);
+  });
+  it("uses a validated English draft followed by genuine Hindi translation for English-only sources", async () => {
+    const modes: string[] = [];
+    const r: AnswerRequest = {
+      ...request, language: "hi", question: "कंपनी की स्थापना कब हुई?",
+    };
+    const provider = new GroundedAnswerProvider({
+      generate: async (messages) => {
+        modes.push(messages[0].content);
+        return modes.length === 1
+          ? output({ answer: "The company was founded in 2018.", language: "en" })
+          : output({ answer: "कंपनी की स्थापना २०१८ में हुई।", language: "hi" });
+      },
+    });
+    const response = await provider.answer(r);
+    expect(response.answer).toContain("स्थापना");
+    expect(response.citations).toEqual(r.evidence);
+    expect(modes).toHaveLength(2);
+    expect(modes[0]).toContain('language "en"');
+    expect(modes[1]).toContain("Translate only the draft factual answer");
+    expect(modes[1]).not.toContain("every Friday");
+  });
+  it("does not translate an unsupported English draft", async () => {
+    let calls = 0;
+    const response = await new GroundedAnswerProvider({
+      generate: async () => {
+        calls++;
+        return output({
+          status: "insufficient_evidence", answer: "", language: "en", citations: [],
+        });
+      },
+    }).answer({ ...request, language: "hi", question: "कंपनी का राजस्व कितना था?" });
+    expect(response.status).toBe("insufficient_evidence");
+    expect(calls).toBe(1);
+  });
+  it("rejects a Hindi translation that drops a quantity from its English draft", async () => {
+    let calls = 0;
+    const r: AnswerRequest = {
+      ...request, language: "hi", question: "कंपनी की स्थापना किस साल हुई?",
+    };
+    await expect(new GroundedAnswerProvider({
+      generate: async () => {
+        calls++;
+        return calls === 1
+          ? output({ language: "en" })
+          : output({ language: "hi", answer: "कंपनी की स्थापना हुई।" });
+      },
+    }).answer(r)).rejects.toThrow("changed the source answer");
+    expect(calls).toBe(2);
+  });
+  it("rejects a translated weight answer with a unit but missing number", () => {
+    const r: AnswerRequest = {
+      ...request, language: "hi", question: "इस वस्तु का वजन कितना है?",
+      evidence: [{ ...request.evidence[0], text: "The item weighs 3 kilograms." }],
+    };
+    expect(() => validateAnswer(
+      output({ language: "hi", answer: "किलोग्राम" }), r,
+    )).toThrow("numeric quantity");
   });
   it("does not retry factual or citation validation failures", async () => {
     let calls = 0;

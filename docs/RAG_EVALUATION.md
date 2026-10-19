@@ -173,3 +173,22 @@ sample and **at least 2 of 3** independent cross-language Hindi synthetic oracle
 cases to pass reference/status checks. This is a small fixed test, not general
 accuracy, and remains subject to the existing full regression gate. Record raw
 outputs and CI result before claiming this target achieved.
+
+## Session 3B Priority 1 — failed prompt-example experiment
+
+Run 39199735294 executed all 30 cases and UI tests but failed the new
+quality gate: **English-source → Hindi reference matches remained 0/3**.
+Inspection of genuine raw output proved that the model copied unrelated
+system-prompt examples instead of source facts: it output `हर शुक्रवार`
+when the evidence said Tuesday, `केले` when evidence said potatoes, and
+`किलोग्राम` without the cited numeric weight. These cannot be counted as
+correct Hindi answers. The mixed-language UI Hindi answer improved on a narrow
+case but took ~126 seconds versus ~48 seconds previously.
+
+The next checkpoint removes all unrelated fact examples from Hindi prompts and
+uses a validated two-stage local inference path for English-only evidence:
+(1) factual English answer with the previously verified short English prompt;
+(2) source-checked Hindi translation using only the draft and its citations.
+Numbers must be preserved between stages; weight responses must contain the
+actual cited quantity, not just a unit. The acceptance thresholds remain
+unchanged. No claim of improved Hindi quality until a NEW real-model run passes.

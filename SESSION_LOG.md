@@ -292,3 +292,13 @@ for Hindi number/unit validation failures. Added strict genuine-model E2E
 acceptance criteria (bilingual UI question and at least two of three cross-Hindi
 oracle cases). English system prompt remains unchanged. Changes require CI and
 real Qwen3 acceptance, not merely mocked unit tests. Version stays v0.2.0.
+
+### Priority 1 second recovery — source contamination (19 October 2026)
+Run 39199735294: 30/31 browser checks passed, Hindi reference gate failed 0/3.
+Raw outputs revealed literal copying of unrelated prompt examples (Friday and
+bananas) into source answers (Tuesday and potatoes). Removed all lexical/factual
+examples from Hindi instructions; added English-draft validation followed by
+translation-only inference for English-only evidence. Added source-numeric
+preservation and mandatory weight quantity checks. English and original Hindi
+source modes remain separate. A fresh run must test these changes; do not waive
+quality gates or claim a successful deployment without Actions confirmation.

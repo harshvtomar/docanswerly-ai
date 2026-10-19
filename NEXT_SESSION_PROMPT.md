@@ -138,3 +138,13 @@ Before claiming success, inspect the **latest** Actions run, its raw RAG outputs
 and generation-{chromium,mobile}.json results. If tests fail, diagnose actual
 model outputs instead of relaxing the quality thresholds or the unit/citation
 safety checks. Keep v0.2.0 until release criteria are met.
+
+## Critical Priority 1 finding — prompt-example contamination
+
+Run 39199735294 failed cross-Hindi quality (0/3) because the 0.6B model
+**copied prompt examples** instead of facts: Friday for Tuesday, bananas for
+potatoes and weight unit without number. New code removed all examples and uses
+an English factual draft followed by Hindi-only translation when evidence is
+entirely non-Devanagari, validating source numerals and citations after both
+steps. Check the latest CI and actual model text before accepting this as an
+improvement; the stringent Hindi test is intentionally still enabled.
