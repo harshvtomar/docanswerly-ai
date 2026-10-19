@@ -213,7 +213,8 @@ export function validateAnswer(
     { answer: /\b\d+\s*days?\b/i, evidence: /\bdays?\b|दिन/u },
   ];
   const citedText = citations.map((c) => c.text).join(" ");
-  if (durationUnits.some((unit) => unit.answer.test(v.answer) && !unit.evidence.test(citedText)))
+  const answerText = v.answer as string; // Schema check above established a string.
+  if (durationUnits.some((unit) => unit.answer.test(answerText) && !unit.evidence.test(citedText)))
     throw Error("The answer contains a duration unit absent from its cited passages.");
   return {
     status: "answer",

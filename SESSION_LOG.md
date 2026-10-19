@@ -243,3 +243,9 @@ checks but failed TypeScript build on a narrow unknown-type cast. Added the
 required explicit discriminator type, and separated canonicalized refusal
 presentation from raw-model abstention-quality metrics. Changes must pass the
 new GitHub Actions gate before claiming a deployment.
+
+#### TypeScript build follow-up
+GitHub Actions caught another TypeScript narrowing issue: the numeric-unit
+callback captured a JSON property still typed `unknown`. Added an explicitly
+typed local string after the existing schema assertion. These build errors were
+caught before deployment and do not imply working model quality.
