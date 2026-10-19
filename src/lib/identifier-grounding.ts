@@ -34,7 +34,7 @@ export function validateIdentifierGrounding(question: string, answer: string, ci
   // without any surrounding sentence, or give its name in Hindi. Requiring
   // one fixed syntactic answer template wrongly rejects these true positives.
   const expected = [...found][0];
-  const answerTokens = answer.normalize("NFC").toLocaleLowerCase()
+  const answerTokens: string[] = answer.normalize("NFC").toLocaleLowerCase()
     .match(/[\p{L}\p{M}\p{N}_-]{3,}/gu) ?? [];
   if (!answerTokens.includes(expected))
     throw Error("The answer's requested identifier is not supported verbatim by its citations.");
