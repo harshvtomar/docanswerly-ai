@@ -24,6 +24,7 @@ export function AnswerPanel({
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false);
   const [answer, setAnswer] = useState<GroundedAnswer | null>(null);
+  const [modelDescription, setModelDescription] = useState("");
   const runtime = useRef<LocalGeneration | null>(null),
     search = useRef<SearchClient | null>(null),
     operation = useRef<AbortController | null>(null);
@@ -52,6 +53,7 @@ export function AnswerPanel({
         AbortSignal.any([abort.signal, AbortSignal.timeout(240000)]),
       );
       if (!active) return;
+      setModelDescription(local.loadedModelDescription);
       setMessage("Loading multilingual evidence retrieval…");
       await c.init();
       if (active) setLoaded(true);
@@ -103,6 +105,7 @@ export function AnswerPanel({
     setAnswer(null);
     setError("");
     setMessage("Preparing optional local AI…");
+    setModelDescription("");
   }
   async function ask() {
     if (!ready || !runtime.current || !search.current || busy) return;
@@ -173,6 +176,9 @@ export function AnswerPanel({
         payment.
       </p>
       {enabled && <p role="status">{message}</p>}
+      {enabled && modelDescription && (
+        <p className="hint" role="note">Local generation model: {modelDescription}. Model weights run on this device.</p>
+      )}
       <label>
         Answer language
         <select
