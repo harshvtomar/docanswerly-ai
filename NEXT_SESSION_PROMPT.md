@@ -102,3 +102,12 @@ The following checkpoint restores Session 3A's concise English prompt, adds
 Hindi-only language guidance, and bounds one re-prompt to explicit wrong-language
 errors. Verify real UI English/Hindi and abstention behavior with the next Actions
 run. Do not count schema compliance as correctness. No v0.3.0 claim.
+
+## Evidence-sufficiency checkpoint
+
+A narrowly scoped `src/lib/evidence-sufficiency.ts` gate identifies repeated
+numeric contradictions and some incomplete multi-fact questions. Gate refusals
+are separately labelled and NEVER counted as valid raw-model abstentions.
+Inspect new CI, false refusals and real inference output. This is not general
+semantic entailment; extend evaluation before declaring unsupported-answer
+correctness solved. Preserve v0.2.0 until quality/release gates pass.

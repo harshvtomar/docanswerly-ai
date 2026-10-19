@@ -221,6 +221,14 @@ export function AnswerPanel({
                 : "Insufficient evidence"}
           </h4>
           <p lang={answer.language}>{answer.answer}</p>
+          {(answer.validation === "heuristic-evidence-gap" ||
+            answer.validation === "heuristic-numeric-conflict") && (
+            <p className="hint" role="note">
+              A limited source-consistency check found possibly missing or
+              contradictory information. This is not complete fact verification.
+              Review the document passages.
+            </p>
+          )}
           {answer.validation === "refusal-content-discarded" && (
             <p className="hint" role="note">
               The local model returned a malformed refusal. Its text was discarded;

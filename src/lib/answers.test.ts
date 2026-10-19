@@ -286,6 +286,68 @@ describe("grounded answer boundary", () => {
     await expect(p.answer({ ...request, language: "hi" })).rejects.toThrow("requested Hindi");
     expect(calls).toBe(2);
   });
+  it("prevents a numeric near-duplicate source contradiction", async () => {
+    const p = new GroundedAnswerProvider({
+      generate: async () => { throw Error("Must not generate"); },
+    });
+    const r: AnswerRequest = {
+      question: "What is the current Meridian ticket price?",
+      language: "en",
+      evidence: [
+        { ...request.evidence[0], id: "a", text: "The current Meridian ticket price is 40 rupees." },
+        { ...request.evidence[0], id: "b", text: "The current Meridian ticket price is 70 rupees." },
+      ],
+    };
+    const out = await p.answer(r);
+    expect(out.status).toBe("conflict");
+    expect(out.validation).toBe("heuristic-numeric-conflict");
+  });
+  it("detects Hindi number-word source contradictions", async () => {
+    const r: AnswerRequest = {
+      question: "अभी सरिता केंद्र कितने बजे खुलता है?",
+      language: "hi",
+      evidence: [
+        { ...request.evidence[0], id: "a", text: "सरिता केंद्र अभी सुबह नौ बजे खुलता है।" },
+        { ...request.evidence[0], id: "b", text: "सरिता केंद्र अभी सुबह दस बजे खुलता है।" },
+      ],
+    };
+    const out = await new GroundedAnswerProvider({
+      generate: async () => { throw Error("Must not generate"); },
+    }).answer(r);
+    expect(out.status).toBe("conflict");
+  });
+  it("conservatively marks missing conjunctive attributes, not complete evidence", async () => {
+    const q = "What is the weight and price of the Orion package?";
+    const p = new GroundedAnswerProvider({
+      generate: async () => output({ answer: "The package weighs 3 kilograms and costs 40 dollars." }),
+    });
+    const partial = await p.answer({
+      ...request, question: q,
+      evidence: [{ ...request.evidence[0], text: "The Orion package weighs 3 kilograms." }],
+    });
+    expect(partial.status).toBe("insufficient_evidence");
+    expect(partial.validation).toBe("heuristic-evidence-gap");
+    const complete = await p.answer({
+      ...request, question: q,
+      evidence: [{ ...request.evidence[0], text: "The Orion package weighs 3 kilograms and costs 40 dollars." }],
+    });
+    expect(complete.status).toBe("answer");
+  });
+  it("does not mistake unrelated conflicting numbers for a relevant conflict", async () => {
+    let called = false;
+    const r: AnswerRequest = {
+      question: "What is the service address?",
+      language: "en",
+      evidence: [
+        { ...request.evidence[0], id: "a", text: "The Meridian ticket price is 40 rupees." },
+        { ...request.evidence[0], id: "b", text: "The Meridian ticket price is 70 rupees." },
+      ],
+    };
+    await new GroundedAnswerProvider({
+      generate: async () => { called = true; return output({ answer: "Unknown" }); },
+    }).answer(r);
+    expect(called).toBe(true);
+  });
   it("selects bounded whole passages", () => {
     const hits = Array.from({ length: 8 }, (_, i) => ({
       score: 1,

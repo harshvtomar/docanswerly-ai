@@ -53,7 +53,7 @@ document.querySelector<HTMLButtonElement>("#run")!.onclick = async () => {
         );
         // A canonicalized refusal is safe to display but NOT a valid raw-model
         // abstention. Keep it out of the reference-match quality proxy.
-        const modelCompliant = answer.validation !== "refusal-content-discarded";
+        const modelCompliant = answer.validation === "source-identities-checked";
         const referenceMatch =
           modelCompliant &&
           answer.status === c.expectedStatus &&
@@ -124,9 +124,15 @@ document.querySelector<HTMLButtonElement>("#run")!.onclick = async () => {
         unsupportedAbstentionRate:
           unsupported.filter(
             (r) => "answer" in r && r.answer?.status !== "answer" &&
-              r.answer?.validation !== "refusal-content-discarded",
+              r.answer?.validation === "source-identities-checked",
           ).length / unsupported.length,
         // Display-safe fallback is distinct from the raw model's format quality.
+        heuristicRefusals: rows.filter(
+          (r) => "answer" in r && (
+            r.answer?.validation === "heuristic-evidence-gap" ||
+            r.answer?.validation === "heuristic-numeric-conflict"
+          ),
+        ).length,
         canonicalizedRefusals: rows.filter(
           (r) => "answer" in r &&
             r.answer?.validation === "refusal-content-discarded",

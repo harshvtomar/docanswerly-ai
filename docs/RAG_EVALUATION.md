@@ -118,3 +118,17 @@ responses; **`displayedUnsupportedRefusalRate`** separately reports how often
 unsupported cases ended in a refusal UI. Canonicalized cases are excluded from
 reference-match and source-set-match quality proxies. Historical evaluation
 artifacts remain untouched. All new figures require fresh genuine inference.
+
+## Conservative evidence-sufficiency gates (Session 3B)
+
+The application now flags near-identical conflicting numeric statements when
+the question overlaps the sources and some multi-attribute questions where one
+requested fact type is conspicuously missing. These inspectable lexical rules
+are intentionally narrow; they can miss unsupported answers and occasionally
+refuse supported cross-language evidence. They are **not** a general semantic
+entailment or calibrated sufficiency model.
+
+Gate decisions are marked `heuristic-evidence-gap` or
+`heuristic-numeric-conflict` and counted separately from the model's valid
+abstentions. Historical raw Qwen outputs remain unchanged. Report observed
+false refusals and false supported answers; no general accuracy claim.

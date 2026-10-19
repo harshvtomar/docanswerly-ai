@@ -258,3 +258,11 @@ to the concise Session 3A English prompt; Hindi now has a small language-specifi
 instruction. Wrong-language outputs get at most one bounded, separately prompted
 retry under unchanged citation, numeral and structural validation. There is no
 automatic retry of factual errors. Fresh browser acceptance is required.
+
+### Session 3B — conservative unsupported-answer safeguards
+Added independent safety gates for repeated near-identical conflicting numeric
+source claims (including Hindi number words) and incomplete multi-attribute
+questions. These bypass unreliable generation only when narrow detectable rules
+match. Explicit validation labels distinguish heuristics from model-grounded
+abstention; evaluation counts them separately. Added targeted unit checks and
+user-facing limitations. Genuine model-quality and CI status remain to be verified.

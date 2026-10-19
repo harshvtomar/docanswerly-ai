@@ -1,5 +1,6 @@
 import type { Chunk, SearchHit } from "./types";
 import { deduplicate } from "./rag";
+import { evidenceSafetyGate } from "./evidence-sufficiency";
 export type AnswerLanguage = "auto" | "en" | "hi";
 export type ResolvedLanguage = "en" | "hi";
 export interface AnswerRequest {
@@ -14,7 +15,8 @@ export interface GroundedAnswer {
   citations: Chunk[];
   // Structural checks cannot establish semantic entailment.
   // A discarded malformed refusal is NOT a verified model-compliant abstention.
-  validation: "source-identities-checked" | "refusal-content-discarded";
+  validation: "source-identities-checked" | "refusal-content-discarded"
+    | "heuristic-evidence-gap" | "heuristic-numeric-conflict";
 }
 export interface InferenceClient {
   generate(
@@ -268,6 +270,13 @@ export class GroundedAnswerProvider {
         answerLanguage(request.question, request.language),
         "insufficient_evidence",
       );
+    const safety = evidenceSafetyGate(request.question, request.evidence);
+    if (safety) {
+      return {
+        ...refusal(answerLanguage(request.question, request.language), safety.status),
+        validation: safety.validation,
+      };
+    }
     const raw = await this.client.generate(
       answerMessages(request),
       ANSWER_SCHEMA,
