@@ -17,7 +17,8 @@ export interface GroundedAnswer {
   // Structural checks cannot establish semantic entailment.
   // A discarded malformed refusal is NOT a verified model-compliant abstention.
   validation: "source-identities-checked" | "refusal-content-discarded"
-    | "heuristic-evidence-gap" | "heuristic-numeric-conflict";
+    | "heuristic-evidence-gap" | "heuristic-numeric-conflict"
+    | "source-extractive-fallback";
 }
 export interface InferenceClient {
   generate(
@@ -349,6 +350,44 @@ export function discardInvalidRefusalText(
   };
 }
 
+/**
+ * A last-resort, clearly labelled source QUOTE, not a generated Hindi answer.
+ * Use only after two language-validation failures, with an unambiguous short
+ * Hindi-containing passage matching at least two informative question words.
+ */
+export function hindiSourceExcerptFallback(request: AnswerRequest): GroundedAnswer | null {
+  if (answerLanguage(request.question, request.language) !== "hi") return null;
+  const stop = new Set(["कौन","कौनसा","किस","किसका","किसकी","किसके",
+    "क्या","कब","कहाँ","कैसे","कितना","कितनी","कितने","है","हैं",
+    "था","थी","थे","में","का","की","के","से","को","पर","और",
+    "रहा","रही","रहे","हो","हुआ","हुई","होता","होती"]);
+  const terms = (s: string) =>
+    new Set((s.normalize("NFC")
+      .match(/[\p{Script=Devanagari}\p{Mark}]{2,}/gu) ?? [])
+      .filter(word => !stop.has(word)));
+  const questionWords = terms(request.question);
+  if (questionWords.size < 2) return null;
+  const matches = request.evidence
+    .filter(e => /\p{Script=Devanagari}/u.test(e.text) && e.text.length <= 450)
+    .map(chunk => ({
+      chunk,
+      score: [...questionWords].filter(word => terms(chunk.text).has(word)).length,
+    }))
+    .filter(hit => hit.score >= 2)
+    .sort((a,b) => b.score-a.score);
+  if (!matches.length || (matches[1] && matches[1].score === matches[0].score))
+    return null;
+  const chunk = matches[0].chunk;
+  if (repeatedQuestion(request.question, chunk.text)) return null;
+  return {
+    status: "answer",
+    answer: chunk.text,
+    language: "hi",
+    citations: [chunk],
+    validation: "source-extractive-fallback",
+  };
+}
+
 function evidenceIsEntirelyNonDevanagari(request: AnswerRequest): boolean {
   return request.evidence.length > 0 &&
     request.evidence.every((chunk) => !/\p{Script=Devanagari}/u.test(chunk.text));
@@ -474,6 +513,14 @@ export class GroundedAnswerProvider {
       } catch (retryError) {
         const refusal = discardInvalidRefusalText(retryRaw, request);
         if (refusal) return refusal;
+        const reason = retryError instanceof Error ? retryError.message : "";
+        if (lang === "hi" && (
+          reason === "The model did not produce the requested Hindi answer." ||
+          reason === "The model repeated the question instead of answering."
+        )) {
+          const excerpt = hindiSourceExcerptFallback(request);
+          if (excerpt) return excerpt;
+        }
         throw retryError;
       }
     }

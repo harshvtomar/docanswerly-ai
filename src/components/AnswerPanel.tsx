@@ -214,7 +214,9 @@ export function AnswerPanel({
       {answer && (
         <div className="answer-output" aria-live="polite">
           <h4>
-            {answer.status === "answer"
+            {answer.validation === "source-extractive-fallback"
+              ? "Source excerpt · AI answer unavailable"
+              : answer.status === "answer"
               ? "AI-generated answer"
               : answer.status === "conflict"
                 ? "Conflicting evidence"
@@ -227,6 +229,13 @@ export function AnswerPanel({
               A limited source-consistency check found possibly missing or
               contradictory information. This is not complete fact verification.
               Review the document passages.
+            </p>
+          )}
+          {answer.validation === "source-extractive-fallback" && (
+            <p className="hint" role="note">
+              The local model could not produce a validated Hindi answer.
+              This is an unchanged excerpt from your document, not an
+              AI-generated or independently verified answer.
             </p>
           )}
           {answer.validation === "refusal-content-discarded" && (

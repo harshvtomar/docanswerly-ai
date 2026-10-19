@@ -321,3 +321,12 @@ the question. Added bounded weekday/crop/weight term grounding, explicit
 question-echo rejection, at-most-one translation correction and per-stage
 synthetic evaluation diagnostics. New unit tests check previously unseen
 Wednesday and wheat. These changes require fresh CI and model evaluation.
+
+### Session 3B Priority 1 — labelled Hindi source fallback (19 Oct 2026)
+Run 39204559677 passed the genuine Qwen3 English-evidence to Hindi benchmark
+3/3, but the bilingual public sample still failed Hindi validation on desktop
+and mobile. Added a last-resort verbatim Hindi source excerpt after two actual
+model attempts fail language validation, only when a unique short passage
+shares >=2 meaningful Hindi question terms. The UI labels this NOT an AI
+answer; the evaluation excludes it from model success and counts it separately.
+This does not establish general Hindi generation accuracy. Version v0.2.0.

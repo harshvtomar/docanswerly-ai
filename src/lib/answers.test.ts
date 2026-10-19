@@ -7,6 +7,7 @@ import {
   GroundedAnswerProvider,
   selectEvidence,
   hindiTranslationMessages,
+  hindiSourceExcerptFallback,
   type AnswerRequest,
 } from "./answers";
 const request: AnswerRequest = {
@@ -545,6 +546,45 @@ describe("grounded answer boundary", () => {
     const ans = await p.answer(r);
     expect(ans.answer).toContain("बुधवार");
     expect(calls).toBe(3);
+  });
+  it("returns a labelled, verbatim Hindi source only after two failed local answer attempts", async () => {
+    const r: AnswerRequest = {
+      ...request, question: "भारत में किसका उपयोग बढ़ रहा है?", language: "hi",
+      evidence: [
+        { ...request.evidence[0], id: "unrelated", text: "कृत्रिम बुद्धिमत्ता सूचना पुनर्प्राप्ति में सुधार करती है।" },
+        { ...request.evidence[0], id: "relevant", text: "भारत में Artificial Intelligence का उपयोग तेजी से बढ़ रहा है।" },
+      ],
+    };
+    let attempts = 0;
+    const result = await new GroundedAnswerProvider({
+      generate: async () => {
+        attempts++;
+        return output({language:"hi",answer:"Artificial Intelligence is increasingly used in India."});
+      },
+    }).answer(r);
+    expect(attempts).toBe(2);
+    expect(result.validation).toBe("source-extractive-fallback");
+    expect(result.answer).toBe(r.evidence[1].text);
+    expect(result.citations).toEqual([r.evidence[1]]);
+  });
+  it("does not quote irrelevant English or weakly matching Hindi sources", () => {
+    expect(hindiSourceExcerptFallback({
+      ...request, language: "hi", question: "विद्यालय की वार्षिक आय कितनी है?",
+      evidence: [{...request.evidence[0],text:"विद्यालय खेल में भाग लेता है।"}],
+    })).toBeNull();
+    expect(hindiSourceExcerptFallback({
+      ...request, language: "hi", question: "भारत में किसका उपयोग बढ़ रहा है?",
+      evidence: [{...request.evidence[0],text:"Artificial Intelligence usage is growing in India."}],
+    })).toBeNull();
+  });
+  it("refuses to choose between equally matched source passages", () => {
+    expect(hindiSourceExcerptFallback({
+      ...request, language: "hi", question: "भारत में किसका उपयोग बढ़ रहा है?",
+      evidence: [
+        {...request.evidence[0],id:"d1",text:"भारत में शिक्षा का उपयोग बढ़ रहा है।"},
+        {...request.evidence[0],id:"d2",text:"भारत में तकनीक का उपयोग बढ़ रहा है।"},
+      ],
+    })).toBeNull();
   });
   it("selects bounded whole passages", () => {
     const hits = Array.from({ length: 8 }, (_, i) => ({

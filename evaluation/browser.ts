@@ -130,6 +130,11 @@ document.querySelector<HTMLButtonElement>("#run")!.onclick = async () => {
           rows.filter((r) => r.sourceSetMatches).length / rows.length,
         supportedAnswerRate:
           supported.filter(
+            (r) => "answer" in r && r.answer?.status === "answer" &&
+              r.answer?.validation === "source-identities-checked",
+          ).length / supported.length,
+        displayedSupportedAnswerRate:
+          supported.filter(
             (r) => "answer" in r && r.answer?.status === "answer",
           ).length / supported.length,
         falseRefusalRate:
@@ -148,6 +153,9 @@ document.querySelector<HTMLButtonElement>("#run")!.onclick = async () => {
             r.answer?.validation === "heuristic-evidence-gap" ||
             r.answer?.validation === "heuristic-numeric-conflict"
           ),
+        ).length,
+        sourceExtractiveFallbacks: rows.filter(
+          (r) => "answer" in r && r.answer?.validation === "source-extractive-fallback",
         ).length,
         canonicalizedRefusals: rows.filter(
           (r) => "answer" in r &&

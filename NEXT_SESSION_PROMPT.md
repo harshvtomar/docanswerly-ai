@@ -158,3 +158,11 @@ translation correction, question-echo rejection, and per-stage evaluation raw
 outputs. Tests include non-benchmark Wednesday and wheat. Check the new Actions
 run and raw model outputs before reporting any quality improvement. Neither
 lexical constraints nor citation IDs prove general answer groundedness.
+
+## Priority 1 bilingual fallback checkpoint
+Run 39204559677 confirmed real-model English→Hindi 3/3 on small synthetic
+cases, but bilingual UI Hindi language checks failed twice. A transparently
+labelled source-only Hindi excerpt can now be shown after two genuine model
+language failures when a uniquely relevant Hindi source is available; it is
+never counted as successful AI generation. Check the latest CI, verify the
+public interface, and continue evaluating small-model limitations separately.
