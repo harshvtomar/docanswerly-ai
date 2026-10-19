@@ -743,3 +743,29 @@ describe("grounded answer boundary", () => {
     expect(selectEvidence(hits)).toHaveLength(3);
   });
 });
+
+describe("source-anchored literal identifier guard and Hindi language repair", () => {
+  const mk=(source:string,question:string,language:"en"|"hi"="en"): AnswerRequest => ({
+    question,language,evidence:[{id:"id-1",documentId:"doc",documentName:"doc.pdf",page:1,text:source,start:0,end:[...source].length}],
+  });
+  const raw=(answer:string,language:"en"|"hi"="en")=>JSON.stringify({status:"answer",answer,language,citations:["E1"]});
+  it("rejects the wrong invented codeword despite a valid citation",()=>{
+    const q=mk("The listed fictional codename is novelbalegodi.","What is the codename?");
+    expect(validateAnswer(raw("The codename is novelbalegodi."),q).status).toBe("answer");
+    expect(()=>validateAnswer(raw("The codename is novelbalegoda."),q)).toThrow("not supported verbatim");
+  });
+  it("rejects invented Hindi names and accepts exact source names",()=>{
+    const q=mk("इस काल्पनिक अभिलेख का नया नाम नवकागाबितु है।","नया नाम क्या है?","hi");
+    expect(validateAnswer(raw("नया नाम नवकागाबितु है।","hi"),q).status).toBe("answer");
+    expect(()=>validateAnswer(raw("नया नाम नवकागाबिका है।","hi"),q)).toThrow("not supported verbatim");
+  });
+  it("prechecks explicitly unpublished codewords in both languages",async()=>{
+    let n=0;
+    const provider = new GroundedAnswerProvider({generate:async()=>{n++;throw Error("model must not invent");}});
+    const en=await provider.answer(mk("The verified codeword has not been published.","What is the verified codeword?"));
+    expect(en.status).toBe("insufficient_evidence");
+    const hi=await provider.answer(mk("सांकेतिक नाम प्रकाशित नहीं किया गया है।","सांकेतिक नाम क्या है?","hi"));
+    expect(hi.status).toBe("insufficient_evidence");
+    expect(n).toBe(0);
+  });
+});

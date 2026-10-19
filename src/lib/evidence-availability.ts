@@ -9,8 +9,8 @@
  */
 const topics: { question: RegExp; source: RegExp }[] = [
   {
-    question: /\b(?:access\s*(?:key|code)|api\s*key|secret\s*(?:key|code)|password|passcode|credential|token)\b|पासवर्ड|गुप्त\s*(?:कुंजी|कोड)|प्रवेश\s*(?:कुंजी|कोड)/iu,
-    source: /\b(?:access\s*(?:key|code)|api\s*key|secret\s*(?:key|code)|password|passcode|credential|token)\b|पासवर्ड|गुप्त\s*(?:कुंजी|कोड)|प्रवेश\s*(?:कुंजी|कोड)/iu,
+    question: /\b(?:access\s*(?:key|code)|api\s*key|secret\s*(?:key|code)|password|passcode|credential|token|codeword|codename|identifier)\b|पासवर्ड|गुप्त\s*(?:कुंजी|कोड)|प्रवेश\s*(?:कुंजी|कोड)|सांकेतिक\s*नाम|नया\s*नाम|पहचान\s*कोड/iu,
+    source: /\b(?:access\s*(?:key|code)|api\s*key|secret\s*(?:key|code)|password|passcode|credential|token|codeword|codename|identifier)\b|पासवर्ड|गुप्त\s*(?:कुंजी|कोड)|प्रवेश\s*(?:कुंजी|कोड)|सांकेतिक\s*नाम|नया\s*नाम|पहचान\s*कोड/iu,
   },
   {
     question: /\b(?:accreditation|accredited|certification|certified)\b|मान्यता|प्रमाणन|प्रमाणित/iu,
@@ -33,7 +33,7 @@ const topics: { question: RegExp; source: RegExp }[] = [
     source: /\b(?:engineer|inspector|reviewer|author|signatory)\b|अभियंता|इंजीनियर|निरीक्षक|लेखक/iu,
   },
 ];
-const unavailable = /\b(?:not\s+(?:yet\s+)?(?:provided|specified|available|known|disclosed|published|determined|decided|finali[sz]ed|confirmed|named|assigned|listed|shared|set)|(?:has|have|is|was|were)\s+not\s+(?:yet\s+)?(?:been\s+)?(?:provided|specified|determined|decided|disclosed|published|finali[sz]ed|confirmed|named|assigned|listed|shared|set)|undecided|unspecified|unavailable|unknown|unpublished|undisclosed|pending|under\s+review|to\s+be\s+(?:decided|determined|announced|confirmed))\b|(?:तय|निर्धारित|घोषित|बताया|दिया|लिखा|उपलब्ध|स्पष्ट|पता|नामित|जारी)\s*(?:नहीं|नही)|(?:नहीं|नही)\s*(?:बताया|दिया|गया|मिला|है|हुआ)|अभी\s*(?:तय|निर्धारित|घोषित)\s*(?:नहीं|नही)|विचाराधीन|अज्ञात|अनिर्णीत|लंबित/iu;
+const unavailable = /\b(?:not\s+(?:yet\s+)?(?:provided|specified|available|known|disclosed|published|determined|decided|finali[sz]ed|confirmed|named|assigned|listed|shared|set)|(?:has|have|is|was|were)\s+not\s+(?:yet\s+)?(?:been\s+)?(?:provided|specified|determined|decided|disclosed|published|finali[sz]ed|confirmed|named|assigned|listed|shared|set)|undecided|unspecified|unavailable|unknown|unpublished|undisclosed|pending|under\s+review|to\s+be\s+(?:decided|determined|announced|confirmed))\b|(?:तय|निर्धारित|घोषित|बताया|दिया|लिखा|उपलब्ध|स्पष्ट|पता|नामित|जारी|प्रकाशित)\s*(?:नहीं|नही)|(?:नहीं|नही)\s*(?:बताया|दिया|गया|मिला|है|हुआ)|अभी\s*(?:तय|निर्धारित|घोषित)\s*(?:नहीं|नही)|विचाराधीन|अज्ञात|अनिर्णीत|लंबित/iu;
 const instructToInvent = /\b(?:ignore\s+(?:all\s+|previous\s+|the\s+)?(?:instructions|rules|system)|pretend|fabricate|invent\s+(?:a|the)?\s*(?:key|code|token)|(?:assistant|model|chatbot|ai)\s+(?:must|should)\s+(?:answer|say|claim)|answer\s+(?:with|exactly))\b|निर्देशों\s*को\s*अनदेखा|कल्पना\s*करके\s*(?:कोड|कुंजी)/iu;
 const credential = topics[0];
 const wordSet = (text: string) =>
