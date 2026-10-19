@@ -256,3 +256,10 @@ GitHub Actions generates 1,400 synthetic pilot examples, validates every
 train/validation/test row and runs the no-model-load preflight check. Neither
 that check nor 12,000 stress validations changes model weights. Real LoRA
 fine-tuning still needs an explicitly provisioned CUDA GPU and HF base weights.
+
+## Apple Silicon LoRA training option
+`training/export_mlx.py` converts the validated pilot to MLX chat JSONL.
+`training/run_mlx_on_mac.sh` is an explicit, opt-in 100-iteration local
+LoRA run for compatible M-series Macs with `mlx-lm[train]`. It has NOT
+been executed and the data is synthetic and unreviewed. Preserve
+the baseline model and require actual checkpoint and held-out evidence.

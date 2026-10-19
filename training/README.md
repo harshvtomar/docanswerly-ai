@@ -69,3 +69,25 @@ Official model: https://huggingface.co/Qwen/Qwen3-0.6B (Apache-2.0)
 Official TRL SFT docs: https://huggingface.co/docs/trl/sft_trainer
 Official llama.cpp adapter conversion:
 https://github.com/ggml-org/llama.cpp/blob/master/convert_lora_to_gguf.py
+
+## 4. Optional Apple Silicon Mac (MLX) pilot — not executed
+
+[Apple MLX-LM](https://github.com/ml-explore/mlx-lm/blob/main/mlx_lm/LORA.md)
+supports local Qwen-family LoRA/QLoRA. This path can avoid cloud GPU
+charges, but it has **not** been tested on the user's machine. The
+script only works when invoked explicitly on an Apple Silicon Mac.
+
+```bash
+python3 -m pip install "mlx-lm[train]"
+python3 training/prepare_data.py
+python3 training/export_mlx.py
+# Review the synthetic dataset before explicitly enabling a pilot:
+DOCANSWERLY_ALLOW_SYNTHETIC_TRAINING=1 bash training/run_mlx_on_mac.sh
+```
+
+The converter writes `training/mlx/{train,valid,test}.jsonl` in supported
+MLX `chat` format. The script runs at most the configured 100 LoRA
+iterations with batch size 1 and four layers. The adapter remains
+gitignored/private; the browser's Q4 GGUF model does not change.
+A training loss decrease does not establish improved Hindi accuracy.
+Re-evaluate on independent sources before considering any release.
