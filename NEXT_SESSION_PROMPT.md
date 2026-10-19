@@ -127,3 +127,14 @@ rows correctly do not call Qwen3. Updated the 30-case evaluation to report
 `modelInvokedCases` and `precheckedCases`, requiring all non-model rows to
 have exactly labelled, safe heuristic results. Do not interpret quality-run
 completion as accurate answers. Keep v0.2.0 until release criteria pass.
+
+## Session 3B Priority 1 — Hindi quality implementation checkpoint
+
+The new code attempts to correct actual English-evidence → Hindi model failures
+using a translation-only second model call and a separate single retry for
+unsupported numerals/measurement-unit drift. E2E now explicitly gates real
+Hindi UI answers and >=2/3 English-evidence → Hindi oracle reference matches.
+Before claiming success, inspect the **latest** Actions run, its raw RAG outputs
+and generation-{chromium,mobile}.json results. If tests fail, diagnose actual
+model outputs instead of relaxing the quality thresholds or the unit/citation
+safety checks. Keep v0.2.0 until release criteria are met.

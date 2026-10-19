@@ -49,6 +49,16 @@ test("genuine local answer, citation navigation, Hindi and unsupported question"
         "Local answer failed. You can retry.",
       );
     }
+    if (language === "hi") {
+      // The previous build returned an invented numeral and no answer.
+      // This is a real browser-model acceptance gate, not mocked inference.
+      expect(alerts).toEqual([]);
+      await expect(page.locator(".answer-output")).toContainText(
+        /कृत्रिम बुद्धिमत्ता|आर्टिफिशियल इंटेलिजेंस|आर्टिफ़िशियल इंटेलिजेंस|Artificial Intelligence|\bAI\b/iu,
+      );
+      await expect(page.locator(".answer-citation").first()).toBeVisible();
+      await expect(page.locator(".answer-output p[lang='hi']").first()).toContainText(/\p{Script=Devanagari}/u);
+    }
     if (question.startsWith("What improves")) {
       await expect(page.locator(".answer-output")).toContainText(
         /intelligence/i,

@@ -281,3 +281,14 @@ contract issue, not an inference initialization failure. Updated evaluation
 metrics and acceptance test to require an explicit validated gate label for any
 model-free row, keeping genuine raw-model rows mandatory otherwise. No tests
 were disabled; original historical model outputs remain untouched.
+
+## Session 3B Priority 1 — focused Hindi quality implementation (19 October 2026)
+Inspected raw successful run 39196776609; 0/3 English-evidence → Hindi target
+reference matches, with wrong language, malformed unit and wrong crop translation.
+UI Hindi synthetic sample had a hallucinated number and validation error.
+Implemented Hindi-only translation prompts, a dedicated fact-preserving
+translation retry for wrong-language model responses, and one bounded retry
+for Hindi number/unit validation failures. Added strict genuine-model E2E
+acceptance criteria (bilingual UI question and at least two of three cross-Hindi
+oracle cases). English system prompt remains unchanged. Changes require CI and
+real Qwen3 acceptance, not merely mocked unit tests. Version stays v0.2.0.

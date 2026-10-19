@@ -150,3 +150,26 @@ New `modelInvokedCases` and `precheckedCases` metrics distinguish actual
 model evaluation from deterministic bypasses. Inference quality and gate
 accuracy remain distinct concerns; completing this test is not acceptance of
 model correctness or general abstention accuracy.
+
+## Session 3B Priority 1 — targeted Hindi generation acceptance (19 October 2026)
+
+The latest successful 30-case Qwen3 run 39196776609 had 3/3 reference matches
+for Hindi-source direct questions but 0/3 for **English-source → Hindi** answers:
+`cross-hi-1` answered in English then repair aborted, `cross-hi-2` produced
+`3 किगारी` for kilograms, and `cross-hi-3` did not translate potatoes as आलू.
+The actual public UI Hindi question about Artificial Intelligence failed after
+inventing an unsupported number. These are genuine model-quality defects.
+
+Priority 1 changes are narrow and preserve the short verified English prompt:
+- Hindi-specific factual translation guidance in the system message.
+- For an otherwise structurally valid draft written in English instead of Hindi,
+  one **translation-only** model call preserves the draft fact and source IDs.
+- For Hindi-generated unsupported numerals or corrupted weight/duration units,
+  one correction call uses the original evidence. All strict validations remain.
+- No unrestricted retries or invented source citations.
+
+Release acceptance checks now require an actual Hindi answer on the bilingual
+sample and **at least 2 of 3** independent cross-language Hindi synthetic oracle
+cases to pass reference/status checks. This is a small fixed test, not general
+accuracy, and remains subject to the existing full regression gate. Record raw
+outputs and CI result before claiming this target achieved.

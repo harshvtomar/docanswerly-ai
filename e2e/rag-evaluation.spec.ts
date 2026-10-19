@@ -84,6 +84,21 @@ test("record thirty oracle-context cases with genuine-model and labelled gate ou
     expect(precheckedRows.length).toBe(result.metrics.heuristicRefusals);
     expect(result.metrics.modelInvokedCases).toBe(rawModelRows.length);
     expect(result.metrics.precheckedCases).toBe(precheckedRows.length);
+    // A genuine quality gate specifically for English-evidence -> Hindi
+    // generation, previously 0/3 reference matches on the saved run.
+    const crossHindi = result.rows.filter(
+      (r: { id: string }) => r.id.startsWith("cross-hi-"),
+    );
+    expect(crossHindi).toHaveLength(3);
+    const matchingHindi = crossHindi.filter((r: {
+      referenceMatch: boolean;
+      answer?: { language?: string; status?: string };
+    }) =>
+      r.referenceMatch && r.answer?.language === "hi" &&
+      r.answer?.status === "answer",
+    ).length;
+    console.log("CROSS_HINDI_REFERENCE_MATCH " + matchingHindi + "/3");
+    expect(matchingHindi).toBeGreaterThanOrEqual(2);
     modelInitialized = true;
     expect(errors).toEqual([]);
     expect(httpErrors).toEqual([]);

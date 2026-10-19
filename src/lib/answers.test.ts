@@ -6,6 +6,7 @@ import {
   validateAnswer,
   GroundedAnswerProvider,
   selectEvidence,
+  hindiTranslationMessages,
   type AnswerRequest,
 } from "./answers";
 const request: AnswerRequest = {
@@ -199,9 +200,9 @@ describe("grounded answer boundary", () => {
     expect(en).not.toContain("Your previous language-format attempt");
     const hi = answerMessages({ ...request, language: "hi" })[0].content;
     expect(hi).toContain("Hindi (Devanagari)");
-    expect(hi).toContain("even if evidence is English");
+    expect(hi).toContain("चाहे स्रोत अंग्रेज़ी में हो");
     expect(hi).toContain("empty answer");
-    expect(answerMessages({ ...request, language: "hi" }, true)[0].content).toContain("पृथ्वी");
+    expect(answerMessages({ ...request, language: "hi" }, true)[0].content).toContain("किलोग्राम");
   });
   it("rejects English-labelled answers containing only Hindi words", () => {
     expect(() =>
@@ -262,7 +263,51 @@ describe("grounded answer boundary", () => {
     expect(result.language).toBe("hi");
     expect(result.answer).toContain("स्थापना");
     expect(messages).toHaveLength(2);
-    expect(messages[1]).toContain("Your previous language-format attempt");
+    expect(messages[1]).toContain("translating a document-supported factual answer");
+    expect(messages[1]).toContain("Hindi (Devanagari)");
+  });
+  it("translation-only retry preserves the initial fact and evidence IDs", async () => {
+    const r: AnswerRequest = {
+      ...request, question: "कंपनी की स्थापना कब हुई?", language: "hi",
+    };
+    const draft = output({ answer: "The company was founded in 2018.", language: "hi" });
+    const messages = hindiTranslationMessages(r, draft);
+    const data = JSON.parse(messages[1].content);
+    expect(data.draftEnglishAnswer).toBe("The company was founded in 2018.");
+    expect(data.sourceLabels).toEqual(["E1"]);
+    expect(data.evidence[0].text).toBe("The company was founded in 2018.");
+    expect(() => hindiTranslationMessages(r, output({ citations: ["E99"], language: "hi" }))).toThrow("Invalid draft");
+  });
+  it("retries a Hindi hallucinated numeral once, preserving number validation", async () => {
+    let calls = 0;
+    const r: AnswerRequest = {
+      ...request, question: "भारत में किसका उपयोग बढ़ रहा है?", language: "hi",
+      evidence: [{ ...request.evidence[0], text: "भारत में Artificial Intelligence का उपयोग तेजी से बढ़ रहा है।" }],
+    };
+    const answer = await new GroundedAnswerProvider({
+      generate: async () => {
+        calls += 1;
+        return calls === 1
+          ? output({ answer: "2028 में AI का उपयोग बढ़ रहा है।", language: "hi" })
+          : output({ answer: "भारत में कृत्रिम बुद्धिमत्ता का उपयोग बढ़ रहा है।", language: "hi" });
+      },
+    }).answer(r);
+    expect(answer.answer).toContain("बुद्धिमत्ता");
+    expect(calls).toBe(2);
+  });
+  it("preserves the original validation failure if a Hindi retry is unsupported", async () => {
+    let calls = 0;
+    await expect(new GroundedAnswerProvider({
+      generate: async () => {
+        calls += 1;
+        return output({ answer: "2028 में AI का उपयोग बढ़ रहा है।", language: "hi" });
+      },
+    }).answer({
+      ...request, language: "hi",
+      question: "किसका उपयोग बढ़ रहा है?",
+      evidence: [{ ...request.evidence[0], text: "AI का उपयोग बढ़ रहा है।" }],
+    })).rejects.toThrow("number absent");
+    expect(calls).toBe(2);
   });
   it("does not retry factual or citation validation failures", async () => {
     let calls = 0;
