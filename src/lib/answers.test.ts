@@ -192,6 +192,58 @@ describe("grounded answer boundary", () => {
         .validation,
     ).toBe("source-identities-checked");
   });
+
+  it("uses explicit Devanagari output instructions for Hindi requests", () => {
+    const hi = answerMessages({ ...request, language: "hi" })[0].content;
+    expect(hi).toContain("देवनागरी");
+    expect(hi).toContain('answer=""');
+    expect(hi).toContain("Preserve the exact units");
+  });
+  it("rejects English-labelled answers containing only Hindi words", () => {
+    expect(() =>
+      validateAnswer(output({ answer: "जयपुर" }), request),
+    ).toThrow("requested English");
+  });
+  it("rejects a translated duration unit not found in the cited source", () => {
+    const weeks: AnswerRequest = {
+      ...request,
+      evidence: [{ ...request.evidence[0], text: "तारा पाठ्यक्रम 6 सप्ताह चलता है।" }],
+    };
+    expect(() =>
+      validateAnswer(output({ answer: "The course lasts 6 years." }), weeks),
+    ).toThrow("duration unit");
+    expect(
+      validateAnswer(output({ answer: "The course lasts 6 weeks." }), weeks).status,
+    ).toBe("answer");
+  });
+  it("marks a malformed refusal when discarding its unsafe text", async () => {
+    const provider = new GroundedAnswerProvider({
+      generate: async () =>
+        output({
+          status: "insufficient_evidence",
+          answer: "The company was founded in 2018.",
+          citations: [],
+        }),
+    });
+    const result = await provider.answer({ ...request, question: "What is its revenue?" });
+    expect(result.status).toBe("insufficient_evidence");
+    expect(result.answer).not.toContain("founded in 2018");
+    expect(result.validation).toBe("refusal-content-discarded");
+    expect(result.citations).toEqual([]);
+  });
+  it("never coerces wrong-status answers or responses with citations to refusals", async () => {
+    const cases = [
+      output({ status: "answer", answer: "Unknown", citations: ["E1"] }),
+      output({ status: "insufficient_evidence", answer: "Unknown", citations: ["E1"] }),
+      output({ status: "insufficient_evidence", language: "hi", answer: "Unknown", citations: [] }),
+    ];
+    for (const raw of cases.slice(1)) {
+      await expect(
+        new GroundedAnswerProvider({ generate: async () => raw }).answer(request),
+      ).rejects.toThrow();
+    }
+    expect(validateAnswer(cases[0], request).status).toBe("answer");
+  });
   it("selects bounded whole passages", () => {
     const hits = Array.from({ length: 8 }, (_, i) => ({
       score: 1,

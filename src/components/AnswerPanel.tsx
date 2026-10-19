@@ -221,6 +221,13 @@ export function AnswerPanel({
                 : "Insufficient evidence"}
           </h4>
           <p lang={answer.language}>{answer.answer}</p>
+          {answer.validation === "refusal-content-discarded" && (
+            <p className="hint" role="note">
+              The local model returned a malformed refusal. Its text was discarded;
+              this standardized message does not prove that the evidence is insufficient.
+              Review the documents before relying on it.
+            </p>
+          )}
           {answer.citations.map((c) => (
             <button
               key={c.id}

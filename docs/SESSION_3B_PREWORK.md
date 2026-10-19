@@ -55,3 +55,22 @@ does **not** resolve the eleven refusal-format errors or the two Hindi errors.
    corpus once stable. Preserve actual output and denominators.
 5. Continue version v0.2.0 until full release gates pass. No external backend,
    paid inference, or model-weight replacement is authorized.
+
+## Additional code checkpoint — 19 October 2026
+
+The latest code now instructs the small generator explicitly to write Hindi
+in Devanagari even from English evidence and to keep original time units.
+Validation detects English-labelled Devanagari-only answers and common numeric
+duration-unit mismatches (e.g. six weeks incorrectly rendered as six years).
+These are bounded structural safeguards, **not** semantic entailment checking.
+
+A malformed **declared** refusal with the exact JSON shape, matching requested
+language, no citations, and nonempty model answer is handled by **discarding**
+all model-generated text and showing the application-owned generic refusal.
+Its validation marker is `refusal-content-discarded`, visibly disclosed in the
+UI. This does not prove the refusal was warranted and must not be counted as a
+format-correct model abstention or factual accuracy gain. Wrong-status answers,
+invalid citation IDs and invalid/mismatched shapes remain failures.
+
+These changes require fresh real-model testing to determine actual Hindi and
+cross-language quality. Historical 30-case raw results are not modified.

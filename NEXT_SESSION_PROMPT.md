@@ -85,3 +85,13 @@ status fix and browser regression assertion were added, but no model prompt,
 structured parser, model weights, or quality labels changed. Do not claim
 Hindi generation or abstention has improved. Continue with genuine targeted
 Qwen3 inference and prompt/schema investigation. Keep v0.2.0 until release.
+
+## Follow-on implementation checkpoint (19 October 2026)
+
+Added a narrow safety conversion for model-declared malformed refusals that
+**discards** unsafe text and marks `validation: refusal-content-discarded`.
+These are not validated/model-correct abstentions. Added explicit Hindi/English
+output instructions and a guard against numeric duration-unit drift (e.g. weeks
+becoming years). Existing model weights and all historical evaluation outputs
+remain unchanged. Check the new CI, test genuine Hindi and cross-language
+results, and evaluate model failures before any v0.3.0 release claim.

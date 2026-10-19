@@ -228,3 +228,11 @@ at “Generating” after errors/cancellation and strengthened its existing brow
 regression assertion. This checkpoint does not assert improved LLM answer
 quality; full real-model tests and deployment status must be checked in Actions.
 Version remains v0.2.0.
+
+### Session 3B — targeted answer-boundary improvement (19 October 2026)
+Added explicit language and evidence-unit prompting; guards English-labelled
+Devanagari-only answers and wrong numbered duration units. Malformed citation-free
+model-declared refusals now discard all text into a distinct, visibly marked
+application-owned standard refusal; the model's original malformed output is
+not counted as a valid raw-model refusal. Added focused boundary tests.
+Fresh genuine-model performance must be measured before claiming improvement.
