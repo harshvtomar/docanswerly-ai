@@ -238,3 +238,13 @@ Before claiming completion inspect newest Actions, actual report count
 and regression results. **Do not call this 12,000 Qwen3 inferences or model
 training.** To pursue real supervised training, set up a separate human-
 reviewed SFT/LoRA dataset and GPU pipeline; preserve the 0.2.0 local app.
+
+## Optional Qwen3 training setup — NOT executed
+
+A standalone opt-in GPU LoRA SFT pipeline now exists in training/. It uses
+full Hugging Face Qwen/Qwen3-0.6B weights, not the existing quantized browser
+GGUF. It contains generated, synthetic **unreviewed** pilot examples only.
+Run training dataset validation and inspect provenance before considering
+training, and do not launch paid GPU resources without explicit consent.
+The model has not been fine-tuned or deployed; accuracy gains unverified.
+Continue with independent held-out evaluation and human dataset review.

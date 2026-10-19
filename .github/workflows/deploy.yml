@@ -23,6 +23,7 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
+      - run: python3 -m unittest discover -s training -p 'test_*.py'
       - run: npm test
       - run: npm run test:stress
       - run: npm run test:pdf

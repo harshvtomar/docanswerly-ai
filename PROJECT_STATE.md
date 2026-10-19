@@ -124,3 +124,14 @@ cited. The experimental v0.2.0 functional browser regression now verifies
 that fallback as a safe alternate outcome, not an AI-generated answer. Full
 release-quality mixed-Hindi generation remains unfinished; 3/3 narrowly
 measured English-evidence→Hindi oracle references are not general accuracy.
+
+## Qwen3 model-training preparation (19 October 2026)
+
+Added opt-in LoRA SFT setup in training/. Baseline GGUF has NOT been altered or
+fine-tuned. CPU-only working environment has no CUDA GPU, no locally available
+Qwen3 HF full-precision training checkpoint and no TRL/PEFT packages. The
+training module can generate and structurally validate original **synthetic,
+not human-reviewed** example splits. It deliberately excludes the 12k
+stress-test data and 30-case original benchmark from training. CI runs only
+stdlib dataset validation tests, not model weight training. Review dataset,
+secure appropriate GPU, and confirm held-out evaluations before any release.

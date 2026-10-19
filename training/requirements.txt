@@ -1,0 +1,9 @@
+# Used ONLY for explicitly authorized GPU fine-tuning, not regular app CI.
+# Versions should be resolved and frozen in a reproducible GPU environment.
+torch>=2.4
+transformers>=4.51
+trl>=0.20
+peft>=0.16
+accelerate>=1.4
+datasets>=3.0
+safetensors>=0.5

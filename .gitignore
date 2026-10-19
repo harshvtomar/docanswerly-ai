@@ -17,3 +17,8 @@ public/models/
 public/onnx/
 
 public/generation/
+
+# Optional fine-tuning outputs; never commit user PDFs or model weights
+training/data/
+training/output/
+training/cache/
