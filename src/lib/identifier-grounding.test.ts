@@ -6,6 +6,13 @@ describe("exact codeword / identifier grounding", () => {
     expect(() => check("What is the codename?", "The codename is novelbalagodiba.", source)).not.toThrow();
     expect(() => check("What is the codename?", "The codename is novelbalagodibo.", source)).toThrow("not supported verbatim");
   });
+  it("accepts fluent sentence variants and bare Hindi IDs", () => {
+    expect(() => check("What is the codename?",
+      "The verified codename for this archive is 'novelbalagodiba'.",
+      "The codename is novelbalagodiba.")).not.toThrow();
+    expect(() => check("सांकेतिक नाम क्या है?", "नवकागाबितु",
+      "इस काल्पनिक अभिलेख का नया नाम नवकागाबितु है।")).not.toThrow();
+  });
   it("passes only correct Hindi codewords", () => {
     const source = "इस काल्पनिक अभिलेख का नया नाम नवकागाबितु है।";
     expect(() => check("नया नाम क्या है?", "नया नाम नवकागाबितु है।", source)).not.toThrow();

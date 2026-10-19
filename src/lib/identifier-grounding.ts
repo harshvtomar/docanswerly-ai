@@ -30,7 +30,22 @@ export function validateIdentifierGrounding(question: string, answer: string, ci
   const found = extractLiterals(citedSource);
   if (found.size !== 1)
     throw Error("The cited passages do not establish one unambiguous requested identifier.");
+  // Valid answers may use "codeword for record X is ...", quote the word
+  // without any surrounding sentence, or give its name in Hindi. Requiring
+  // one fixed syntactic answer template wrongly rejects these true positives.
+  const expected = [...found][0];
+  const answerTokens = answer.normalize("NFC").toLocaleLowerCase()
+    .match(/[\p{L}\p{M}\p{N}_-]{3,}/gu) ?? [];
+  if (!answerTokens.includes(expected))
+    throw Error("The answer's requested identifier is not supported verbatim by its citations.");
+  // Preserve precision for long opaque IDs: do not allow a wrong near-match
+  // alongside the correct ID (e.g. "novelgood" AND "novelbad").
+  if (expected.length >= 9) {
+    const prefix = [...expected].slice(0,5).join("");
+    if (answerTokens.some(word => word !== expected && word.length >= 8 && word.startsWith(prefix)))
+      throw Error("The answer includes a conflicting identifier absent from the cited source.");
+  }
   const claimed = extractLiterals(answer);
-  if (claimed.size !== 1 || [...claimed].some(value => !found.has(value)))
+  if ([...claimed].some(word => word !== expected))
     throw Error("The answer's requested identifier is not supported verbatim by its citations.");
 }
