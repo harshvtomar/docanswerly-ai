@@ -4,6 +4,8 @@ on:
     branches: [main]
     paths:
       - "src/lib/answers.ts"
+      - "src/lib/identifier-grounding.ts"
+      - "src/lib/identifier-grounding.test.ts"
       - "src/lib/evidence-availability.ts"
       - "src/lib/evidence-sufficiency.ts"
       - "evaluation/novel-word-heldout.json"

@@ -5,6 +5,8 @@ on:
     paths:
       - "scripts/novel-words-500k.ts"
       - "src/lib/answers.ts"
+      - "src/lib/identifier-grounding.ts"
+      - "src/lib/identifier-grounding.test.ts"
       - "src/lib/evidence-sufficiency.ts"
       - ".github/workflows/novel-words-500k.yml"
   workflow_dispatch:

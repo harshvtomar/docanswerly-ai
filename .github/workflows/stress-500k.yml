@@ -5,6 +5,8 @@ on:
     paths:
       - "scripts/stress-500k.ts"
       - "src/lib/answers.ts"
+      - "src/lib/identifier-grounding.ts"
+      - "src/lib/identifier-grounding.test.ts"
       - "src/lib/hindi-facts.ts"
       - "package.json"
       - ".github/workflows/stress-500k.yml"

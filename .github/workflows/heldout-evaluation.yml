@@ -3,6 +3,10 @@ on:
   push:
     branches: [main]
     paths:
+      - "src/lib/answers.ts"
+      - "src/lib/evidence-availability.ts"
+      - "src/lib/identifier-grounding.ts"
+      - "src/lib/identifier-grounding.test.ts"
       - "evaluation/heldout-cases.json"
       - "evaluation/browser.ts"
       - "e2e/heldout-evaluation.spec.ts"
