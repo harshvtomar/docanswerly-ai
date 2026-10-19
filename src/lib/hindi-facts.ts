@@ -4,7 +4,7 @@
  * Evaluate on unseen terms and contexts; never count them as model accuracy.
  */
 export interface HindiFactHint {
-  category: "weekday" | "crop" | "weight";
+  category: "weekday" | "crop" | "weight" | "speed";
   source: string;
   hindi: string;
   accepts: RegExp;
@@ -34,6 +34,7 @@ const FACTS: {category: HindiFactHint["category"]; source: string; inSource: Reg
   {category:"crop",source:"barley",inSource:/\bbarley\b/iu,hindi:"जौ",accepts:/जौ/u},
   {category:"crop",source:"soybeans",inSource:/\bsoybeans?\b/iu,hindi:"सोयाबीन",accepts:/सोयाबीन/u},
   {category:"crop",source:"mustard",inSource:/\bmustard\b/iu,hindi:"सरसों",accepts:/सरसों/u},
+  {category:"speed",source:"kilometers per hour",inSource:/\b(?:kilometers?|kilometres?)\s+per\s+hour\b|\bkm\s*\/\s*h\b/iu,hindi:"किलोमीटर प्रति घंटा",accepts:/किलोमीटर\s*(?:प्रति|\/)\s*घंटा|किमी\s*\/\s*घंटा|\bkm\s*\/\s*h\b/iu},
   {category:"weight",source:"kilograms",inSource:/\b(?:kilograms?|kg)\b/iu,hindi:"किलोग्राम",accepts:/किलोग्राम|किलो|\bkg\b/iu},
   {category:"weight",source:"grams",inSource:/\b(?:grams?|g)\b/iu,hindi:"ग्राम",accepts:/ग्राम|\bg\b/iu},
   {category:"weight",source:"pounds",inSource:/\b(?:pounds?|lbs?)\b/iu,hindi:"पाउंड",accepts:/पाउंड|\blbs?\b/iu},
@@ -48,6 +49,8 @@ export function sourceHindiFactHints(question: string, citedEvidence: string[]):
     categories.push("crop");
   if (/वजन|वज़न|भार|कितने\s+किलो|\b(?:weight|weighs?|heavy|mass)\b/iu.test(q))
     categories.push("weight");
+  if (/गति|रफ्तार|रफ़्तार|कितनी\s+तेज|\bspeed\b|\bvelocity\b/iu.test(q))
+    categories.push("speed");
   if (!categories.length) return [];
   const text = citedEvidence.join("\n");
   return FACTS.filter(f => categories.includes(f.category) && f.inSource.test(text))

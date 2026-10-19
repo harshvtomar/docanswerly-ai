@@ -3,6 +3,7 @@ import {
   answerLanguage,
   answerMessages,
   ANSWER_SCHEMA,
+  CONSTRAINED_ANSWER_SCHEMA,
   validateRequest,
   validateAnswer,
   GroundedAnswerProvider,
@@ -728,7 +729,7 @@ describe("grounded answer boundary", () => {
       properties: {citations: {items: {enum: string[]}}};
     };
     expect(constrained.properties.citations.items.enum).toEqual(["E3"]);
-    expect(schemas[0]).toBe(ANSWER_SCHEMA);
+    expect(schemas[0]).toBe(CONSTRAINED_ANSWER_SCHEMA);
   });
   it("selects bounded whole passages", () => {
     const hits = Array.from({ length: 8 }, (_, i) => ({
@@ -767,5 +768,24 @@ describe("source-anchored literal identifier guard and Hindi language repair", (
     const hi=await provider.answer(mk("सांकेतिक नाम प्रकाशित नहीं किया गया है।","सांकेतिक नाम क्या है?","hi"));
     expect(hi.status).toBe("insufficient_evidence");
     expect(n).toBe(0);
+  });
+});
+
+describe("correctly constrained model formatting and Hindi speed units", () => {
+  it("requires empty fields for the refusal branch", () => {
+    expect(CONSTRAINED_ANSWER_SCHEMA.oneOf[1].properties.answer.enum).toEqual([""]);
+    expect(CONSTRAINED_ANSWER_SCHEMA.oneOf[1].properties.citations.maxItems).toBe(0);
+    expect(CONSTRAINED_ANSWER_SCHEMA.oneOf[0].properties.status.enum).toEqual(["answer"]);
+  });
+  it("rejects a garbled Hindi speed unit and accepts correct equivalent", () => {
+    const req: AnswerRequest = {
+      question:"बस की अधिकतम गति क्या है?",language:"hi",
+      evidence:[{id:"v",documentId:"d",documentName:"d.pdf",page:1,
+        text:"The maximum speed of the Vale prototype bus is 65 kilometers per hour.",
+        start:0,end:71}],
+    };
+    const make=(answer:string)=>JSON.stringify({status:"answer",answer,language:"hi",citations:["E1"]});
+    expect(() => validateAnswer(make("65 किलोमीटर वर्ष अवसर"),req)).toThrow("source-critical");
+    expect(validateAnswer(make("अधिकतम गति 65 किलोमीटर प्रति घंटा है।"),req).status).toBe("answer");
   });
 });

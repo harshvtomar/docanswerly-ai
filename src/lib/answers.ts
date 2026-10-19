@@ -96,6 +96,30 @@ export const ANSWER_SCHEMA = {
   },
   required: ["status", "answer", "language", "citations"],
 };
+
+/** Strict inference grammar: status=insufficient/conflict entails exact empty answer and citations. */
+export const CONSTRAINED_ANSWER_SCHEMA = {
+  oneOf: [
+    {
+      type:"object",additionalProperties:false,
+      properties:{
+        status:{type:"string",enum:["answer"]},answer:{type:"string",minLength:1},
+        language:{type:"string",enum:["en","hi"]},
+        citations:{type:"array",items:{type:"string"},minItems:1,maxItems:3},
+      },required:["status","answer","language","citations"],
+    },
+    {
+      type:"object",additionalProperties:false,
+      properties:{
+        status:{type:"string",enum:["insufficient_evidence","conflict"]},
+        answer:{type:"string",enum:[""]},
+        language:{type:"string",enum:["en","hi"]},
+        citations:{type:"array",items:{type:"string"},maxItems:0},
+      },required:["status","answer","language","citations"],
+    },
+  ],
+};
+
 export function answerMessages(
   request: AnswerRequest,
   languageRetry = false,
@@ -525,7 +549,7 @@ export class GroundedAnswerProvider {
       const englishRequest: AnswerRequest = { ...request, language: "en" };
       const englishRaw = await this.client.generate(
         answerMessages(englishRequest),
-        ANSWER_SCHEMA,
+        CONSTRAINED_ANSWER_SCHEMA,
         signal,
       );
       if (signal?.aborted) throw new DOMException("Cancelled", "AbortError");
@@ -574,7 +598,7 @@ export class GroundedAnswerProvider {
     }
     const raw = await this.client.generate(
       answerMessages(request),
-      ANSWER_SCHEMA,
+      CONSTRAINED_ANSWER_SCHEMA,
       signal,
     );
     if (signal?.aborted) throw new DOMException("Cancelled", "AbortError");
@@ -613,7 +637,7 @@ export class GroundedAnswerProvider {
         ? hindiCitationRepairSchema(
             (JSON.parse(repair[1].content) as {requiredCitationIds: string[]}).requiredCitationIds,
           )
-        : ANSWER_SCHEMA;
+        : CONSTRAINED_ANSWER_SCHEMA;
       const retryRaw = await this.client.generate(
         repair,
         retrySchema,

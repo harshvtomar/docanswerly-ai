@@ -18,6 +18,11 @@ describe("explicit evidence unavailability (never model accuracy credit)", () =>
       "संस्थान का पता नई सड़क पर है। प्रवेश शुल्क अभी तय नहीं हुआ है।",
     ])).toBe(true);
   });
+  it("recognizes future undecided shipping charges", () => {
+    expect(missing("What is the shipping charge and delivery address?", [
+      "The delivery address is 8 Dock Lane, Westport, and the shipping charge will be decided after dispatch.",
+    ])).toBe(true);
+  });
   it("does not infer an accreditation year from a founding year", () => {
     expect(missing("In which year was the center accredited?", [
       "The center was founded in 2016. Accreditation is still under review.",

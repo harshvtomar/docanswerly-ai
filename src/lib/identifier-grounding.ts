@@ -9,6 +9,8 @@ const questionPattern =
   /\b(?:codewords?|codenames?|identifiers?|passcodes?|passwords?|access\s*(?:codes?|keys?)|secret\s*(?:codes?|keys?))\b|सांकेतिक\s*नाम|नया\s*नाम|पहचान\s*(?:कोड|संख्या)|पासवर्ड|गुप्त\s*(?:कोड|कुंजी)/iu;
 const literal = String.raw`([\p{L}\p{M}\p{N}_-]{3,80})`;
 const patterns = [
+  // The factual statement can identify a codeword through another label.
+  new RegExp(String.raw`\\b(?:lists?|records?|displays?)\\s+(?:the\\s+)?(?:verified\\s+)?(?:identifier|codeword|codename)\\s+${literal}(?=\\s+(?:as|is|was|for)\\b|[.,!?]|$)`, "giu"),
   new RegExp(String.raw`\b(?:codeword|codename|identifier|passcode|password|access\s*(?:code|key))\s+(?:is|was|equals|:|=)\s*${literal}`, "giu"),
   new RegExp(String.raw`\b(?:codeword|codename|identifier|passcode|password|access\s*(?:code|key))\s+${literal}(?=\s+(?:as|is|was|has|for|belongs)\b|[.,!?]|$)`, "giu"),
   new RegExp(String.raw`(?:सांकेतिक\s*नाम|नया\s*नाम|पहचान\s*(?:कोड|संख्या)|गुप्त\s*(?:कोड|कुंजी)|पासवर्ड)\s+${literal}(?=\s*(?:है|हैं|था|थी|होगा|।|[,;.!?]|$))`, "gu"),

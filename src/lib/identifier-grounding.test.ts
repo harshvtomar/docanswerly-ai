@@ -13,6 +13,11 @@ describe("exact codeword / identifier grounding", () => {
     expect(() => check("सांकेतिक नाम क्या है?", "नवकागाबितु",
       "इस काल्पनिक अभिलेख का नया नाम नवकागाबितु है।")).not.toThrow();
   });
+  it("extracts a codeword from 'lists the identifier X as' evidence", () => {
+    const src = "The fictional archive record Sable-1 lists the identifier novelbolodogiba as its verified codeword. No other codeword is listed.";
+    expect(() => check("What is the verified codeword?", "The verified codeword for Sable-1 is 'novelbolodogiba'.", src)).not.toThrow();
+    expect(() => check("What is the verified codeword?", "The codeword is 'novelbolodogibo'.", src)).toThrow("not supported verbatim");
+  });
   it("passes only correct Hindi codewords", () => {
     const source = "इस काल्पनिक अभिलेख का नया नाम नवकागाबितु है।";
     expect(() => check("नया नाम क्या है?", "नया नाम नवकागाबितु है।", source)).not.toThrow();
