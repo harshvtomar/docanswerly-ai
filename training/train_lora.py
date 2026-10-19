@@ -28,8 +28,10 @@ def main() -> None:
     if not args.train:
         print("CHECK ONLY: 0 model training steps, no model weights loaded or modified.")
         return
-    if not args.allow_synthetic:
+    if audit["synthetic"] and not args.allow_synthetic:
         raise SystemExit("Training is blocked: the pilot dataset is synthetic and unreviewed. Use --allow-synthetic ONLY for an experimental pilot.")
+    if not audit["synthetic"] and not audit["human_reviewed"]:
+        raise SystemExit("Training is blocked: reviewed corpus provenance is missing.")
     if args.max_steps < 1 or args.max_steps > 2000:
         raise SystemExit("--max-steps must be 1..2000")
     # Import heavy optional libraries only after a no-GPU preflight check.
