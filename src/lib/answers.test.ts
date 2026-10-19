@@ -269,7 +269,7 @@ describe("grounded answer boundary", () => {
     expect(result.answer).toContain("स्थापना");
     expect(messages).toHaveLength(2);
     expect(messages[1]).toContain("Translate only the draft factual answer");
-    expect(messages[1]).toContain("Hindi (Devanagari)");
+    expect(messages[1]).toContain("Hindi written in Devanagari");
   });
   it("translation-only retry preserves the initial fact and evidence IDs", async () => {
     const r: AnswerRequest = {
