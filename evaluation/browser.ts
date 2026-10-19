@@ -105,7 +105,7 @@ document.querySelector<HTMLButtonElement>("#run")!.onclick = async () => {
       result.textContent = JSON.stringify({
         partial: true,
         initializationMs,
-        model: GENERATION_MODEL,
+        model: runtime.loadedModelDescription || GENERATION_MODEL,
         rows,
       });
     }
@@ -113,7 +113,7 @@ document.querySelector<HTMLButtonElement>("#run")!.onclick = async () => {
       unsupported = rows.filter((r) => r.expectedStatus !== "answer");
     result.textContent = JSON.stringify({
       initializationMs,
-      model: GENERATION_MODEL,
+      model: runtime.loadedModelDescription || GENERATION_MODEL,
       note: selectedSuite.note,
       generatedAt: new Date().toISOString(),
       metrics: {
@@ -184,7 +184,7 @@ document.querySelector<HTMLButtonElement>("#run")!.onclick = async () => {
   } catch (error) {
     result.textContent = JSON.stringify({
       partial: true,
-      model: GENERATION_MODEL,
+      model: runtime.loadedModelDescription || GENERATION_MODEL,
       elapsedMs: performance.now() - initStart,
       error: String(error),
       rows,
