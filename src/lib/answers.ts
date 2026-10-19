@@ -348,7 +348,7 @@ export function validateAnswer(
   if (numerals(v.answer).some((n) => !allowed.has(n)))
     throw Error("The answer contains a number absent from its cited passages.");
   // Placeholders are not translations or grounded factual answers.
-  if (/<\\s*(?:hindi|english|translation|translated|answer|response|अनुवाद)[^>]*>|\\b(?:translation here|translate here|insert answer here)\\b|(?:हिंदी|हिन्दी)\\s*अनुवाद\\s*(?:यहाँ|यहां)/iu.test(v.answer))
+  if (/<\s*(?:hindi|english|translation|translated|answer|response|अनुवाद)[^>]*>|\b(?:translation here|translate here|insert answer here)\b|(?:हिंदी|हिन्दी)\s*अनुवाद\s*(?:यहाँ|यहां)/iu.test(v.answer))
     throw Error("The answer contains an unfilled translation or answer placeholder.");
   if (repeatedQuestion(request.question, v.answer))
     throw Error("The model repeated the question instead of answering.");
@@ -373,9 +373,9 @@ export function validateAnswer(
   }
   // High-impact Celsius unit degradation in Hindi: a correct number followed
   // by garbled units must not be displayed as a verified answer.
-  if (lang === "hi" && /\\b(?:celsius|degree\\s*celsius)\\b|°\\s*C\\b/iu.test(citedText) &&
-      /\\btemperature\\b|तापमान|डिग्री|सेल्सियस/iu.test(request.question + " " + answerText) &&
-      !/सेल्सियस|\\bcelsius\\b|°\\s*C\\b|डिग्री\\s*सी(?:\\s|$)/iu.test(answerText))
+  if (lang === "hi" && /\b(?:celsius|degree\s*celsius)\b|°\s*C\b/iu.test(citedText) &&
+      /\btemperature\b|तापमान|डिग्री|सेल्सियस/iu.test(request.question + " " + answerText) &&
+      !/सेल्सियस|\bcelsius\b|°\s*C\b|डिग्री\s*सी(?:\s|$)/iu.test(answerText))
     throw Error("The Hindi answer omitted or mistranslated the Celsius unit.");
   if (durationUnits.some((unit) => unit.answer.test(answerText) && !unit.evidence.test(citedText)))
     throw Error("The answer contains a duration unit absent from its cited passages.");
