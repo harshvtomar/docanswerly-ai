@@ -90,3 +90,28 @@ The final documentation/results-only checkpoint uses [skip ci] to avoid repeatin
 unchanged expensive inference. No executable file, test or workflow gate changes.
 The tested/deployed code remains f5d8c85; inspect current HEAD for final docs SHA.
 Version remains v0.2.0. No backend, paid service or prompt/label tuning was added.
+
+## Verified Session 3B Priority 1 checkpoint — 19 October 2026
+
+Code and deployed revision: `08a14f706002843e49e1e0813b901ed21532a546`.
+Full [GitHub Actions run 39207953646](https://github.com/harshvtomar/docanswerly-ai/actions/runs/39207953646)
+finished successfully: build and Pages deployment succeeded, 84 unit,
+7 PDF/OCR, 9 embedding and 31 browser checks passed (131 total).
+The 30 oracle-context model evaluation rows are not correctness tests.
+
+Real Qwen3 English-evidence→Hindi reference matches improved from 0/3 to
+3/3 on the saved *synthetic* evaluation (Tuesday, weight 3 kilograms and
+potatoes). This is an encouraging narrow result, not general Hindi fluency.
+The bilingual sample's Hindi model answer still fails language validation.
+Desktop and mobile now show a **verbatim source excerpt**, clearly identified
+as not AI-generated, only after two genuine model attempts fail. Both UI
+tests passed with the correct page-3 citation and no errors. This fallback
+does not inflate model-compliant reference matches or supported-answer rates.
+
+The latest 30-case results: 14/30 reference-term matches, 14/17 supported
+cases returning model-compliant answers, 3 evaluation errors, 5 pre-inference
+gate decisions and 8 canonicalized refusals. The model produced 0/13 valid
+strict abstentions. Semantic claim-level groundedness has not been measured.
+Session 3C should address evidence sufficiency; remaining Session 3B work
+includes broader bilingual factual quality and additional evaluation.
+Version remains **v0.2.0**. No v0.3.0 release.

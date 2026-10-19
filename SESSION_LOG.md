@@ -330,3 +330,16 @@ model attempts fail language validation, only when a unique short passage
 shares >=2 meaningful Hindi question terms. The UI labels this NOT an AI
 answer; the evaluation excludes it from model success and counts it separately.
 This does not establish general Hindi generation accuracy. Version v0.2.0.
+
+### Verified Priority 1 functional checkpoint (19 October 2026)
+
+Commit `08a14f706002843e49e1e0813b901ed21532a546` passed full
+Actions run 39207953646 including Pages deployment. 84 unit, 7 PDF/OCR,
+9 embedding, 31 E2E browser tests (131 total); 0 failures/skips.
+
+Genuine English-only evidence→Hindi Qwen3 oracle tests passed 3/3.
+Both real browser tests of the mixed-language sample instead needed a
+*clearly labelled, cited source-excerpt fallback* because Hindi generation
+remained wrong-language after retry. Saved browser artifacts confirm this.
+Do not count the excerpt as genuine generation or semantic entailment.
+The unrelated unsupported-question 0/13 strict abstention issue persists.

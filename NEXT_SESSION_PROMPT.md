@@ -166,3 +166,20 @@ labelled source-only Hindi excerpt can now be shown after two genuine model
 language failures when a uniquely relevant Hindi source is available; it is
 never counted as successful AI generation. Check the latest CI, verify the
 public interface, and continue evaluating small-model limitations separately.
+
+## VERIFIED PRIORITY 1 RESULT — 19 October 2026
+
+The code revision `08a14f706002843e49e1e0813b901ed21532a546`
+passed full [Actions 39207953646](https://github.com/harshvtomar/docanswerly-ai/actions/runs/39207953646)
+including Pages deployment (84 unit + 7 PDF/OCR + 9 embedding + 31 browser).
+Real-model English-evidence→Hindi oracle references: **3/3**, up from 0/3.
+The bilingual mixed-source UI still requires a **clearly marked, verbatim
+Hindi source excerpt**, displayed after two failed real model attempts on
+desktop and mobile. Do not count that as successful generated Hindi.
+Do not retune or remove the quality gate to hide model failures.
+
+For further Session 3B work prioritize broader unseen Hindi/cross-language
+factual accuracy, duration/performance and transparent failure states, then
+handoff to Session 3C for deep abstention/hallucination work. The 30-case
+evaluation still has only 14/30 reference-term matches and 0/13 *valid*
+model abstentions. Version remains v0.2.0; v0.3.0 remains unreleased.
