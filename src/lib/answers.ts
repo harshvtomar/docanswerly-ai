@@ -3,6 +3,7 @@ import { deduplicate } from "./rag";
 import { evidenceSafetyGate } from "./evidence-sufficiency";
 import { validateIdentifierGrounding } from "./identifier-grounding";
 import { sourceHindiFactHints, sourceEnglishMaterialGlossary, repeatedQuestion } from "./hindi-facts";
+import { countEvidenceHint, numericFingerprint } from "./bilingual-evidence";
 export type AnswerLanguage = "auto" | "en" | "hi";
 export type ResolvedLanguage = "en" | "hi";
 export interface AnswerRequest {
@@ -535,6 +536,40 @@ function evidenceIsEntirelyNonDevanagari(request: AnswerRequest): boolean {
  */
 export class GroundedAnswerProvider {
   constructor(private client: InferenceClient) {}
+  /**
+   * One real-model retry for a probable false refusal about an explicit count.
+   * Uses a high-precision source snippet; does not synthesize an answer.
+   * A mistaken second answer must still pass all normal source checks.
+   */
+  private async retryCountRefusal(request: AnswerRequest, signal?: AbortSignal):
+    Promise<{raw: string; answer: GroundedAnswer} | null> {
+    const hint = countEvidenceHint(request.question, request.evidence);
+    if (!hint) return null;
+    if (signal?.aborted) throw new DOMException("Cancelled", "AbortError");
+    const messages = answerMessages(request);
+    messages[0].content +=
+      " Your previous attempt refused. Re-check whether the asked item and a " +
+      "specific count are explicitly present in the cited source sentence. " +
+      "If so, answer the requested count using its exact numeral and real citation. " +
+      "Otherwise still refuse; never use nearby unrelated quantities.";
+    const payload = JSON.parse(messages[1].content) as Record<string, unknown>;
+    messages[1].content = JSON.stringify({...payload, focusedSourceCount: hint});
+    const raw = await this.client.generate(messages, CONSTRAINED_ANSWER_SCHEMA, signal);
+    if (signal?.aborted) throw new DOMException("Cancelled", "AbortError");
+    try {
+      const answer = validateAnswer(raw, request);
+      if (answer.status !== "answer" ||
+          numericFingerprint(answer.answer) !== hint.count ||
+          !answer.citations.some(chunk =>
+            request.evidence.findIndex(e => e.id === chunk.id) + 1 ===
+            Number(hint.label.slice(1))))
+        return null;
+      return {raw,answer};
+    } catch {
+      // Never turn an uncertain refusal into a misleading generated answer.
+      return null;
+    }
+  }
   async answer(
     request: AnswerRequest,
     signal?: AbortSignal,
@@ -558,14 +593,22 @@ export class GroundedAnswerProvider {
       evidenceIsEntirelyNonDevanagari(request)
     ) {
       const englishRequest: AnswerRequest = { ...request, language: "en" };
-      const englishRaw = await this.client.generate(
+      let englishRaw = await this.client.generate(
         answerMessages(englishRequest),
         CONSTRAINED_ANSWER_SCHEMA,
         signal,
       );
       if (signal?.aborted) throw new DOMException("Cancelled", "AbortError");
-      // Avoid translating an unsupported or invalid factual draft.
-      const english = validateAnswer(englishRaw, englishRequest);
+      // Avoid translating an unsupported or invalid factual draft. Retry only
+      // a directly verified count, without bypassing the model or validator.
+      let english = validateAnswer(englishRaw, englishRequest);
+      if (english.status === "insufficient_evidence") {
+        const recovered = await this.retryCountRefusal(englishRequest, signal);
+        if (recovered) {
+          englishRaw = recovered.raw;
+          english = recovered.answer;
+        }
+      }
       if (english.status !== "answer")
         return refusal("hi", english.status);
       const citedLabels = english.citations.map(chunk =>
@@ -614,7 +657,12 @@ export class GroundedAnswerProvider {
     );
     if (signal?.aborted) throw new DOMException("Cancelled", "AbortError");
     try {
-      return validateAnswer(raw, request);
+      const validated = validateAnswer(raw, request);
+      if (validated.status === "insufficient_evidence") {
+        const recovered = await this.retryCountRefusal(request, signal);
+        if (recovered) return recovered.answer;
+      }
+      return validated;
     } catch (error) {
       const canonical = discardInvalidRefusalText(raw, request);
       if (canonical) return canonical;
