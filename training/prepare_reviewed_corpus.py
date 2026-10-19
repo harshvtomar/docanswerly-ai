@@ -14,13 +14,24 @@ from pathlib import Path
 from prepare_data import MODEL, SYSTEM
 
 ALLOWED_LICENSES = {"CC0-1.0", "CC-BY-4.0", "Apache-2.0", "MIT"}
-WORD = re.compile(r"[^\W\d_]+(?:['’][^\W\d_]+)?", re.UNICODE)
 SPLITS = ("train", "validation", "test")
 STATUSES = {"answer", "insufficient_evidence", "conflict"}
 
 def lexical_forms(text: str) -> set[str]:
+    """NFC/casefolded word forms, including Hindi combining vowel marks."""
     import unicodedata
-    return {w for w in WORD.findall(unicodedata.normalize("NFC", text).casefold()) if len(w) >= 2}
+    words, token = set(), []
+    for ch in unicodedata.normalize("NFC", text).casefold():
+        category = unicodedata.category(ch)
+        if category.startswith("L") or (token and category.startswith("M")):
+            token.append(ch)
+        else:
+            if len(token) >= 2:
+                words.add("".join(token))
+            token = []
+    if len(token) >= 2:
+        words.add("".join(token))
+    return words
 
 def convert(source: Path, output: Path, min_unique_words: int = 500_000) -> dict:
     if not source.is_file():
