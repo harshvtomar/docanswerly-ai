@@ -15,7 +15,7 @@ const patterns = [
   new RegExp(String.raw`\b(?:codeword|codename|identifier|passcode|password|access\s*(?:code|key))\s+${literal}(?=\s+(?:as|is|was|has|for|belongs)\b|[.,!?]|$)`, "giu"),
   new RegExp(String.raw`(?:सांकेतिक\s*नाम|नया\s*नाम|पहचान\s*(?:कोड|संख्या)|गुप्त\s*(?:कोड|कुंजी)|पासवर्ड)\s+${literal}(?=\s*(?:है|हैं|था|थी|होगा|।|[,;.!?]|$))`, "gu"),
 ];
-const invalidValues = new Set(["not", "none", "never", "unknown", "unavailable", "unpublished", "unspecified", "has", "been", "the", "नहीं", "अज्ञात"]);
+const invalidValues = new Set(["not", "none", "never", "unknown", "unavailable", "unpublished", "unspecified", "has", "been", "the", "listed", "provided", "published", "given", "available", "disclosed", "identified", "recorded", "shown", "specified", "नहीं", "अज्ञात"]);
 function extractLiterals(text: string): Set<string> {
   const values = new Set<string>();
   for (const pattern of patterns) {
