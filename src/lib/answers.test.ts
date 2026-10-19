@@ -270,7 +270,7 @@ describe("grounded answer boundary", () => {
     expect(result.language).toBe("hi");
     expect(result.answer).toContain("स्थापना");
     expect(messages).toHaveLength(2);
-    expect(messages[1]).toContain("मूल दस्तावेज़ के हिन्दी वाक्य");
+    expect(messages[1]).toContain("दिए गए मूल हिन्दी दस्तावेज़");
     expect(messages[1]).toContain("देवनागरी");
     expect(messages[1]).not.toContain("Translate only the draft");
   });
@@ -609,7 +609,7 @@ describe("grounded answer boundary", () => {
     expect(answer.validation).toBe("source-identities-checked");
     expect(answer.answer).toContain("Robotics");
     expect(calls).toBe(2);
-    expect(contexts[1]).toContain("मूल दस्तावेज़ के हिन्दी वाक्य");
+    expect(contexts[1]).toContain("दिए गए मूल हिन्दी दस्तावेज़");
     expect(contexts[1]).not.toContain("Translate only the draft");
   });
   it("keeps the mixed-source Hindi repair restricted to its initial citation labels", () => {
@@ -626,7 +626,7 @@ describe("grounded answer boundary", () => {
     const body=JSON.parse(messages[1].content);
     expect(body.evidence).toHaveLength(1);
     expect(body.evidence[0].text).toContain("Robotics");
-    expect(body.sourceLabels).toEqual(["E1"]);
+    expect(body.requiredCitationIds).toEqual(["E1"]);
     expect(() => hindiSourceRepairMessages(mixed, output({language:"hi",citations:["E99"]})))
       .toThrow("Invalid draft citations");
   });
