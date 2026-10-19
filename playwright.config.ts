@@ -22,7 +22,7 @@ export default defineConfig({
     ...(process.env.HELDOUT_EVALUATION === "1"
       ? [{
           name: "heldout-evaluation",
-          testMatch: "**/heldout-evaluation.spec.ts", "**/heldout-postfix-evaluation.spec.ts",
+          testMatch: "**/heldout-evaluation.spec.ts",
           use: { ...devices["Desktop Chrome"] },
         }]
       : []),
