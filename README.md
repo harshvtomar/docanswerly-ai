@@ -159,3 +159,24 @@ identified 10 clearly correct supported answers and one malformed Hindi-unit
 answer. These are **not independently human-reviewed accuracy** scores.
 [Full transparent review](docs/HELDOUT_SOURCE_AUDIT.md) and
 [blind independent-human review sheet](docs/HELDOUT_BLIND_REVIEW.csv).
+
+
+### Verified October 20 post-fix deployment (still v0.2.0)
+
+The evidence-sufficiency and Hindi validation patch was [successfully built
+and deployed through GitHub Pages](https://github.com/harshvtomar/docanswerly-ai/actions/runs/39316203815)
+at executable commit `953cc9f`. A separate genuine Qwen3
+[24-case synthetic post-fix evaluation](https://github.com/harshvtomar/docanswerly-ai/actions/runs/39316203719)
+ran 24/24 cases: supported strict proxy 12/14, 2 errors, zero direct valid model
+abstentions among 10 unsupported cases. Seven of those displayed refusals were
+heuristic and three were normalized malformed model refusals; app-level safety
+must never be called successful model abstention. Original frozen
+[28-case comparison](https://github.com/harshvtomar/docanswerly-ai/actions/runs/39316203695)
+remained at 11/28 strict proxy, with 0/12 valid model abstentions and one
+incorrect supported-status answer. These cases are fictional and not external
+human-rated quality estimates.
+
+**External fluent English/Hindi reviewer sign-off is outstanding.**
+[Independent review packet](https://github.com/harshvtomar/docanswerly-ai/pull/2)
+is open for a consenting human reviewer. No v0.3.0 release or trained model
+is claimed.

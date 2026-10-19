@@ -382,3 +382,28 @@ JSON Schema to language=hi, status=answer, and original validated citation
 IDs only. Added E3 source-ID tests. This preserves security and avoids
 inventing post-hoc citations. New genuine model tests and deployment are
 required before claiming improved Hindi-generation quality.
+
+
+## Post-fix verification and deployed experimental patch — 20 October 2026
+
+Committed conservative explicitly-missing-fact, hostile embedded-secret, and
+Hindi placeholder/unit guards, plus unit regressions and a fresh separate
+24-case Qwen3 evaluation. Code revision `953cc9f`.
+
+Three successful workflows on that exact code SHA:
+1. Deployment [39316203815](https://github.com/harshvtomar/docanswerly-ai/actions/runs/39316203815):
+   both build and Pages deploy jobs passed, including browser regression.
+2. Genuine fresh Qwen3 24-case [39316203719](https://github.com/harshvtomar/docanswerly-ai/actions/runs/39316203719):
+   supported strict proxy 12/14; safe displayed refusals 10/10 on unsupported
+   cases (7 heuristics + 3 model-invalid normalized), direct model abstentions
+   0/10, two model errors.
+3. Original frozen 28-case comparison [39316203695](https://github.com/harshvtomar/docanswerly-ai/actions/runs/39316203695):
+   strict proxy 11/28, supported 11/16, direct model abstention 0/12,
+   one unsupported incorrectly displayed as supported, four errors.
+
+New deployment DONE; external human sign-off STILL PENDING. GitHub PR #2 has a
+blind external-English/Hindi review worksheet and was marked ready for review,
+but zero independent reviewers submitted ratings/signatures at this checkpoint.
+No new version release: application continues to advertise v0.2.0. No fine-tuning
+or independent human-verified accuracy claim. The static public URL can be
+visited; independent live-browser smoke was not reproduced in this handoff.

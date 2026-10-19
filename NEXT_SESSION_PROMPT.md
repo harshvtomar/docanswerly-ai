@@ -291,3 +291,37 @@ prompt-injection text, Hindi cross-language generation failures and raw valid
 refusals. Do not modify the frozen held-out gold answers or use those cases
 for fine-tuning; use a second sealed held-out benchmark for post-fix tests.
 Keep v0.2.0 until genuine independent testing clears blockers.
+
+
+## CURRENT HANDOFF — verified deployment, independent review still open (20 October 2026)
+
+Before further edits, confirm current remote `main` and the following **code**
+commit: `953cc9fb949dc46c8364f87307bbaa096a492f45`. A later
+documentation-only [skip ci] commit may be HEAD; do not confuse its SHA with
+the deployed, tested executable revision.
+
+**Deployment done**: [Actions 39316203815](https://github.com/harshvtomar/docanswerly-ai/actions/runs/39316203815)
+build and Pages deploy both succeeded. Existing application remains v0.2.0.
+**Fresh real-model evaluation done**: [24-case run 39316203719](https://github.com/harshvtomar/docanswerly-ai/actions/runs/39316203719);
+supported strict proxy 12/14, 2 errors, 0/10 valid model abstentions;
+10 unsupported cases safely refused by 7 heuristics and 3 application
+canonicalizations. **Original 28-case rerun done**:
+[39316203695](https://github.com/harshvtomar/docanswerly-ai/actions/runs/39316203695);
+11/28 strict proxy, 11/16 supported proxy, 0/12 true model abstentions,
+1 false supported status, 4 errors. Do not claim broad accuracy or generalize
+assistant-authored fictional examples to uploaded real PDFs.
+
+**Only independent external bilingual human sign-off remains from the user's
+two requested operational statuses.** It cannot be completed by another LLM
+self-rating, GitHub Actions or the repository author. Find a consenting fluent
+English/Hindi reviewer who did not author gold, source facts or prompts. They
+must independently fill the blind 24-case worksheet in open ready-for-review
+[PR #2](https://github.com/harshvtomar/docanswerly-ai/pull/2), then inspect
+actual Qwen raw output artifact from 39316203719; log explicit per-case factual,
+citation, language and refusal judgements, date/signature and independent
+adjudication. No reviewer submissions exist yet. Keep issue #1 open and do not
+make up a reviewer, signature or `human-verified accuracy` number.
+
+For a later v0.3.0 quality release, additionally address remaining Hindi
+and unsupported-answer failures, build a real-document benchmark and repeat
+quality gates. Preserve historical gold and the successful v0.2.0 public app.

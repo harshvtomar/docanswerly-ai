@@ -152,3 +152,38 @@ used a labelled source-only fallback. Detailed case-level findings:
 human-verified accuracy or 500k model inferences. High-priority blockers:
 unsupported-answer hallucination/prompt injection and cross-language output.
 No weights trained; release remains v0.2.0.
+
+
+## Verified post-fix deployment and human-review state — 20 October 2026 IST
+
+**Completed**: code revision `953cc9fb949dc46c8364f87307bbaa096a492f45` was built,
+tested and deployed by successful [GitHub Actions 39316203815](https://github.com/harshvtomar/docanswerly-ai/actions/runs/39316203815).
+Both `build` and `deploy` jobs concluded success, including unit, PDF/OCR,
+retrieval, 12,000 and 500,000 deterministic validations, and browser regression
+steps. Public URL remains https://harshvtomar.github.io/docanswerly-ai/.
+GitHub deployment confirmation is verified; a separate external-browser live
+smoke was not established in this handoff. Application version remains v0.2.0.
+
+Actual Qwen3 inference was executed successfully on the **same** code revision:
+- [Fresh 24-case post-fix run 39316203719](https://github.com/harshvtomar/docanswerly-ai/actions/runs/39316203719):
+  24/24 executed; 12/14 supported strict proxy, 0/10 direct valid model
+  abstentions, 7 labelled heuristic refusals, 3 app-canonicalized malformed
+  refusals, 2 errors. All 10 unsupported cases showed safe refusals **by the
+  application**, not evidence of model abstention quality.
+- [Original 28-case repeat 39316203695](https://github.com/harshvtomar/docanswerly-ai/actions/runs/39316203695):
+  28/28 executed; 11/28 strict proxy, 11/16 supported strict proxy,
+  0/12 direct valid model abstentions, 6 heuristic refusals,
+  4 app-canonicalized refusals, 4 errors; one unsupported case still displayed
+  an invalid supported-answer status. Original gold unchanged.
+
+**External independent bilingual human sign-off is NOT COMPLETE.** No reviewer
+has submitted a signed, dated, full case-level independent assessment. The
+blind worksheet is in [PR #2](https://github.com/harshvtomar/docanswerly-ai/pull/2)
+(open and ready for review), with instructions in
+`docs/POSTFIX_REVIEW_PROTOCOL.md`. Source author, owner and assistant cannot
+substitute for external approval. Reviewer recruitment and adjudication are
+real dependencies; do not invent an identity, signature or verified accuracy.
+
+Continue quality work under [issue #1](https://github.com/harshvtomar/docanswerly-ai/issues/1).
+**Do not promote v0.3.0** or call the model fully accurate because the test and
+deployment workflows succeeded. The code was deployed as an experimental v0.2.0 patch.
