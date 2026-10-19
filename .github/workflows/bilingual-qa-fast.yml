@@ -1,0 +1,31 @@
+name: Bilingual accuracy fast CI
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/lib/answers.ts"
+      - "src/lib/answers.test.ts"
+      - "src/lib/bilingual-evidence.ts"
+      - "src/lib/bilingual-evidence.test.ts"
+      - "src/lib/hindi-facts.ts"
+      - ".github/workflows/bilingual-qa-fast.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  bilingual-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    env:
+      ONNXRUNTIME_NODE_INSTALL_CUDA: skip
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: All unit tests including new Hindi and English guard regressions
+        run: npm test
+      - name: Compile and build the production browser app
+        run: npm run build
