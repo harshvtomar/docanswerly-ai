@@ -302,3 +302,12 @@ translation-only inference for English-only evidence. Added source-numeric
 preservation and mandatory weight quantity checks. English and original Hindi
 source modes remain separate. A fresh run must test these changes; do not waive
 quality gates or claim a successful deployment without Actions confirmation.
+
+#### Session 3B — unit-test contract repair
+Run 39201905782 failed three *pre-model* unit tests after the new prompt
+refactor. Two tests expected prompt examples intentionally removed because they
+had contaminated real Hindi generation; another mock simulated the old
+single-pass English-evidence path. Updated assertions to verify the corrected
+prompts and test single-pass retries using Hindi-containing evidence. No model
+quality metrics or corpus expectations were changed. New CI must verify the
+real English-draft → Hindi-translation path.

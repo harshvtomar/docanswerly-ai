@@ -202,7 +202,9 @@ describe("grounded answer boundary", () => {
     expect(hi).toContain("Hindi (Devanagari)");
     expect(hi).toContain("स्वाभाविक देवनागरी हिन्दी");
     expect(hi).toContain("empty answer");
-    expect(answerMessages({ ...request, language: "hi" }, true)[0].content).toContain("किलोग्राम");
+    expect(answerMessages({ ...request, language: "hi" }, true)[0].content).toContain("सही माप");
+    expect(hi).not.toContain("हर शुक्रवार");
+    expect(hi).not.toContain("केले उगाता");
   });
   it("rejects English-labelled answers containing only Hindi words", () => {
     expect(() =>
@@ -266,7 +268,7 @@ describe("grounded answer boundary", () => {
     expect(result.language).toBe("hi");
     expect(result.answer).toContain("स्थापना");
     expect(messages).toHaveLength(2);
-    expect(messages[1]).toContain("translating a document-supported factual answer");
+    expect(messages[1]).toContain("Translate only the draft factual answer");
     expect(messages[1]).toContain("Hindi (Devanagari)");
   });
   it("translation-only retry preserves the initial fact and evidence IDs", async () => {
@@ -389,7 +391,12 @@ describe("grounded answer boundary", () => {
         return output({ answer: "The company was founded in 2018.", language: "hi" });
       },
     });
-    await expect(p.answer({ ...request, language: "hi" })).rejects.toThrow("requested Hindi");
+    // The single-pass plus repair path is used for Hindi-containing evidence;
+    // English-only evidence follows the separately tested two-stage path.
+    await expect(p.answer({
+      ...request, language: "hi",
+      evidence: [{ ...request.evidence[0], text: "कंपनी की स्थापना २०१८ में हुई थी।" }],
+    })).rejects.toThrow("requested Hindi");
     expect(calls).toBe(2);
   });
   it("prevents a numeric near-duplicate source contradiction", async () => {
