@@ -32,7 +32,7 @@ jobs:
       - run: npm run build:evaluation
       - run: npx playwright install --with-deps chromium
       - name: Run 24 novel-word exact-copy and abstention questions with real Qwen3
-        run: npx playwright test e2e/novel-word-evaluation.spec.ts --project=heldout-postfix-evaluation
+        run: npx playwright test e2e/novel-word-evaluation.spec.ts --project=novel-word-evaluation
       - uses: actions/upload-artifact@v4
         if: always()
         with:
