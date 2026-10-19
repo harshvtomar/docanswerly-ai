@@ -396,6 +396,14 @@ export function validateAnswer(
   const answerText = v.answer as string; // Schema check above established a string.
   // Specific literal identifiers are not safe just because their citations exist.
   validateIdentifierGrounding(request.question, answerText, citedText);
+  // A literal valid citation is insufficient when the wrong nearby material
+  // is selected. Only enforce when a SINGLE question-scoped source material
+  // has been recognized, not for open-ended or compound material requests.
+  if (lang === "en" && citations.some(c => /\p{Script=Devanagari}/u.test(c.text))) {
+    const materials = sourceEnglishMaterialGlossary(request.question, citations.map(c=>c.text));
+    if (materials.length === 1 && !(new RegExp("\\b" + materials[0].english + "\\b", "iu")).test(answerText))
+      throw Error("The English answer mismatched the cited source material.");
+  }
   if (lang === "hi" && request.evidence.every(c => !/\p{Script=Devanagari}/u.test(c.text))) {
     const essential = sourceHindiFactHints(request.question, citations.map(c => c.text));
     if (essential.some(({accepts}) => !accepts.test(answerText)))
@@ -617,13 +625,15 @@ export class GroundedAnswerProvider {
       const requestedLanguageFailed =
         reason === "The model did not produce the requested Hindi answer." ||
         reason === "The model did not produce the requested English answer.";
+      const fixableEnglishMaterial = lang === "en" &&
+        reason === "The English answer mismatched the cited source material.";
       const fixableHindiFactFormat = lang === "hi" && (
         reason === "The answer contains a number absent from its cited passages." ||
         reason === "The answer omitted or mistranslated the source weight unit." ||
         reason === "The answer contains a duration unit absent from its cited passages." ||
         reason === "The model repeated the question instead of answering."
       );
-      if (!requestedLanguageFailed && !fixableHindiFactFormat) throw error;
+      if (!requestedLanguageFailed && !fixableHindiFactFormat && !fixableEnglishMaterial) throw error;
       if (signal?.aborted) throw new DOMException("Cancelled", "AbortError");
       // English-only evidence needs factual translation, while a cited
       // Hindi passage benefits from a short Hindi source-conditioned reply.
