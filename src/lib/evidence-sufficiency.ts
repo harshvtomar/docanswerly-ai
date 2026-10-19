@@ -1,4 +1,5 @@
 import type { Chunk } from "./types";
+import { explicitlyMissingRequestedFact } from "./evidence-availability";
 
 /** Limited high-precision checks, NOT general semantic entailment. */
 export type EvidenceSafetyResult = {
@@ -70,6 +71,10 @@ export function evidenceSafetyGate(question: string, evidence: Chunk[]): Evidenc
   if(!evidence.length) return null;
   if(numericConflict(question, evidence))
     return {status:"conflict", validation:"heuristic-numeric-conflict"};
+  // A missing requested attribute is a refusal even if other attributes exist.
+  // This is a labelled heuristic, never a successful model abstention.
+  if (explicitlyMissingRequestedFact(question, evidence.map(e => e.text)))
+    return {status:"insufficient_evidence", validation:"heuristic-evidence-gap"};
   // Only preempt obvious multi-slot incompleteness. Do not reject single-slot
   // or fully cross-language questions using weak lexical evidence alone.
   const slots = Object.keys(slotQuestions).filter(
