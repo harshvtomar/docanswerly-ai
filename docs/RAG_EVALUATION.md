@@ -192,3 +192,25 @@ uses a validated two-stage local inference path for English-only evidence:
 Numbers must be preserved between stages; weight responses must contain the
 actual cited quantity, not just a unit. The acceptance thresholds remain
 unchanged. No claim of improved Hindi quality until a NEW real-model run passes.
+
+## Priority 1 continued — no improvement in two-stage generation (19 October 2026)
+
+Genuine run 39202191083 completed its 30 evaluation rows but failed the
+strict 2/3 cross-English-to-Hindi criterion (**0/3**). The model changed
+Tuesday into an unrecognizable day expression, produced `3 किगारी` for
+kilograms, and failed to identify potatoes. The public synthetic Hindi
+question was echoed rather than answered. Successful compilation and other
+browser checks do not establish Hindi quality. Deployment was correctly skipped.
+
+An additional source-grounded **bounded terminology** aid was introduced for
+weekday names, common crops and measurement units. The aid is general across
+multiple words and is created only from actual cited English evidence relevant
+to the asked fact type; it does not add unrelated examples to the system prompt.
+The post-generation validator rejects outputs omitting these constrained facts
+and rejects answers repeating the exact question. On a limited translation
+failure, the local Qwen model receives one additional attempt with the same
+source-specific constraints. The source citation set must also remain unchanged.
+This is a narrow guard, not full semantic equivalence. Additional unit tests use
+Wednesday and wheat (not the three preexisting oracle targets). Raw generative
+outputs are preserved per stage by the private CI evaluator. No improvement is
+claimed until a new genuine-model run demonstrates it. Version stays v0.2.0.

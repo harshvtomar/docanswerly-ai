@@ -148,3 +148,13 @@ an English factual draft followed by Hindi-only translation when evidence is
 entirely non-Devanagari, validating source numerals and citations after both
 steps. Check the latest CI and actual model text before accepting this as an
 improvement; the stringent Hindi test is intentionally still enabled.
+
+## Continued Hindi quality failure and bounded correction
+
+Run 39202191083 did not meet Hindi reference accuracy (0/3); do not treat it as
+completed Priority 1. The next checkpoint adds a general source-specific Hindi
+term guard for weekdays, crops and weight units, one strictly bounded model
+translation correction, question-echo rejection, and per-stage evaluation raw
+outputs. Tests include non-benchmark Wednesday and wheat. Check the new Actions
+run and raw model outputs before reporting any quality improvement. Neither
+lexical constraints nor citation IDs prove general answer groundedness.

@@ -24,9 +24,11 @@ document.querySelector<HTMLButtonElement>("#run")!.onclick = async () => {
     );
     const initializationMs = performance.now() - initStart;
     let raw = "";
+    const rawStages: string[] = [];
     const provider = new GroundedAnswerProvider({
       generate: async (...args) => {
         raw = await runtime.generate(...args);
+        rawStages.push(raw);
         return raw;
       },
     });
@@ -34,6 +36,7 @@ document.querySelector<HTMLButtonElement>("#run")!.onclick = async () => {
       status.textContent = `Evaluating ${c.id}`;
       const start = performance.now();
       raw = "";
+      rawStages.length = 0;
       try {
         const answer = await provider.answer(
           {
@@ -77,6 +80,7 @@ document.querySelector<HTMLButtonElement>("#run")!.onclick = async () => {
           expectedStatus: c.expectedStatus,
           answer,
           raw,
+          rawStages: rawStages.slice(),
           referenceMatch,
           sourceSetMatches,
           latencyMs: performance.now() - start,
@@ -86,6 +90,7 @@ document.querySelector<HTMLButtonElement>("#run")!.onclick = async () => {
           id: c.id,
           expectedStatus: c.expectedStatus,
           raw,
+          rawStages: rawStages.slice(),
           error: error instanceof Error ? error.message : String(error),
           referenceMatch: false,
           sourceSetMatches: false,

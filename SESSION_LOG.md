@@ -311,3 +311,13 @@ single-pass English-evidence path. Updated assertions to verify the corrected
 prompts and test single-pass retries using Hindi-containing evidence. No model
 quality metrics or corpus expectations were changed. New CI must verify the
 real English-draft → Hindi-translation path.
+
+### Session 3B Priority 1 — second model-quality failure and terminology safeguard
+Run 39202191083: all preliminary suites and 30 other browser checks passed,
+but genuine English-evidence→Hindi accuracy remained 0/3 and the test rightly
+blocked deployment. Raw errors: Tuesday was mistranslated, kilograms became
+`किगारी`, potatoes became a different word; bilingual UI answer merely echoed
+the question. Added bounded weekday/crop/weight term grounding, explicit
+question-echo rejection, at-most-one translation correction and per-stage
+synthetic evaluation diagnostics. New unit tests check previously unseen
+Wednesday and wheat. These changes require fresh CI and model evaluation.

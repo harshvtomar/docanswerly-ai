@@ -486,6 +486,66 @@ describe("grounded answer boundary", () => {
       output({ answer: "4 किलो", language: "hi" }), r,
     ).status).toBe("answer");
   });
+  it("rejects a Hindi echo of the user question instead of an answer", () => {
+    const r: AnswerRequest = {
+      ...request, language: "hi",
+      question: "भारत में किसका उपयोग बढ़ रहा है?",
+      evidence: [{ ...request.evidence[0], text: "भारत में Artificial Intelligence का उपयोग बढ़ रहा है।" }],
+    };
+    expect(() => validateAnswer(output({
+      answer: "भारत में किसका उपयोग बढ़ रहा है?", language: "hi",
+    }), r)).toThrow("repeated the question");
+  });
+  it("rejects wrong day and crop names for English-evidence Hindi questions", () => {
+    const day: AnswerRequest = {
+      ...request, language: "hi", question: "केंद्र किस दिन बंद है?",
+      evidence: [{...request.evidence[0],text:"The centre remains closed every Wednesday."}],
+    };
+    expect(() => validateAnswer(output({
+      answer: "केंद्र शुक्रवार को बंद है।", language:"hi",
+    }), day)).toThrow("source-critical");
+    expect(validateAnswer(output({
+      answer: "केंद्र बुधवार को बंद है।", language:"hi",
+    }), day).status).toBe("answer");
+    const crop: AnswerRequest = {
+      ...request, language: "hi", question: "खेत में कौन सी फसल उगती है?",
+      evidence: [{...request.evidence[0],text:"The farm grows wheat."}],
+    };
+    expect(() => validateAnswer(output({
+      answer:"खेत में आलू उगता है।",language:"hi",
+    }), crop)).toThrow("source-critical");
+    expect(validateAnswer(output({
+      answer:"खेत में गेहूँ उगता है।",language:"hi",
+    }), crop).status).toBe("answer");
+  });
+  it("sends source-specific hints, not unrelated sample facts, for translation", () => {
+    const r: AnswerRequest = {
+      ...request, language: "hi", question: "किस दिन बंद रहता है?",
+      evidence: [{...request.evidence[0],text:"The centre is closed on Thursday."}],
+    };
+    const prompt = hindiTranslationMessages(r, output({language:"en",answer:"The centre is closed on Thursday."}));
+    const user = JSON.parse(prompt[1].content);
+    expect(user.sourceTerminology).toEqual([{source:"Thursday",hindi:"गुरुवार"}]);
+    expect(prompt[0].content).not.toContain("Friday");
+  });
+  it("uses a single bounded correction for source-critical Hindi mistranslation", async () => {
+    let calls = 0;
+    const r: AnswerRequest = {
+      ...request, language:"hi", question:"किस दिन बंद है?",
+      evidence: [{...request.evidence[0], text:"The office is closed on Wednesday."}],
+    };
+    const p = new GroundedAnswerProvider({
+      generate: async () => {
+        calls++;
+        if (calls === 1) return output({language:"en",answer:"The office is closed on Wednesday."});
+        if (calls === 2) return output({language:"hi",answer:"कार्यालय शुक्रवार को बंद है।"});
+        return output({language:"hi",answer:"कार्यालय बुधवार को बंद है।"});
+      },
+    });
+    const ans = await p.answer(r);
+    expect(ans.answer).toContain("बुधवार");
+    expect(calls).toBe(3);
+  });
   it("selects bounded whole passages", () => {
     const hits = Array.from({ length: 8 }, (_, i) => ({
       score: 1,
