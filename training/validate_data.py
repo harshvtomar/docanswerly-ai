@@ -7,8 +7,14 @@ from pathlib import Path
 
 def validate(data_dir: Path) -> dict:
     manifest = json.loads((data_dir/"manifest.json").read_text(encoding="utf8"))
-    if not manifest.get("synthetic") or manifest.get("reviewed_by_human"):
-        raise ValueError("Synthetic pilot provenance incorrectly labelled")
+    synthetic = manifest.get("synthetic")
+    reviewed = manifest.get("reviewed_by_human")
+    if not isinstance(synthetic, bool) or not isinstance(reviewed, bool) or synthetic == reviewed:
+        raise ValueError("Dataset provenance must identify synthetic-unreviewed OR reviewed-non-synthetic")
+    if not synthetic and not manifest.get("input_sha256"):
+        raise ValueError("Reviewed dataset must retain the input corpus SHA-256")
+    if not synthetic and manifest.get("unique_training_word_forms", 0) < manifest.get("unique_word_target", 500_000):
+        raise ValueError("Reviewed dataset did not meet its unique word target")
     all_rows = set()
     counts = {}
     statuses = set()
@@ -60,7 +66,7 @@ def validate(data_dir: Path) -> dict:
         raise ValueError("Pilot data does not contain all answer statuses")
     return {
         "result":"pass", "counts":counts,"total":sum(counts.values()),
-        "synthetic":True,"human_reviewed":False,"weight_updates":0,
+        "synthetic":synthetic,"human_reviewed":reviewed,"weight_updates":0,
     }
 
 if __name__ == "__main__":
