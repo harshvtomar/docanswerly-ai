@@ -129,7 +129,7 @@ export function AnswerPanel({
         setMessage("Local answer complete");
       }
     } catch (e) {
-      if (revision.current === current)
+      if (revision.current === current) {
         setError(
           signal.aborted
             ? "Answer cancelled or timed out. You can retry."
@@ -137,8 +137,17 @@ export function AnswerPanel({
               ? e.message
               : "Answer generation failed.",
         );
+        setMessage(
+          signal.aborted
+            ? "Local answer cancelled or timed out. You can retry."
+            : "Local answer failed. You can retry.",
+        );
+      }
     } finally {
-      if (revision.current === current) setBusy(false);
+      if (revision.current === current) {
+        if (operation.current === abort) operation.current = null;
+        setBusy(false);
+      }
     }
   }
   return (

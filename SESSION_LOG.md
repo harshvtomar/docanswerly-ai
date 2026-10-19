@@ -216,3 +216,15 @@ already preserved. Scratch was subsequently pruned. Re-cloned the same repositor
 confirmed unchanged remote HEAD and successful CI, recovered the unexpired
 11798185153 artifact, and restored final documentation from verified evidence.
 No repository replacement, force-push or new inference run.
+
+## Session 3B pre-work — focused Chat-mode checkpoint (19 October 2026)
+
+Analyzed all 30 previously saved genuine-model cases without new inference.
+Recorded 11 nonempty refusal-format errors, two requested-Hindi failures,
+incorrect cross-language units (6 weeks → 6 years), and English-labelled
+Devanagari output. Added a reproducible saved-run audit command and detailed
+failure triage in docs/SESSION_3B_PREWORK.md. Fixed AnswerPanel status remaining
+at “Generating” after errors/cancellation and strengthened its existing browser
+regression assertion. This checkpoint does not assert improved LLM answer
+quality; full real-model tests and deployment status must be checked in Actions.
+Version remains v0.2.0.

@@ -1,7 +1,7 @@
 {
   "name": "docanswerly-ai",
   "version": "0.2.0",
-  "description": "DocAnswerly AI \u2014 Upload Documents. Ask Questions. Get Answers. Multilingual English/Hindi document intelligence.",
+  "description": "DocAnswerly AI — Upload Documents. Ask Questions. Get Answers. Multilingual English/Hindi document intelligence.",
   "main": "index.js",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
@@ -18,7 +18,8 @@
     "test:retrieval": "npm run prepare:model && node --import tsx scripts/evaluate-retrieval.ts",
     "prepare:generation": "node scripts/prepare-generation.mjs",
     "test:hybrid": "npm run prepare:model && node --import tsx scripts/evaluate-hybrid.ts",
-    "build:evaluation": "vite build --config vite.evaluation.config.ts"
+    "build:evaluation": "vite build --config vite.evaluation.config.ts",
+    "audit:rag": "node scripts/audit-rag.mjs"
   },
   "repository": {
     "type": "git",

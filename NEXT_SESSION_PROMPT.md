@@ -75,3 +75,13 @@ Avoid unrelated UI redesign, OCR expansion, providers or storage during recovery
 Commit and push verified changes regularly with current HEAD as parent and a
 non-forced expected-SHA update. Verify the remote SHA and Actions. Update state/log
 and this continuation with actual results; GitHub is authoritative, not chat.
+
+## Session 3B pre-work update — 19 October 2026
+
+Before repeating already completed diagnostics, inspect
+`docs/SESSION_3B_PREWORK.md`, run `npm run audit:rag`, and check the
+latest GitHub Actions for the pre-work commit. A targeted AnswerPanel error
+status fix and browser regression assertion were added, but no model prompt,
+structured parser, model weights, or quality labels changed. Do not claim
+Hindi generation or abstention has improved. Continue with genuine targeted
+Qwen3 inference and prompt/schema investigation. Keep v0.2.0 until release.

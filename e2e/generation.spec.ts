@@ -43,6 +43,12 @@ test("genuine local answer, citation navigation, Hindi and unsupported question"
       alerts,
       latencyMs: Date.now() - start,
     });
+    // A failed model validation must never leave the UI at "Generating".
+    if (alerts.length) {
+      await expect(page.locator('.ask-panel [role="status"]')).toHaveText(
+        "Local answer failed. You can retry.",
+      );
+    }
     if (question.startsWith("What improves")) {
       await expect(page.locator(".answer-output")).toContainText(
         /intelligence/i,
