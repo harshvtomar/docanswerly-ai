@@ -18,6 +18,7 @@ def main() -> None:
     ap.add_argument("--data",type=Path,default=Path("training/data"))
     ap.add_argument("--output",type=Path,default=Path("training/output/qwen3-docanswerly-lora"))
     ap.add_argument("--train",action="store_true",help="Perform actual LoRA training (CUDA required)")
+    ap.add_argument("--check",action="store_true",help="Validate inputs and exit without training (default)")
     ap.add_argument("--allow-synthetic",action="store_true",
                     help="Explicitly acknowledge unreviewed synthetic pilot; not for production deployment")
     ap.add_argument("--max-steps",type=int,default=100)

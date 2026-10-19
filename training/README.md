@@ -19,8 +19,9 @@ python3 -m unittest discover -s training -p 'test_*.py'
 python3 training/train_lora.py --data training/data --check
 \`\`\`
 
-The pilot creates a few hundred-to-thousand original *synthetic template*
-examples, split by disjoint fictional entities into train/validation/test.
+The default pilot creates 1,400 original *synthetic template* examples
+(840 train / 280 validation / 280 test), split by disjoint fictional
+entities into train/validation/test.
 It covers Hindi/English source-answer direction, source IDs, abstentions,
 contradictory facts, numeric fidelity, prompt injection and mixed-language text.
 It reuses template families across splits, so even its held-out test split

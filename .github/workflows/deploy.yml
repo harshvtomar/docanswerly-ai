@@ -24,6 +24,11 @@ jobs:
           cache: npm
       - run: npm ci
       - run: python3 -m unittest discover -s training -p 'test_*.py'
+      - name: Validate synthetic fine-tuning pilot (no model training)
+        run: |
+          python3 training/prepare_data.py --output training/data
+          python3 training/validate_data.py --data training/data
+          python3 training/train_lora.py --data training/data --check
       - run: npm test
       - run: npm run test:stress
       - run: npm run test:pdf

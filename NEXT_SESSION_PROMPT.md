@@ -248,3 +248,11 @@ Run training dataset validation and inspect provenance before considering
 training, and do not launch paid GPU resources without explicit consent.
 The model has not been fine-tuned or deployed; accuracy gains unverified.
 Continue with independent held-out evaluation and human dataset review.
+
+## Training dataset/CLI verification update
+
+The opt-in Qwen3 training setup now includes an explicit `--check` CLI option.
+GitHub Actions generates 1,400 synthetic pilot examples, validates every
+train/validation/test row and runs the no-model-load preflight check. Neither
+that check nor 12,000 stress validations changes model weights. Real LoRA
+fine-tuning still needs an explicitly provisioned CUDA GPU and HF base weights.
