@@ -266,3 +266,9 @@ questions. These bypass unreliable generation only when narrow detectable rules
 match. Explicit validation labels distinguish heuristics from model-grounded
 abstention; evaluation counts them separately. Added targeted unit checks and
 user-facing limitations. Genuine model-quality and CI status remain to be verified.
+
+### Session 3B — measured-unit fidelity check
+Extended answer validation to Hindi numeric durations and source-backed weight
+units so malformed unit translations are rejected rather than presented as
+verified answers. Added focused tests. This is fail-closed validation, not a
+successful regeneration or new model-quality metric. Verify the latest CI.

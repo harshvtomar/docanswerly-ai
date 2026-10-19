@@ -111,3 +111,10 @@ are separately labelled and NEVER counted as valid raw-model abstentions.
 Inspect new CI, false refusals and real inference output. This is not general
 semantic entailment; extend evaluation before declaring unsupported-answer
 correctness solved. Preserve v0.2.0 until quality/release gates pass.
+
+## Unit fidelity checkpoint
+
+Numeric source-unit checks now cover Hindi durations and weight questions in
+addition to English duration changes. Observe actual new Qwen3 output; rejected
+mistranslations are safety improvements but do not equal correct Hindi answers.
+No version bump until genuine evaluations and regression tests succeed.

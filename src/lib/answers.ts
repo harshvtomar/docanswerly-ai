@@ -219,6 +219,30 @@ export function validateAnswer(
   const answerText = v.answer as string; // Schema check above established a string.
   if (durationUnits.some((unit) => unit.answer.test(answerText) && !unit.evidence.test(citedText)))
     throw Error("The answer contains a duration unit absent from its cited passages.");
+  // Hindi duration units must also agree with their sources. The numeric
+  // consistency check alone cannot detect "6 सप्ताह" -> "6 साल".
+  const hindiDurationUnits = [
+    { answer: /[०-९\d]+\s*(?:साल|वर्ष)/u, evidence: /\b(?:years?|yrs?)\b|साल|वर्ष/u },
+    { answer: /[०-९\d]+\s*(?:सप्ताह|हफ़्ते|हफ्ते)/u, evidence: /\bweeks?\b|सप्ताह|हफ़्त|हफ्त/u },
+    { answer: /[०-९\d]+\s*(?:महीने|माह)/u, evidence: /\bmonths?\b|महीन|माह/u },
+    { answer: /[०-९\d]+\s*दिन/u, evidence: /\bdays?\b|दिन/u },
+  ];
+  if (hindiDurationUnits.some((unit) =>
+    unit.answer.test(answerText) && !unit.evidence.test(citedText)
+  ))
+    throw Error("The answer contains a duration unit absent from its cited passages.");
+  // If a question specifically requests weight, a source unit must survive
+  // translation as the equivalent unit, not as a malformed Hindi expression.
+  if (/\b(?:weight|weighs?|mass|heavy)\b|वजन|वज़न|भार/u.test(request.question)) {
+    const weights = [
+      { source: /\b(?:kg|kilograms?)\b|किलोग्राम|किलो/u, answer: /\b(?:kg|kilograms?)\b|किलोग्राम|किलो/u },
+      { source: /\b(?:g|grams?)\b|ग्राम/u, answer: /\b(?:g|grams?)\b|ग्राम/u },
+      { source: /\b(?:lbs?|pounds?)\b|पाउंड/u, answer: /\b(?:lbs?|pounds?)\b|पाउंड/u },
+    ];
+    const knownUnit = weights.find((unit) => unit.source.test(citedText));
+    if (knownUnit && !knownUnit.answer.test(answerText))
+      throw Error("The answer omitted or mistranslated the source weight unit.");
+  }
   return {
     status: "answer",
     answer: v.answer,

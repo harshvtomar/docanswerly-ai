@@ -348,6 +348,31 @@ describe("grounded answer boundary", () => {
     }).answer(r);
     expect(called).toBe(true);
   });
+  it("rejects Hindi duration unit drift even when the numeral is unchanged", () => {
+    const r: AnswerRequest = {
+      ...request, language: "hi",
+      evidence: [{ ...request.evidence[0], text: "पाठ्यक्रम 6 सप्ताह का है।" }],
+    };
+    expect(() => validateAnswer(
+      output({ answer: "पाठ्यक्रम 6 साल का है।", language: "hi" }), r,
+    )).toThrow("duration unit");
+    expect(validateAnswer(
+      output({ answer: "पाठ्यक्रम 6 सप्ताह का है।", language: "hi" }), r,
+    ).status).toBe("answer");
+  });
+  it("rejects garbled Hindi weight units from English source evidence", () => {
+    const r: AnswerRequest = {
+      ...request, language: "hi",
+      question: "इस पार्सल का वजन कितना है?",
+      evidence: [{ ...request.evidence[0], text: "The parcel weighs 4 kilograms." }],
+    };
+    expect(() => validateAnswer(
+      output({ answer: "4 किगारी", language: "hi" }), r,
+    )).toThrow("source weight unit");
+    expect(validateAnswer(
+      output({ answer: "4 किलो", language: "hi" }), r,
+    ).status).toBe("answer");
+  });
   it("selects bounded whole passages", () => {
     const hits = Array.from({ length: 8 }, (_, i) => ({
       score: 1,

@@ -74,3 +74,11 @@ invalid citation IDs and invalid/mismatched shapes remain failures.
 
 These changes require fresh real-model testing to determine actual Hindi and
 cross-language quality. Historical 30-case raw results are not modified.
+
+### Further targeted source-unit safeguards
+
+Added checks for Hindi duration units and weight questions. The older saved
+cross-hi-2 answer `3 किगारी` should be rejected because it fails to preserve
+the English source's kilograms unit; `3 किलो` remains acceptable. No source
+text or expected answer was changed. These are narrow structural checks, not
+proof of overall Hindi fluency, and still require real-model evaluation.
