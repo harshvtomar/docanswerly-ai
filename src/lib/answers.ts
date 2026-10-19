@@ -248,7 +248,7 @@ export function validateAnswer(
     return request.evidence[index];
   });
   // Conservative check only, not a semantic entailment classifier. No new numerals.
-  const numerals = (s: string) =>
+  const numerals = (s: string): string[] =>
     s
       .replace(/[०-९]/g, (c) => String(c.charCodeAt(0) - 0x966))
       .match(/\d+(?:[.,]\d+)*/g) ?? [];
