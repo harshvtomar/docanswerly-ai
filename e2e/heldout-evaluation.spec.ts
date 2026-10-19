@@ -1,8 +1,17 @@
 import { test, expect } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
-import suite from "../evaluation/heldout-cases.json";
+import { readFileSync } from "node:fs";
 
-type Gold = (typeof suite.cases)[number];
+// Node 24 requires an import attribute for JSON ESM. Read the frozen
+// evaluation set as bytes to avoid framework-specific module transforms.
+type Gold = {
+  id: string; category: string; question: string; evidence: string[];
+  language: string; expectedStatus: string; requiredTerms: string[];
+  forbiddenTerms: string[]; supportingEvidence: number[]; factCheck: string;
+};
+const suite = JSON.parse(readFileSync("evaluation/heldout-cases.json","utf8")) as {
+  suite: string; cases: Gold[];
+};
 type Row = {
   id: string; raw: string; rawStages?: string[];
   answer?: {
