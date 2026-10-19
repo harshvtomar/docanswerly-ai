@@ -244,3 +244,23 @@ supplied exact permitted source labels from the validated draft. A new unit
 test covers a three-passage E3 citation. Unknown/missing model citation IDs
 still fail strict validation. This is not a claim of verified generation quality
 until genuine tests pass.
+
+## Session 3B — mixed-Hindi model limitation and safe release acceptance (19 October 2026)
+
+Run 39255489649 completed full 30-case inference and retained **3/3**
+English-document→Hindi reference matches. The unknown-citation error seen in
+prior run 39253185783 no longer occurred. However, in both desktop and mobile
+public bilingual sample cases the local Qwen model failed to produce a valid
+Hindi answer and the app showed **Source excerpt · AI answer unavailable**.
+Thus **genuine mixed-Hindi generation remains unverified/not achieved**.
+
+For the experimental **v0.2.0** functioning-app gate, browser E2E now accepts
+only (1) genuinely validated and labelled model output, or (2) a transparently
+labelled verbatim excerpt from page 3 with actual citation, an explicit note
+that no AI-generated answer was produced, and a successful click through to
+page 3. Which path was used is recorded as `answerMode` in the browser test
+artifact. This prevents an unsafe or unlabelled failure from being considered
+successful functionality; it does **not** reclassify source fallback as model
+accuracy. The separate genuine Qwen 3/3 oracle-quality gate and citation
+validation are unchanged. Broader mixed-language generated-answer accuracy
+remains an explicit v0.3.0 acceptance blocker.

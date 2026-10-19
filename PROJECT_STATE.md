@@ -115,3 +115,12 @@ strict abstentions. Semantic claim-level groundedness has not been measured.
 Session 3C should address evidence sufficiency; remaining Session 3B work
 includes broader bilingual factual quality and additional evaluation.
 Version remains **v0.2.0**. No v0.3.0 release.
+
+## Session 3B mixed-language Hindi limitation (19 October 2026)
+
+The local 0.6B model still occasionally cannot answer in Hindi from a mixed
+Hindi/English document. Source-excerpt fallback is clearly labelled and
+cited. The experimental v0.2.0 functional browser regression now verifies
+that fallback as a safe alternate outcome, not an AI-generated answer. Full
+release-quality mixed-Hindi generation remains unfinished; 3/3 narrowly
+measured English-evidence→Hindi oracle references are not general accuracy.

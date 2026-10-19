@@ -204,3 +204,15 @@ The next checkpoint sends the exact original E1/E2/E3 IDs in the system/user
 messages and has a unit test for E3. No post-hoc citation fabrication. Check
 the new CI result and real output, keep the genuine Hindi gate enabled, and
 do not call this verified until the public sample passes.
+
+## Current Priority 1 quality boundary / honest safe fallback
+
+Run 39255489649 preserved 3/3 English→Hindi oracle reference matches, but
+both desktop/mobile public mixed-language sample tests used the explicitly
+labelled source-excerpt fallback rather than genuine Qwen Hindi generation.
+For experimental v0.2.0 CI only, E2E now confirms either truly validated model
+output or a *clearly labelled* original passage with accurate citation and
+navigation, and records `answerMode` in the artifact. It never counts that
+fallback as a generated answer. Before a v0.3.0 claim, improve genuine
+mixed-language generation on independently held-out cases; maintain the 3/3
+real model gate and true model-abstention measurement.

@@ -362,3 +362,14 @@ source was E2 or E3. Replaced the example with the exact validated source
 labels, supplied to Qwen as a literal requiredCitationIds array, and added an
 E3 negative regression. No source IDs are invented or silently repaired;
 existing citation validation remains strict. Fresh real-model CI required.
+
+### Session 3B mixed-language outcome and deployment gate (19 October 2026)
+The exact-source-ID prompt resolved the previous unknown-citation error, but
+run 39255489649 still showed source-excerpt fallbacks on both desktop and
+mobile; it did not produce a validated AI-generated Hindi answer for the
+mixed-language sample. The separate English-only-evidence→Hindi proxy remains
+3/3. For the experimental v0.2.0 UI gate, the browser test now verifies the
+fallback **as a fallback** with the original page-3 citation, source text,
+visible honesty label and navigation, and records the mode in the CI artifact.
+Model success is NOT inferred from a fallback. The true mixed-Hindi quality
+issue is open and v0.3.0 release remains blocked on broader quality criteria.
