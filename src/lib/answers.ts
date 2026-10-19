@@ -620,9 +620,17 @@ export class GroundedAnswerProvider {
         signal,
       );
       if (signal?.aborted) throw new DOMException("Cancelled", "AbortError");
+      const checkTranslation = (candidate: string): GroundedAnswer => {
+        const result = validateAnswer(candidate, request);
+        if (english.citations.map(c=>c.id).join("|") !== result.citations.map(c=>c.id).join("|"))
+          throw Error("The Hindi translation changed the supporting citation identities.");
+        if (numericFingerprint(english.answer) !== numericFingerprint(result.answer))
+          throw Error("The Hindi translation changed the source answer's numeric facts.");
+        return result;
+      };
       let translated: GroundedAnswer;
       try {
-        translated = validateAnswer(translatedRaw, request);
+        translated = checkTranslation(translatedRaw);
       } catch (error) {
         const reason = error instanceof Error ? error.message : "";
         if (![
@@ -631,23 +639,18 @@ export class GroundedAnswerProvider {
           "The weight answer omitted the cited numeric quantity.",
           "The model did not produce the requested Hindi answer.",
           "The model repeated the question instead of answering.",
+          "The Hindi translation changed the source answer's numeric facts.",
         ].includes(reason)) throw error;
         if (signal?.aborted) throw new DOMException("Cancelled", "AbortError");
         const retry = hindiTranslationMessages(request, englishRaw);
-        retry[0].content += " The previous attempt did not preserve the requested evidence facts. Keep each provided sourceTerminology equivalent in the Hindi answer. Include the exact cited quantities and units. Do not repeat the question. JSON only.";
+        retry[0].content +=
+          " Previous draft's factual numerals MUST ALL appear in the Hindi answer: " +
+          JSON.stringify(numericFingerprint(english.answer).split("|").filter(Boolean)) +
+          ". Preserve the complete numeric value with matching units and original citation labels, not merely a unit. Do not repeat the question. JSON only.";
         translatedRaw = await this.client.generate(retry, translationSchema, signal);
         if (signal?.aborted) throw new DOMException("Cancelled", "AbortError");
-        translated = validateAnswer(translatedRaw, request);
+        translated = checkTranslation(translatedRaw);
       }
-      if (english.citations.map(c => c.id).join("|") !== translated.citations.map(c => c.id).join("|"))
-        throw Error("The Hindi translation changed the supporting citation identities.");
-      // Source-only numeric checking does not detect numeric omissions.
-      const numbers = (text: string) => (
-        text.replace(/[०-९]/gu, c => String(c.charCodeAt(0) - 0x966))
-          .match(/\d+(?:[.,]\d+)*/g) ?? []
-      ).sort().join("|");
-      if (numbers(english.answer) !== numbers(translated.answer))
-        throw Error("The Hindi translation changed the source answer's numeric facts.");
       return translated;
     }
     const raw = await this.client.generate(
