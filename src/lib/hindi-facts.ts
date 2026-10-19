@@ -83,6 +83,16 @@ export function sourceEnglishMaterialGlossary(question: string, evidence: string
   if (!/\b(?:material|made from|made of|constructed from|walls?|fabric|metal|substance)\b|किस\s+से\s+बना|सामग्री/iu.test(question))
     return [];
   const text = evidence.join("\n");
-  return HINDI_MATERIAL_GLOSSARY.filter(x=>x.pattern.test(text))
+  // If the question asks about one clear subject, keep the matching sentence.
+  // This avoids translating the roof's wood as the walls' bamboo.
+  const subject = /\b(?:walls?|wall\s+material)\b/iu.test(question) &&
+    !/\b(?:roof|ceiling|and\s+walls)\b/iu.test(question)
+      ? /दीवार/iu
+      : /\b(?:roofs?|ceilings?)\b/iu.test(question) &&
+          !/\b(?:walls?)\b/iu.test(question)
+        ? /छत/iu : null;
+  const sentences = text.split(/[।.!?\r\n]+/u).filter(s => s.trim());
+  const scoped = subject ? sentences.filter(s => subject.test(s)).join("\n") : text;
+  return HINDI_MATERIAL_GLOSSARY.filter(x=>x.pattern.test(scoped))
     .map(({source,english})=>({source,english}));
 }

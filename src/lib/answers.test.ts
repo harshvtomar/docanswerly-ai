@@ -798,7 +798,7 @@ describe("source-scoped English material repair", () => {
         text:"प्रदर्शनी की दीवारें बाँस से बनाई गई हैं। छत पर लकड़ी का काम है।",start:0,end:70}],
     };
     const hint=JSON.parse(answerMessages(r,true)[1].content);
-    expect(hint.sourceGlossary).toEqual([{source:"बाँस",english:"bamboo"},{source:"लकड़ी",english:"wood"}]);
+    expect(hint.sourceGlossary).toEqual([{source:"बाँस",english:"bamboo"}]);
     expect(answerMessages(r,true)[0].content).toContain("Translate the actual Hindi evidence");
   });
 });
