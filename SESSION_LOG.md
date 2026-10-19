@@ -171,3 +171,48 @@ Node 24 CPU-only npm ci passed. Local unit 56, PDF/OCR 7, real embedding 9 passe
 hybrid metrics unchanged. Browser results for the new checkpoint are pending CI.
 Restored stale local scratch from authoritative remote files; no remote history
 reset or force push. Updated README/state and standalone Session 3B handoff.
+
+## Verified Session 3A completion
+
+Code/deployment: f5d8c85d6514e0125a4942597afa7fc6017f3541.
+[Run 38366200372](https://github.com/harshvtomar/docanswerly-ai/actions/runs/38366200372)
+completed successfully on 13 October 2026; status and artifacts reverified on
+19 October 2026. Both build 115191822041 and deploy 115198205359 succeeded.
+
+| Suite | Passed | Failed | Skipped |
+|---|---:|---:|---:|
+| Vitest | 56 | 0 | 0 |
+| PDF/OCR | 7 | 0 | 0 |
+| Real embedding checks | 9 | 0 | 0 |
+| Desktop/mobile UI cases | 28 | 0 | 0 |
+| Full thirty-case evaluation infrastructure | 1 | 0 | 0 |
+| Module/model failure-path browser tests | 2 | 0 | 0 |
+| Total | 103 | 0 | 0 |
+
+The thirty model cases are evaluation rows, not thirty passing correctness tests.
+All thirty real outputs completed; 13 answer-validation errors remain unchanged.
+Initialization took 23,411.3 ms; browser suite 16.0 minutes. Module failure reached
+Failed in 121 ms; injected model HTTP 503 did so in 199 ms. Full-run diagnostics:
+zero page/HTTP/console errors and one exact model HEAD 200 / ERR_ABORTED warning.
+All raw request failures remain recorded. No other failures were exempted.
+Raw JSON and provenance: docs/runs/38366200372/ (relative to repository root).
+Historical run docs/runs/38331700774/ remains unchanged.
+
+Post-deployment public smoke on 13 October: index-C1rC7N9P.js matched production;
+bilingual sample processed three pages; Hindi search returned page 2 and citation
+navigation opened it. No application-origin errors; unrelated extension errors
+were excluded. Public evaluation.html returned GitHub Pages 404 as intended.
+
+The final documentation/results-only checkpoint uses [skip ci] to avoid repeating
+unchanged expensive inference. No executable file, test or workflow gate changes.
+The tested/deployed code remains f5d8c85; inspect current HEAD for final docs SHA.
+Version remains v0.2.0. No backend, paid service or prompt/label tuning was added.
+
+### Handoff recovery — 19 October 2026
+
+The final documentation push on 13 October was blocked by automatic approval
+review because the Work usage limit was reached. Code/deployment f5d8c85 was
+already preserved. Scratch was subsequently pruned. Re-cloned the same repository,
+confirmed unchanged remote HEAD and successful CI, recovered the unexpired
+11798185153 artifact, and restored final documentation from verified evidence.
+No repository replacement, force-push or new inference run.

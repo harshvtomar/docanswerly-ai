@@ -88,3 +88,18 @@ See [focused cases](runs/38331700774/focused-cases.json), original full JSON,
 UI generation observations in the same directory. These are synthetic fixtures,
 not personal documents. The UI Hindi sample failed language validation even
 though the oracle hi-1 case succeeds. No broad Hindi quality claim follows.
+
+## Successful recovery confirmation
+
+Run 38366200372 at f5d8c85d6514e0125a4942597afa7fc6017f3541 passed all
+31 browser tests and deployed. All thirty actual model rows completed; quality
+metrics are identical to the recovered run above. Initialization: 23,411.3 ms.
+Zero page/HTTP/console errors. The exact HEAD 200 / ERR_ABORTED event remains in
+both requests and warnings. [Raw results](runs/38366200372/rag-evaluation.json)
+and [diagnostics](runs/38366200372/evaluation-diagnostics.json) are preserved.
+
+Real UI questions also ran on desktop and emulated mobile: English succeeded;
+Hindi and unsupported questions retained explicit validation errors. Desktop
+latencies: 41,620 / 35,939 / 30,008 ms; mobile: 41,673 / 35,925 / 29,511 ms.
+These single-run observations are not performance or answer-quality guarantees.
+Artifacts were recovered unchanged on 19 October; no model rerun was needed.

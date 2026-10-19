@@ -4,8 +4,9 @@ Tagline: Upload Documents. Ask Questions. Get Answers.
 Version: v0.2.0. Default branch: main. No v0.3.0 release.
 Repository: https://github.com/harshvtomar/docanswerly-ai
 Live: https://harshvtomar.github.io/docanswerly-ai/
-Last verified remote baseline: 3ccf32043db6c57941eb19124465bb9cf57513e9.
-This checkpoint follows that baseline; inspect remote HEAD for its own SHA.
+Last verified code/deployment SHA: f5d8c85d6514e0125a4942597afa7fc6017f3541.
+Recovery baseline: 3ccf32043db6c57941eb19124465bb9cf57513e9.
+This documentation checkpoint follows the verified code SHA; inspect remote HEAD for its own SHA.
 
 ## Session 3A findings — 13 October 2026 UTC
 
@@ -33,7 +34,7 @@ Production app, prompt, validation and retrieval algorithms are unchanged.
 
 Local Node 24 CPU-only npm ci succeeded. 56 unit, 7 PDF/OCR and 9 real embedding
 checks passed (72 total, zero failed/skipped). Hybrid evaluation reproduced prior
-metrics. Browser/CI confirmation of this new checkpoint must be inspected in Actions.
+metrics. CI confirmation succeeded; see verified completion below.
 
 ## Feature status and limits
 
@@ -50,6 +51,42 @@ metrics. Browser/CI confirmation of this new checkpoint must be inspected in Act
 - Public UI may retain “Generating” progress wording after an answer error;
   this is deferred to Session 3B, not repaired through prompt changes here.
 
-Next: inspect this checkpoint's CI and public deployment, finish any infrastructure
-regression first, then plan separately authorized answer-quality work. Read
+Next: inspect current remote HEAD and CI, then plan separately authorized
+answer-quality work. Read
 NEXT_SESSION_PROMPT.md. Never restart or replace the repository.
+
+## Verified Session 3A completion
+
+Code/deployment: f5d8c85d6514e0125a4942597afa7fc6017f3541.
+[Run 38366200372](https://github.com/harshvtomar/docanswerly-ai/actions/runs/38366200372)
+completed successfully on 13 October 2026; status and artifacts reverified on
+19 October 2026. Both build 115191822041 and deploy 115198205359 succeeded.
+
+| Suite | Passed | Failed | Skipped |
+|---|---:|---:|---:|
+| Vitest | 56 | 0 | 0 |
+| PDF/OCR | 7 | 0 | 0 |
+| Real embedding checks | 9 | 0 | 0 |
+| Desktop/mobile UI cases | 28 | 0 | 0 |
+| Full thirty-case evaluation infrastructure | 1 | 0 | 0 |
+| Module/model failure-path browser tests | 2 | 0 | 0 |
+| Total | 103 | 0 | 0 |
+
+The thirty model cases are evaluation rows, not thirty passing correctness tests.
+All thirty real outputs completed; 13 answer-validation errors remain unchanged.
+Initialization took 23,411.3 ms; browser suite 16.0 minutes. Module failure reached
+Failed in 121 ms; injected model HTTP 503 did so in 199 ms. Full-run diagnostics:
+zero page/HTTP/console errors and one exact model HEAD 200 / ERR_ABORTED warning.
+All raw request failures remain recorded. No other failures were exempted.
+Raw JSON and provenance: docs/runs/38366200372/ (relative to repository root).
+Historical run docs/runs/38331700774/ remains unchanged.
+
+Post-deployment public smoke on 13 October: index-C1rC7N9P.js matched production;
+bilingual sample processed three pages; Hindi search returned page 2 and citation
+navigation opened it. No application-origin errors; unrelated extension errors
+were excluded. Public evaluation.html returned GitHub Pages 404 as intended.
+
+The final documentation/results-only checkpoint uses [skip ci] to avoid repeating
+unchanged expensive inference. No executable file, test or workflow gate changes.
+The tested/deployed code remains f5d8c85; inspect current HEAD for final docs SHA.
+Version remains v0.2.0. No backend, paid service or prompt/label tuning was added.

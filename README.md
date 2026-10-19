@@ -92,7 +92,9 @@ retrieval integrity and cancellation checks. See [actual counts](docs/TEST_RESUL
 OCR CER on the original clean synthetic sentences: English 0%, Hindi 5.17%, mixed
 0%; not general OCR accuracy. Semantic Recall@1/3/5 and MRR were 1.0 on 25 simple
 synthetic development queries. Keyword Recall@1 was 0.60; hybrid also 0.60, so
-hybrid is not recommended for cross-language queries. No held-out generalization
+the original hybrid was not recommended for cross-language queries. Revised
+optional hybrid held-out Recall@1 is .85 versus semantic .95. No representative
+real-world generalization
 or negative-query abstention is claimed. [Full evaluation and failures](docs/RETRIEVAL_EVALUATION.md).
 
 Fixtures and regeneration instructions: [public/fixtures](public/fixtures/README.md).

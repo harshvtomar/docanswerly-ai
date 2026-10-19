@@ -33,7 +33,9 @@ source offsets and immutable derived IDs. Mean pooling and L2 normalization prod
 
 The provider-neutral `SemanticIndex` swaps a fully embedded index atomically.
 Cosine ranks up to 40 candidates; hybrid combines the lexical and vector rankings
-with RRF (constant 60). Same-document/same-page spans with >50% overlap are deduped.
+with semantic-first weighted RRF (semantic 1, lexical .15, constant 10).
+Original equal-weight constant-60 RRF remains in evaluation comparisons.
+Same-document/same-page spans with >50% overlap are deduped.
 Different documents and pages keep independent citations, even with identical text.
 Result buttons open the original document and page.
 
@@ -54,19 +56,20 @@ CPU/WASM is the supported path; no WebGPU requirement or GPU benchmark is claime
 
 Model loading/inference failure is explicit, while keyword remains independently
 available. Ranked passages are not answers and retrieval has no validated negative
-query abstention. QA remains disabled. OCR ordering, noisy/rotated scans and layout
+query abstention. Experimental local QA is described below. OCR ordering, noisy/rotated scans and layout
 reconstruction still need broader datasets. Password entry is unsupported.
 
 ## Future secure generation
 
-`AnswerProvider` is an integration contract only. A deployed backend must hold API
+Current generation uses GroundedAnswerProvider and a local InferenceClient.
+If an external backend is added, it must hold API
 keys server-side, enforce authentication, rate/body limits, explicit origin policy,
 timeouts and cost ceilings. Do not treat CORS as authentication. Treat PDFs as
 untrusted evidence, validate citation IDs against supplied chunks and test claim
 support, contradiction and abstention. No document-triggered privileged actions.
 Shared storage requires document ownership checks. No paid service is authorized.
 
-## Session 3 / 3A current additions (supersede pending-generation notes above)
+## Local generation and evaluation
 
 Optional AnswerPanel uses real browser-local Qwen3 0.6B Q4_K_M through Wllama 3.8.1.
 Semantic retrieval selects up to three whole source chunks / 2100 characters.

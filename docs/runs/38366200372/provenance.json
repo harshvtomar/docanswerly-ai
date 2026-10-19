@@ -1,0 +1,14 @@
+{
+  "workflowRun": "https://github.com/harshvtomar/docanswerly-ai/actions/runs/38366200372",
+  "commit": "f5d8c85d6514e0125a4942597afa7fc6017f3541",
+  "artifactId": 11798185153,
+  "artifactZipSHA256": "2446a39556b9a41909d4d4272cdae6a2481d9b9c6ba58cb0c8949155c0f9652e",
+  "recoveredAt": "2026-10-19",
+  "notes": "Original CI JSON preserved unchanged; no new inference during documentation recovery.",
+  "files": {
+    "evaluation-diagnostics.json": "6deeade6971753ef0e9603538eaf43c25d79441c2687f38f49af747b348d2e9d",
+    "generation-chromium.json": "52eea08abe6a6c80fc4dea6ab78ab91a21bec0a175ee302cb5d033959b4e8af0",
+    "generation-mobile.json": "92b63ef724d154b02a64c07dfa13f56bf6f99a5bf579bb87ad509b6b5c467a3e",
+    "rag-evaluation.json": "aa737e6637fa8407f053613dc9e528f1ba3947e01be22b565701ec9f5a5aa4f4"
+  }
+}

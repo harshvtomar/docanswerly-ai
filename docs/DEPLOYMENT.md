@@ -15,7 +15,7 @@ Vite base must stay `/docanswerly-ai/`. PDF worker is a Vite asset URL; supporti
 PDF assets and OCR paths use `import.meta.env.BASE_URL`. `prepare-assets.mjs`
 copies package workers/WebAssembly and downloads versioned eng/hin traineddata
 with checksum checks. Fonts are bundled. CI fails if required assets are missing.
-The full static artifact is about 237 MiB including model/tokenizer and multiple
+The pre-generation Session 2 static artifact was about 237 MiB including model/tokenizer and multiple
 WASM variants; browsers fetch only the needed engine. Semantic opt-in downloads
 about 160 MB on first use; model/tokenizer total about 135 MB. Public weights are
 not committed in Git. scripts/prepare-model.mjs verifies the pinned checksums.
@@ -24,7 +24,7 @@ changing model revision must also change the runtime URL/cache namespace.
 
 ## Reproduce / deploy
 
-1. Clone this repository. Use `npm ci` on Node 24.
+1. Clone this repository. Use `ONNXRUNTIME_NODE_INSTALL_CUDA=skip npm ci` on Node 24.
 2. Run `npm test`, `npm run test:pdf`, `npm run build`.
 3. Install Chromium for Playwright and run `npm run test:e2e` where allowed.
 4. Commit/push a fast-forward update to main. Never force-push.
@@ -57,3 +57,9 @@ credentials. Production and evaluation are separate Vite builds, in that order.
 Evaluation HTML and `assets/evaluation-*.js` are removed before Pages upload.
 Run 38331700774 completed inference but failed its request assertion, so did not
 deploy. All regression gates and the full evaluation remain enabled for the fix.
+
+Recovery deployment f5d8c85d6514e0125a4942597afa7fc6017f3541 succeeded in
+run 38366200372 (13 October; status reverified 19 October). Public sample, Hindi
+search and source navigation passed the post-deploy smoke check; evaluation.html
+returned 404. Final docs/results-only commit skips repeated CI; no executable
+files or gates change. See TEST_RESULTS.md for the verified 103-check result.

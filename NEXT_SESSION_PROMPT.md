@@ -21,12 +21,21 @@ React missing-root repair. CI then failed on a model HEAD request ERR_ABORTED
 following HTTP 200. Page errors were empty; actual model GET/inference succeeded.
 Original raw outputs and diagnostics survive in docs/runs/38331700774.
 Last verified deployment before the 3A fix: 0237ad17ecf318727b830f9e0f87ba26107720ce.
-Inspect newer runs instead of assuming this remains the live version.
+Superseding verified deployment: f5d8c85d6514e0125a4942597afa7fc6017f3541,
+run 38366200372 succeeded. Inspect current HEAD/runs before editing.
 
 Session 3A adds a narrowly tested diagnostic classification for that exact probe,
 retains all request records, adds module/model failure-path browser tests, and
 removes the evaluation HTML AND bundle from Pages artifacts. Production model,
-prompt, labels and validation logic were not changed. Check actual CI confirmation.
+prompt, labels and validation logic were not changed. CI confirmation succeeded: 103 passed, 0 failed, 0 skipped (56 unit + 7 PDF/OCR
++ 9 embedding + 31 browser). Full corpus and both failure-path tests completed.
+Raw JSON: docs/runs/38366200372. Quality metrics and 13 validation errors remain
+unchanged. No unexpected page/HTTP/console errors; one exact completed HEAD warning
+retained. Public sample/Hindi search/page navigation worked after deployment on
+13 October; evaluation.html correctly returned 404. Final docs/results-only commit
+uses [skip ci] to avoid unchanged inference repetition; no tests were disabled.
+CI status/artifacts were reverified and archived on 19 October after a usage-limit
+interruption. No new model run was needed for that documentation recovery.
 
 ## Actual model results; do not relabel to hide failures
 
