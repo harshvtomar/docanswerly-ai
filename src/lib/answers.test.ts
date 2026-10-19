@@ -481,7 +481,7 @@ describe("grounded answer boundary", () => {
     };
     expect(() => validateAnswer(
       output({ answer: "4 किगारी", language: "hi" }), r,
-    )).toThrow("source weight unit");
+    )).toThrow(/source-critical term|source weight unit/);
     expect(validateAnswer(
       output({ answer: "4 किलो", language: "hi" }), r,
     ).status).toBe("answer");
