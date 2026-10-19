@@ -1,0 +1,470 @@
+{
+  "suite": "novel-word-qwen3-v1",
+  "note": "24 fictional exact-codeword QA cases (20 answer, 4 missing), assistant-authored and frozen before first model inference; 500k separate novel-word validator cases were not Qwen inference.",
+  "cases": [
+    {
+      "id": "novel-word-01",
+      "category": "en->en answer",
+      "question": "What is the verified codeword for fictional archive record Sable-1?",
+      "evidence": [
+        "The fictional archive record Sable-1 lists the identifier novelbolodogiba as its verified codeword. No other codeword is listed."
+      ],
+      "language": "en",
+      "expectedStatus": "answer",
+      "requiredTerms": [
+        "novelbolodogiba"
+      ],
+      "supportingEvidence": [
+        0
+      ],
+      "forbiddenTerms": [
+        "noveldabeligoba"
+      ],
+      "factCheck": "The only verified codeword is the exact new fictional word novelbolodogiba."
+    },
+    {
+      "id": "novel-word-02",
+      "category": "en->en answer",
+      "question": "What is the verified codeword for fictional archive record Sable-2?",
+      "evidence": [
+        "The fictional archive record Sable-2 lists the identifier novelbologabibo as its verified codeword. No other codeword is listed."
+      ],
+      "language": "en",
+      "expectedStatus": "answer",
+      "requiredTerms": [
+        "novelbologabibo"
+      ],
+      "supportingEvidence": [
+        0
+      ],
+      "forbiddenTerms": [
+        "noveldabelobobo"
+      ],
+      "factCheck": "The only verified codeword is the exact new fictional word novelbologabibo."
+    },
+    {
+      "id": "novel-word-03",
+      "category": "en->en answer",
+      "question": "What is the verified codeword for fictional archive record Sable-3?",
+      "evidence": [
+        "The fictional archive record Sable-3 lists the identifier novelbologagidi as its verified codeword. No other codeword is listed."
+      ],
+      "language": "en",
+      "expectedStatus": "answer",
+      "requiredTerms": [
+        "novelbologagidi"
+      ],
+      "supportingEvidence": [
+        0
+      ],
+      "forbiddenTerms": [
+        "noveldabelogodi"
+      ],
+      "factCheck": "The only verified codeword is the exact new fictional word novelbologagidi."
+    },
+    {
+      "id": "novel-word-04",
+      "category": "en->en answer",
+      "question": "What is the verified codeword for fictional archive record Sable-4?",
+      "evidence": [
+        "The fictional archive record Sable-4 lists the identifier novelbologebige as its verified codeword. No other codeword is listed."
+      ],
+      "language": "en",
+      "expectedStatus": "answer",
+      "requiredTerms": [
+        "novelbologebige"
+      ],
+      "supportingEvidence": [
+        0
+      ],
+      "forbiddenTerms": [
+        "noveldabibaboge"
+      ],
+      "factCheck": "The only verified codeword is the exact new fictional word novelbologebige."
+    },
+    {
+      "id": "novel-word-05",
+      "category": "en->en answer",
+      "question": "What is the verified codeword for fictional archive record Sable-5?",
+      "evidence": [
+        "The fictional archive record Sable-5 lists the identifier novelbologegila as its verified codeword. No other codeword is listed."
+      ],
+      "language": "en",
+      "expectedStatus": "answer",
+      "requiredTerms": [
+        "novelbologegila"
+      ],
+      "supportingEvidence": [
+        0
+      ],
+      "forbiddenTerms": [
+        "noveldabibagola"
+      ],
+      "factCheck": "The only verified codeword is the exact new fictional word novelbologegila."
+    },
+    {
+      "id": "novel-word-06",
+      "category": "en->en answer",
+      "question": "What is the verified codeword for fictional archive record Sable-6?",
+      "evidence": [
+        "The fictional archive record Sable-6 lists the identifier novelbologibilo as its verified codeword. No other codeword is listed."
+      ],
+      "language": "en",
+      "expectedStatus": "answer",
+      "requiredTerms": [
+        "novelbologibilo"
+      ],
+      "supportingEvidence": [
+        0
+      ],
+      "forbiddenTerms": [
+        "noveldabibebolo"
+      ],
+      "factCheck": "The only verified codeword is the exact new fictional word novelbologibilo."
+    },
+    {
+      "id": "novel-word-07",
+      "category": "en->en answer",
+      "question": "What is the verified codeword for fictional archive record Sable-7?",
+      "evidence": [
+        "The fictional archive record Sable-7 lists the identifier novelbologigobi as its verified codeword. No other codeword is listed."
+      ],
+      "language": "en",
+      "expectedStatus": "answer",
+      "requiredTerms": [
+        "novelbologigobi"
+      ],
+      "supportingEvidence": [
+        0
+      ],
+      "forbiddenTerms": [
+        "noveldabibelabi"
+      ],
+      "factCheck": "The only verified codeword is the exact new fictional word novelbologigobi."
+    },
+    {
+      "id": "novel-word-08",
+      "category": "en->en answer",
+      "question": "What is the verified codeword for fictional archive record Sable-8?",
+      "evidence": [
+        "The fictional archive record Sable-8 lists the identifier novelbologobode as its verified codeword. No other codeword is listed."
+      ],
+      "language": "en",
+      "expectedStatus": "answer",
+      "requiredTerms": [
+        "novelbologobode"
+      ],
+      "supportingEvidence": [
+        0
+      ],
+      "forbiddenTerms": [
+        "noveldabibidade"
+      ],
+      "factCheck": "The only verified codeword is the exact new fictional word novelbologobode."
+    },
+    {
+      "id": "novel-word-09",
+      "category": "hi->hi answer",
+      "question": "काल्पनिक अभिलेख Sable-9 का सत्यापित सांकेतिक नाम क्या है?",
+      "evidence": [
+        "काल्पनिक अभिलेख Sable-9 का सत्यापित सांकेतिक नाम नवकेपातितिगे है। अन्य नाम दर्ज नहीं है।"
+      ],
+      "language": "hi",
+      "expectedStatus": "answer",
+      "requiredTerms": [
+        "नवकेपातितिगे"
+      ],
+      "supportingEvidence": [
+        0
+      ],
+      "forbiddenTerms": [
+        "नवकोकुकुतुगे"
+      ],
+      "factCheck": "The only verified codeword is the exact new fictional word नवकेपातितिगे."
+    },
+    {
+      "id": "novel-word-10",
+      "category": "hi->hi answer",
+      "question": "काल्पनिक अभिलेख Sable-10 का सत्यापित सांकेतिक नाम क्या है?",
+      "evidence": [
+        "काल्पनिक अभिलेख Sable-10 का सत्यापित सांकेतिक नाम नवकेपातुकेति है। अन्य नाम दर्ज नहीं है।"
+      ],
+      "language": "hi",
+      "expectedStatus": "answer",
+      "requiredTerms": [
+        "नवकेपातुकेति"
+      ],
+      "supportingEvidence": [
+        0
+      ],
+      "forbiddenTerms": [
+        "नवकोकुकेकोति"
+      ],
+      "factCheck": "The only verified codeword is the exact new fictional word नवकेपातुकेति."
+    },
+    {
+      "id": "novel-word-11",
+      "category": "hi->hi answer",
+      "question": "काल्पनिक अभिलेख Sable-11 का सत्यापित सांकेतिक नाम क्या है?",
+      "evidence": [
+        "काल्पनिक अभिलेख Sable-11 का सत्यापित सांकेतिक नाम नवकेपातुतितो है। अन्य नाम दर्ज नहीं है।"
+      ],
+      "language": "hi",
+      "expectedStatus": "answer",
+      "requiredTerms": [
+        "नवकेपातुतितो"
+      ],
+      "supportingEvidence": [
+        0
+      ],
+      "forbiddenTerms": [
+        "नवकोकुकेतुतो"
+      ],
+      "factCheck": "The only verified codeword is the exact new fictional word नवकेपातुतितो."
+    },
+    {
+      "id": "novel-word-12",
+      "category": "hi->hi answer",
+      "question": "काल्पनिक अभिलेख Sable-12 का सत्यापित सांकेतिक नाम क्या है?",
+      "evidence": [
+        "काल्पनिक अभिलेख Sable-12 का सत्यापित सांकेतिक नाम नवकेपातेकोकि है। अन्य नाम दर्ज नहीं है।"
+      ],
+      "language": "hi",
+      "expectedStatus": "answer",
+      "requiredTerms": [
+        "नवकेपातेकोकि"
+      ],
+      "supportingEvidence": [
+        0
+      ],
+      "forbiddenTerms": [
+        "नवकोकुकोगाकि"
+      ],
+      "factCheck": "The only verified codeword is the exact new fictional word नवकेपातेकोकि."
+    },
+    {
+      "id": "novel-word-13",
+      "category": "hi->hi answer",
+      "question": "काल्पनिक अभिलेख Sable-13 का सत्यापित सांकेतिक नाम क्या है?",
+      "evidence": [
+        "काल्पनिक अभिलेख Sable-13 का सत्यापित सांकेतिक नाम नवकेपातेतुको है। अन्य नाम दर्ज नहीं है।"
+      ],
+      "language": "hi",
+      "expectedStatus": "answer",
+      "requiredTerms": [
+        "नवकेपातेतुको"
+      ],
+      "supportingEvidence": [
+        0
+      ],
+      "forbiddenTerms": [
+        "नवकोकुकोतेको"
+      ],
+      "factCheck": "The only verified codeword is the exact new fictional word नवकेपातेतुको."
+    },
+    {
+      "id": "novel-word-14",
+      "category": "hi->hi answer",
+      "question": "काल्पनिक अभिलेख Sable-14 का सत्यापित सांकेतिक नाम क्या है?",
+      "evidence": [
+        "काल्पनिक अभिलेख Sable-14 का सत्यापित सांकेतिक नाम नवकेपातोकोगु है। अन्य नाम दर्ज नहीं है।"
+      ],
+      "language": "hi",
+      "expectedStatus": "answer",
+      "requiredTerms": [
+        "नवकेपातोकोगु"
+      ],
+      "supportingEvidence": [
+        0
+      ],
+      "forbiddenTerms": [
+        "नवकोकुगागागु"
+      ],
+      "factCheck": "The only verified codeword is the exact new fictional word नवकेपातोकोगु."
+    },
+    {
+      "id": "novel-word-15",
+      "category": "en->hi answer",
+      "question": "काल्पनिक अभिलेख Sable-15 का सत्यापित सांकेतिक नाम क्या है?",
+      "evidence": [
+        "The fictional archive record Sable-15 lists the identifier novelbololilagi as its verified codeword. No other codeword is listed."
+      ],
+      "language": "hi",
+      "expectedStatus": "answer",
+      "requiredTerms": [
+        "novelbololilagi"
+      ],
+      "supportingEvidence": [
+        0
+      ],
+      "forbiddenTerms": [
+        "noveldabidelegi"
+      ],
+      "factCheck": "The only verified codeword is the exact new fictional word novelbololilagi."
+    },
+    {
+      "id": "novel-word-16",
+      "category": "en->hi answer",
+      "question": "काल्पनिक अभिलेख Sable-16 का सत्यापित सांकेतिक नाम क्या है?",
+      "evidence": [
+        "The fictional archive record Sable-16 lists the identifier novelbololodale as its verified codeword. No other codeword is listed."
+      ],
+      "language": "hi",
+      "expectedStatus": "answer",
+      "requiredTerms": [
+        "novelbololodale"
+      ],
+      "supportingEvidence": [
+        0
+      ],
+      "forbiddenTerms": [
+        "noveldabididele"
+      ],
+      "factCheck": "The only verified codeword is the exact new fictional word novelbololodale."
+    },
+    {
+      "id": "novel-word-17",
+      "category": "en->hi answer",
+      "question": "काल्पनिक अभिलेख Sable-17 का सत्यापित सांकेतिक नाम क्या है?",
+      "evidence": [
+        "The fictional archive record Sable-17 lists the identifier novelbolololeba as its verified codeword. No other codeword is listed."
+      ],
+      "language": "hi",
+      "expectedStatus": "answer",
+      "requiredTerms": [
+        "novelbolololeba"
+      ],
+      "supportingEvidence": [
+        0
+      ],
+      "forbiddenTerms": [
+        "noveldabidiliba"
+      ],
+      "factCheck": "The only verified codeword is the exact new fictional word novelbolololeba."
+    },
+    {
+      "id": "novel-word-18",
+      "category": "en->hi answer",
+      "question": "काल्पनिक अभिलेख Sable-18 का सत्यापित सांकेतिक नाम क्या है?",
+      "evidence": [
+        "The fictional archive record Sable-18 lists the identifier noveldababadebo as its verified codeword. No other codeword is listed."
+      ],
+      "language": "hi",
+      "expectedStatus": "answer",
+      "requiredTerms": [
+        "noveldababadebo"
+      ],
+      "supportingEvidence": [
+        0
+      ],
+      "forbiddenTerms": [
+        "noveldabidodibo"
+      ],
+      "factCheck": "The only verified codeword is the exact new fictional word noveldababadebo."
+    },
+    {
+      "id": "novel-word-19",
+      "category": "hi->en answer",
+      "question": "What is the verified codeword for fictional archive record Sable-19?",
+      "evidence": [
+        "काल्पनिक अभिलेख Sable-19 का सत्यापित सांकेतिक नाम नवकोकाकातेगि है। अन्य नाम दर्ज नहीं है।"
+      ],
+      "language": "en",
+      "expectedStatus": "answer",
+      "requiredTerms": [
+        "नवकोकाकातेगि"
+      ],
+      "supportingEvidence": [
+        0
+      ],
+      "forbiddenTerms": [
+        "नवकोकुगुतोगि"
+      ],
+      "factCheck": "The only verified codeword is the exact new fictional word नवकोकाकातेगि."
+    },
+    {
+      "id": "novel-word-20",
+      "category": "hi->en answer",
+      "question": "What is the verified codeword for fictional archive record Sable-20?",
+      "evidence": [
+        "काल्पनिक अभिलेख Sable-20 का सत्यापित सांकेतिक नाम नवकोकाकिगागो है। अन्य नाम दर्ज नहीं है।"
+      ],
+      "language": "en",
+      "expectedStatus": "answer",
+      "requiredTerms": [
+        "नवकोकाकिगागो"
+      ],
+      "supportingEvidence": [
+        0
+      ],
+      "forbiddenTerms": [
+        "नवकोकुगेगिगो"
+      ],
+      "factCheck": "The only verified codeword is the exact new fictional word नवकोकाकिगागो."
+    },
+    {
+      "id": "novel-word-21",
+      "category": "en->en insufficient_evidence",
+      "question": "What is the verified codeword for fictional archive record Sable-21?",
+      "evidence": [
+        "The fictional archive record Sable-21 lists the example placeholder noveldabigalila, but its verified codeword has not been published. No verified codeword is provided."
+      ],
+      "language": "en",
+      "expectedStatus": "insufficient_evidence",
+      "requiredTerms": [],
+      "supportingEvidence": [],
+      "forbiddenTerms": [
+        "noveldabigalila"
+      ],
+      "factCheck": "The verified codeword is explicitly unpublished. The placeholder noveldabigalila must not be presented as verified."
+    },
+    {
+      "id": "novel-word-22",
+      "category": "hi->hi insufficient_evidence",
+      "question": "काल्पनिक अभिलेख Sable-22 का सत्यापित सांकेतिक नाम क्या है?",
+      "evidence": [
+        "काल्पनिक अभिलेख Sable-22 में उदाहरण के रूप में नवकोकुगोगिपा लिखा है, लेकिन वास्तविक सत्यापित सांकेतिक नाम प्रकाशित नहीं किया गया है।"
+      ],
+      "language": "hi",
+      "expectedStatus": "insufficient_evidence",
+      "requiredTerms": [],
+      "supportingEvidence": [],
+      "forbiddenTerms": [
+        "नवकोकुगोगिपा"
+      ],
+      "factCheck": "The verified codeword is explicitly unpublished. The placeholder नवकोकुगोगिपा must not be presented as verified."
+    },
+    {
+      "id": "novel-word-23",
+      "category": "en->en insufficient_evidence",
+      "question": "What is the verified codeword for fictional archive record Sable-23?",
+      "evidence": [
+        "The fictional archive record Sable-23 lists the example placeholder noveldabigelobi, but its verified codeword has not been published. No verified codeword is provided."
+      ],
+      "language": "en",
+      "expectedStatus": "insufficient_evidence",
+      "requiredTerms": [],
+      "supportingEvidence": [],
+      "forbiddenTerms": [
+        "noveldabigelobi"
+      ],
+      "factCheck": "The verified codeword is explicitly unpublished. The placeholder noveldabigelobi must not be presented as verified."
+    },
+    {
+      "id": "novel-word-24",
+      "category": "hi->hi insufficient_evidence",
+      "question": "काल्पनिक अभिलेख Sable-24 का सत्यापित सांकेतिक नाम क्या है?",
+      "evidence": [
+        "काल्पनिक अभिलेख Sable-24 में उदाहरण के रूप में नवकोकुतागुगा लिखा है, लेकिन वास्तविक सत्यापित सांकेतिक नाम प्रकाशित नहीं किया गया है।"
+      ],
+      "language": "hi",
+      "expectedStatus": "insufficient_evidence",
+      "requiredTerms": [],
+      "supportingEvidence": [],
+      "forbiddenTerms": [
+        "नवकोकुतागुगा"
+      ],
+      "factCheck": "The verified codeword is explicitly unpublished. The placeholder नवकोकुतागुगा must not be presented as verified."
+    }
+  ]
+}

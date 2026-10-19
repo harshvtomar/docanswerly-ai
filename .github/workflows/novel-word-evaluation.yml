@@ -1,0 +1,45 @@
+name: New-word genuine Qwen3 bilingual grounding evaluation
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/lib/answers.ts"
+      - "src/lib/evidence-availability.ts"
+      - "src/lib/evidence-sufficiency.ts"
+      - "evaluation/novel-word-heldout.json"
+      - "evaluation/browser.ts"
+      - "e2e/novel-word-evaluation.spec.ts"
+      - "playwright.config.ts"
+      - ".github/workflows/novel-word-evaluation.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  genuine-qwen3-postfix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      ONNXRUNTIME_NODE_INSTALL_CUDA: skip
+      NOVEL_WORD_EVALUATION: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm run build:evaluation
+      - run: npx playwright install --with-deps chromium
+      - name: Run 24 novel-word exact-copy and abstention questions with real Qwen3
+        run: npx playwright test e2e/novel-word-evaluation.spec.ts --project=heldout-postfix-evaluation
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: novel-word-real-qwen3-review
+          path: |
+            docs/novel-word-qwen3-evaluation.json
+            docs/novel-word-qwen3-review.csv
+            playwright-report/
+            test-results/
+          retention-days: 30

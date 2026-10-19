@@ -1,9 +1,11 @@
 import cases from "./rag-cases.json";
 import heldoutCases from "./heldout-cases.json";
 import postfixCases from "./heldout-v2-cases.json";
+import novelCases from "./novel-word-heldout.json";
 const suiteParam = new URLSearchParams(location.search).get("suite");
 const selectedSuite = suiteParam === "heldout" ? heldoutCases
-  : suiteParam === "postfix" ? postfixCases : cases;
+  : suiteParam === "postfix" ? postfixCases
+  : suiteParam === "novel" ? novelCases : cases;
 import { LocalGeneration, GENERATION_MODEL } from "../src/lib/local-generation";
 import {
   GroundedAnswerProvider,
