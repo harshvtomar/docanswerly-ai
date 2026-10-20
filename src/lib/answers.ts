@@ -4,6 +4,7 @@ import { evidenceSafetyGate } from "./evidence-sufficiency";
 import { validateIdentifierGrounding, sourceIdentifierHint } from "./identifier-grounding";
 import { sourceHindiFactHints, sourceEnglishMaterialGlossary, repeatedQuestion } from "./hindi-facts";
 import { countEvidenceHint, numericFingerprint } from "./bilingual-evidence";
+import { assertQuestionFactSupport, UnsafeSourceClaimError } from "./claim-support";
 export type AnswerLanguage = "auto" | "en" | "hi";
 export type ResolvedLanguage = "en" | "hi";
 export interface AnswerRequest {
@@ -403,6 +404,7 @@ export function validateAnswer(
   const answerText = v.answer as string; // Schema check above established a string.
   // Specific literal identifiers are not safe just because their citations exist.
   validateIdentifierGrounding(request.question, answerText, citedText);
+  assertQuestionFactSupport(request.question, answerText, citations.map(c=>({text:c.text})));
   // A literal valid citation is insufficient when the wrong nearby material
   // is selected. Only enforce when a SINGLE question-scoped source material
   // has been recognized, not for open-ended or compound material requests.
@@ -670,7 +672,14 @@ export class GroundedAnswerProvider {
       if (signal?.aborted) throw new DOMException("Cancelled", "AbortError");
       // Avoid translating an unsupported or invalid factual draft. Retry only
       // a directly verified count, without bypassing the model or validator.
-      let english = validateAnswer(englishRaw, englishRequest);
+      let english: GroundedAnswer;
+      try {
+        english = validateAnswer(englishRaw, englishRequest);
+      } catch (error) {
+        if (error instanceof UnsafeSourceClaimError)
+          return {...refusal("hi","insufficient_evidence"),validation:"heuristic-evidence-gap"};
+        throw error;
+      }
       if (english.status === "insufficient_evidence") {
         const recovered = await this.retryCountRefusal(englishRequest, signal)
           ?? await this.retryIdentifierRefusal(englishRequest, signal);
@@ -702,6 +711,8 @@ export class GroundedAnswerProvider {
       try {
         translated = checkTranslation(translatedRaw);
       } catch (error) {
+        if (error instanceof UnsafeSourceClaimError)
+          return {...refusal("hi","insufficient_evidence"),validation:"heuristic-evidence-gap"};
         const reason = error instanceof Error ? error.message : "";
         if (![
           "The Hindi answer omitted or mistranslated a source-critical term.",
@@ -724,6 +735,8 @@ export class GroundedAnswerProvider {
         } catch (finalError) {
           const formatted = this.exactHindiLiteralFallback(translatedRaw,request,english);
           if(formatted) return formatted;
+          if (finalError instanceof UnsafeSourceClaimError)
+            return {...refusal("hi","insufficient_evidence"),validation:"heuristic-evidence-gap"};
           throw finalError;
         }
       }
@@ -744,6 +757,9 @@ export class GroundedAnswerProvider {
       }
       return validated;
     } catch (error) {
+      if (error instanceof UnsafeSourceClaimError)
+        return {...refusal(answerLanguage(request.question,request.language),"insufficient_evidence"),
+          validation:"heuristic-evidence-gap"};
       const canonical = discardInvalidRefusalText(raw, request);
       if (canonical) return canonical;
       // Only retry a clearly wrong output language. Citation and factual
