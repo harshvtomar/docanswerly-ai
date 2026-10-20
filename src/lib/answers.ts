@@ -4,6 +4,7 @@ import { evidenceSafetyGate } from "./evidence-sufficiency";
 import { validateIdentifierGrounding, sourceIdentifierHint } from "./identifier-grounding";
 import { sourceHindiFactHints, sourceEnglishMaterialGlossary, repeatedQuestion } from "./hindi-facts";
 import { countEvidenceHint, numericFingerprint } from "./bilingual-evidence";
+import { assertEnglishHindiFactIntegrity, mainlyHindiInsteadOfEnglish } from "./bilingual-integrity";
 import { assertQuestionFactSupport, UnsafeSourceClaimError } from "./claim-support";
 export type AnswerLanguage = "auto" | "en" | "hi";
 export type ResolvedLanguage = "en" | "hi";
@@ -392,6 +393,8 @@ export function validateAnswer(
     if (!named || v.answer.trim().normalize("NFC").toLocaleLowerCase() !== named.value)
       throw Error("The model did not produce the requested English answer.");
   }
+  if (lang === "en" && mainlyHindiInsteadOfEnglish(v.answer))
+    throw Error("The model did not produce the requested English answer.");
   // Guard a high-impact cross-language failure: matching the number is
   // insufficient if the model silently changes the duration unit.
   const durationUnits = [
@@ -703,8 +706,7 @@ export class GroundedAnswerProvider {
         const result = validateAnswer(candidate, request);
         if (english.citations.map(c=>c.id).join("|") !== result.citations.map(c=>c.id).join("|"))
           throw Error("The Hindi translation changed the supporting citation identities.");
-        if (numericFingerprint(english.answer) !== numericFingerprint(result.answer))
-          throw Error("The Hindi translation changed the source answer's numeric facts.");
+        assertEnglishHindiFactIntegrity(english.answer, result.answer);
         return result;
       };
       let translated: GroundedAnswer;
@@ -721,13 +723,17 @@ export class GroundedAnswerProvider {
           "The model did not produce the requested Hindi answer.",
           "The model repeated the question instead of answering.",
           "The Hindi translation changed the source answer's numeric facts.",
-        ].includes(reason)) throw error;
+          "The Hindi translation changed the source answer's calendar month.",
+          "The Hindi translation changed the source answer's negation.",
+          "The Hindi translation changed an exact source identifier.",
+        ].includes(reason) && !reason.startsWith("The Hindi translation omitted or changed the source ")) throw error;
         if (signal?.aborted) throw new DOMException("Cancelled", "AbortError");
         const retry = hindiTranslationMessages(request, englishRaw);
         retry[0].content +=
           " Previous draft's factual numerals MUST ALL appear in the Hindi answer: " +
           JSON.stringify(numericFingerprint(english.answer).split("|").filter(Boolean)) +
-          ". Preserve the complete numeric value with matching units and original citation labels, not merely a unit. Do not repeat the question. JSON only.";
+          ". Preserve all source names, units, affirmative/negative meaning, and exact alphanumeric identifiers. " +
+          "Correction needed: " + reason + ". Keep original citation labels. Do not repeat the question. JSON only.";
         translatedRaw = await this.client.generate(retry, translationSchema, signal);
         if (signal?.aborted) throw new DOMException("Cancelled", "AbortError");
         try {
@@ -779,10 +785,29 @@ export class GroundedAnswerProvider {
       );
       if (!requestedLanguageFailed && !fixableHindiFactFormat && !fixableEnglishMaterial) throw error;
       if (signal?.aborted) throw new DOMException("Cancelled", "AbortError");
+      // For predominantly Hindi text labeled as English, give a *single*
+      // translation-only attempt. Keep its source metadata immutable.
+      // The model is not invited to answer again using new facts.
+      // Other failures still use their narrow, existing retry paths.
       // English-only evidence needs factual translation, while a cited
       // Hindi passage benefits from a short Hindi source-conditioned reply.
       // Both paths still use genuine local inference and strict validation.
       let repair = answerMessages(request, true);
+      if (requestedLanguageFailed && lang === "en") {
+        let first: unknown = null;
+        try { first = JSON.parse(raw); } catch { /* invalid raw stays invalid */ }
+        const draft = first && typeof first === "object" && !Array.isArray(first)
+          ? first as Record<string,unknown> : null;
+        if (draft && draft.status === "answer" && typeof draft.answer === "string" &&
+            Array.isArray(draft.citations) &&
+            draft.citations.every(id=>typeof id==="string" &&
+              request.evidence.some((_,i)=>id===`E${i+1}`))) {
+          repair[0].content += " This is a translation-only correction: the prior factual reply was mostly in Hindi. Translate its existing verified facts into English grammar without changing names, numbers, negation, dates, units or cited source IDs. Keep an original-script proper noun when essential. Return only JSON.";
+          const oldPayload=JSON.parse(repair[1].content) as Record<string,unknown>;
+          repair[1].content=JSON.stringify({...oldPayload,
+            priorHindiFactualDraft:draft.answer,requiredCitationIds:draft.citations});
+        }
+      }
       if (requestedLanguageFailed && lang === "hi") {
         repair = request.evidence.some(c => /\p{Script=Devanagari}/u.test(c.text))
           ? hindiSourceRepairMessages(request, raw)
@@ -805,6 +830,20 @@ export class GroundedAnswerProvider {
       // the cited passages or change a draft's explicit numbers.
       try {
         const result = validateAnswer(retryRaw, request);
+        if (requestedLanguageFailed && lang === "en") {
+          let initial: { citations?: unknown; answer?: unknown } = {};
+          try { initial = JSON.parse(raw); } catch { /* handled by validation */ }
+          if (Array.isArray(initial.citations) && initial.citations.length &&
+              initial.citations.every(id=>typeof id==="string")) {
+            const resultIds=result.citations.map(c=>
+              "E"+(request.evidence.findIndex(e=>e.id===c.id)+1));
+            if (initial.citations.slice().sort().join("|")!==resultIds.sort().join("|"))
+              throw Error("English language repair changed the cited source identities.");
+          }
+          if (typeof initial.answer==="string" &&
+              numericFingerprint(initial.answer)!==numericFingerprint(result.answer))
+            throw Error("English language repair changed the draft's numeric facts.");
+        }
         if (requestedLanguageFailed && lang === "hi") {
           let initial: { citations?: unknown; answer?: unknown } = {};
           try { initial = JSON.parse(raw); } catch { /* handled below */ }
