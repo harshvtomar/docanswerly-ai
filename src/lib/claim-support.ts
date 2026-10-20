@@ -58,7 +58,7 @@ function unambiguousRequestedMonth(question:string,chunks:{text:string}[]):numbe
   const sentences=chunks.flatMap(c=>c.text.split(/[।.!?\n]+/u)).map(s=>s.trim()).filter(Boolean);
   let candidates=sentences;
   if(filing)candidates=sentences.filter(s=>/\b(?:filed|submitted|lodged)\b|प्रस्तुत|दाखिल|जमा|दायर/iu.test(s));
-  else if(inspection)candidates=sentences.filter(s=>/\b(?:inspected|inspection|performed|conducted)\b|निरीक्षण|जांच/iu.test(s));
+  else if(inspection)candidates=sentences.filter(s=>/\b(?:inspected|performed|conducted)\b|निरीक्षण\s+(?:किया|हुआ)|जांच\s+(?:की|हुई)/iu.test(s));
   const values=[...new Set(candidates.flatMap(monthsIn))];
   return values.length===1?values[0]:null;
 }
