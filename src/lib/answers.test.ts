@@ -981,3 +981,95 @@ describe("English/Hindi cross-script identifier and literal recovery",()=>{
     expect(n).toBe(2); // An invented numeral is rejected immediately; no repeat.
   });
 });
+
+
+describe("Step 2 — real inference bilingual translation corrections",()=>{
+  const request=(question:string,language:"en"|"hi",text:string):AnswerRequest=>({
+    question,language,
+    evidence:[{id:"doc-p1",documentId:"doc",documentName:"doc.pdf",page:1,text,start:0,end:text.length}],
+  });
+  const out=(language:"en"|"hi",text:string,citations:string[]=["E1"])=>
+    JSON.stringify({status:"answer",answer:text,language,citations});
+  it("retries a dropped source speed dimension, then accepts verified Hindi",async()=>{
+    const r=request("बस की गति कितनी है?","hi","The bus maximum speed is 65 kilometers per hour.");
+    let n=0;
+    const answer=await new GroundedAnswerProvider({generate:async()=>{
+      n++;
+      return n===1?out("en","The bus speed is 65 kilometers per hour.")
+        :n===2?out("hi","गति ६५ किलोमीटर है।")
+        :out("hi","बस की गति ६५ किलोमीटर प्रति घंटा है।");
+    }}).answer(r);
+    expect(n).toBe(3);
+    expect(answer.answer).toContain("प्रति घंटा");
+    expect(answer.validation).toBe("source-identities-checked");
+  });
+  it("corrects a changed negative fact without accepting the first invalid translation",async()=>{
+    const r=request("दरवाज़ा खुला है या नहीं?","hi","The entrance is not open.");
+    let n=0;
+    const answer=await new GroundedAnswerProvider({generate:async()=>{
+      n++;
+      return n===1?out("en","The entrance is not open.")
+        :n===2?out("hi","प्रवेश द्वार खुला है।")
+        :out("hi","प्रवेश द्वार खुला नहीं है।");
+    }}).answer(r);
+    expect(n).toBe(3);
+    expect(answer.answer).toContain("नहीं");
+  });
+  it("retries an incorrect report month and keeps the unchanged event",async()=>{
+    const r=request("रिपोर्ट किस महीने प्रस्तुत की गई?","hi",
+      "The inspection was performed in August. The report was filed in September 2028.");
+    let n=0;
+    const answer=await new GroundedAnswerProvider({generate:async()=>{
+      n++;
+      return n===1?out("en","The report was filed in September 2028.")
+        :n===2?out("hi","रिपोर्ट अगस्त २०२८ में दाखिल हुई।")
+        :out("hi","रिपोर्ट सितम्बर २०२८ में दाखिल हुई।");
+    }}).answer(r);
+    expect(n).toBe(3);
+    expect(answer.answer).toContain("सितम्बर");
+  });
+  it("keeps safe refusal when both translation attempts change the factual month",async()=>{
+    const r=request("रिपोर्ट किस महीने प्रस्तुत की गई?","hi",
+      "The inspection was performed in August. The report was filed in September 2028.");
+    let n=0;
+    const answer=await new GroundedAnswerProvider({generate:async()=>{
+      n++;return n===1?out("en","The report was filed in September 2028."):
+        out("hi","रिपोर्ट अगस्त २०२८ में दाखिल हुई।");
+    }}).answer(r);
+    expect(n).toBe(3);
+    expect(answer.status).toBe("insufficient_evidence");
+    expect(answer.validation).toBe("heuristic-evidence-gap");
+  });
+  it("rewrites an existing Hindi-source answer as English without a new fact",async()=>{
+    const r=request("Which river supplies the park with water?","en",
+      "उद्यान को पानी सोन नदी से मिलता है। तालाब में वर्षा जल भरता है।");
+    let n=0;
+    const answer=await new GroundedAnswerProvider({generate:async()=>{
+      n++;return n===1?out("en","उद्यान को पानी सोन नदी से मिलता है।")
+        :out("en","The park is supplied with water by the Son River.");
+    }}).answer(r);
+    expect(n).toBe(2);
+    expect(answer.status).toBe("answer");
+    expect(answer.answer).toContain("Son River");
+  });
+  it("does not allow an English language retry to swap source IDs",async()=>{
+    const r=request("Which river supplies the park?","en",
+      "उद्यान को पानी सोन नदी से मिलता है।");
+    let n=0;
+    await expect(new GroundedAnswerProvider({generate:async()=>{
+      n++;return n===1?out("en","उद्यान को पानी सोन नदी से मिलता है।")
+        :out("en","The Son River.",["E2"]);
+    }}).answer(r)).rejects.toThrow("unknown source");
+    expect(n).toBe(2);
+  });
+  it("keeps one bounded repair and rejects invented numerical facts",async()=>{
+    const r=request("Which year was the hall built?","en",
+      "सभागार २०२८ में बना था, २०२९ में रंगाई हुई।");
+    let n=0;
+    await expect(new GroundedAnswerProvider({generate:async()=>{
+      n++;return n===1?out("en","सभागार २०२८ में बना था।")
+        :out("en","The hall was built in 2029.");
+    }}).answer(r)).rejects.toThrow("numeric facts");
+    expect(n).toBe(2);
+  });
+});

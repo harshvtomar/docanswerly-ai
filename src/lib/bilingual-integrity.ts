@@ -8,7 +8,7 @@
 const toAsciiDigits = (s: string) =>
   s.replace(/[०-९]/gu, c => String(c.charCodeAt(0) - 0x966));
 export function factNumbers(s:string):string[] {
-  return (toAsciiDigits(s).match(/\d+(?:[.,]\d+)*/gu) ?? []).sort();
+  return (toAsciiDigits(s.replace(identifier," ")).match(/\d+(?:[.,]\d+)*/gu) ?? []).sort();
 }
 const months=[
   {en:/\bjanuary\b/iu,hi:/जनवरी/u},

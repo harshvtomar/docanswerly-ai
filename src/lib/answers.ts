@@ -713,10 +713,10 @@ export class GroundedAnswerProvider {
       try {
         translated = checkTranslation(translatedRaw);
       } catch (error) {
-        if (error instanceof UnsafeSourceClaimError)
-          return {...refusal("hi","insufficient_evidence"),validation:"heuristic-evidence-gap"};
+        // An unsafe translated claim is never displayed. A single correction
+        // may be attempted against the already validated source-grounded draft.
         const reason = error instanceof Error ? error.message : "";
-        if (![
+        if (!(error instanceof UnsafeSourceClaimError) && ![
           "The Hindi answer omitted or mistranslated a source-critical term.",
           "The answer omitted or mistranslated the source weight unit.",
           "The weight answer omitted the cited numeric quantity.",
