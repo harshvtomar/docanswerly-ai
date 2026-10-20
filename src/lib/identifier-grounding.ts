@@ -51,3 +51,19 @@ export function validateIdentifierGrounding(question: string, answer: string, ci
   if ([...claimed].some(word => word !== expected))
     throw Error("The answer's requested identifier is not supported verbatim by its citations.");
 }
+
+/**
+ * Unique exact source identifier, if explicit; no guess from a related
+ * document or another snippet. Suitable ONLY as a hint for genuine inference.
+ */
+export function sourceIdentifierHint(question: string, chunks: {text:string}[]):
+  {label:string;value:string}|null {
+  if(!questionPattern.test(question)) return null;
+  const found: {label:string;value:string}[] = [];
+  for(let i=0;i<chunks.length;i++) {
+    const names=[...extractLiterals(chunks[i].text)];
+    if(names.length!==1) continue;
+    found.push({label:"E"+(i+1),value:names[0]});
+  }
+  return found.length===1 ? found[0] : null;
+}

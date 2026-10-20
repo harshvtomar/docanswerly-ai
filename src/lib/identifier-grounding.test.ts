@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { validateIdentifierGrounding as check } from "./identifier-grounding";
+import { validateIdentifierGrounding as check, sourceIdentifierHint } from "./identifier-grounding";
 describe("exact codeword / identifier grounding", () => {
   it("passes only correct literal English names", () => {
     const source = "The listed fictional codename is novelbalagodiba.";
@@ -36,5 +36,22 @@ describe("exact codeword / identifier grounding", () => {
   it("does not disturb ordinary factual paraphrases", () => {
     expect(() => check("What is the crop?", "They grow wheat.", "The farm grows wheat.")).not.toThrow();
     expect(() => check("विद्यालय कहाँ है?", "विद्यालय मुख्य भवन में है।", "विद्यालय मुख्य भवन में है।")).not.toThrow();
+  });
+});
+
+describe("uniquely anchored multilingual source identifier hints",()=>{
+  it("finds a Latin codeword from its exact verification sentence",()=>{
+    expect(sourceIdentifierHint("What is the verified codeword?",[
+      {text:"The archival record lists the identifier novelbololilagi as its verified codeword. No other codeword is listed."}
+    ])).toEqual({label:"E1",value:"novelbololilagi"});
+  });
+  it("finds a Hindi codeword despite the English question",()=>{
+    expect(sourceIdentifierHint("What is the verified codeword?",[
+      {text:"काल्पनिक अभिलेख Sable-19 का सत्यापित सांकेतिक नाम नवकोकाकातेगि है। अन्य नाम दर्ज नहीं है।"}
+    ])).toEqual({label:"E1",value:"नवकोकाकातेगि"});
+  });
+  it("does not guess from unverified placeholders or multiple IDs",()=>{
+    expect(sourceIdentifierHint("What is the codeword?",[{text:"The codeword has not been published."}])).toBeNull();
+    expect(sourceIdentifierHint("What is the codename?",[{text:"The codename is AlphaOne. The codename is BetaTwo."}])).toBeNull();
   });
 });
