@@ -5,6 +5,8 @@ on:
     paths:
       - "src/lib/bilingual-evidence.ts"
       - "src/lib/bilingual-evidence.test.ts"
+      - "src/lib/claim-support.ts"
+      - "src/lib/claim-support.test.ts"
       - "src/lib/hindi-facts.ts"
       - "src/lib/answers.ts"
       - "src/lib/identifier-grounding.ts"
