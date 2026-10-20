@@ -88,3 +88,36 @@ describe("Stage 1: conservative source-fact validation",()=>{
       model("answer","54 chairs")}).answer(r,ctrl.signal)).rejects.toThrow("Cancelled");
   });
 });
+
+describe("Stage 1 high-confidence event/month and price claims",()=>{
+  const passage="The Mayur Testing Center filed the equipment inspection report in September 2028. The inspection was performed in August.";
+  it("does not swap a nearby inspection month for the filing month",()=>{
+    expect(()=>assert("In which month was the report filed?","It was filed in August.",[{text:passage}]))
+      .toThrow("requested month");
+    expect(()=>assert("In which month was the report filed?","It was filed in September.",[{text:passage}]))
+      .not.toThrow();
+  });
+  it("preserves Hindi month equivalence but refuses a mistranslated one",()=>{
+    expect(()=>assert("रिपोर्ट किस महीने प्रस्तुत की गई?","रिपोर्ट सितंबर 2028 में प्रस्तुत हुई।",[{text:passage}]))
+      .not.toThrow();
+    expect(()=>assert("रिपोर्ट किस महीने प्रस्तुत की गई?","अगस्त में।",[{text:passage}]))
+      .toThrow("requested month");
+  });
+  it("supports the separate inspection month when the question asks it",()=>{
+    expect(()=>assert("In which month was the inspection performed?","In August.",[{text:passage}]))
+      .not.toThrow();
+    expect(()=>assert("In which month was the inspection performed?","In September.",[{text:passage}]))
+      .toThrow("requested month");
+  });
+  it("does not guess the right month from two plausible entries without event context",()=>{
+    expect(()=>assert("Which month?","August",[{text:passage}])).not.toThrow();
+  });
+  it("requires a factual source statement before saying entry is free",()=>{
+    expect(()=>assert("Is entry free?","Entry is free.",[{text:"Visitors must register in advance."}]))
+      .toThrow("free-admission");
+    expect(()=>assert("Is entry free?","Entry is free.",[{text:"Admission is free, with registration required."}]))
+      .not.toThrow();
+    expect(()=>assert("Is entry free?","Entry is not free.",[{text:"A fee is required."}]))
+      .not.toThrow();
+  });
+});

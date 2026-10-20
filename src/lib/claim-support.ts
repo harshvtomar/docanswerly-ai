@@ -34,6 +34,37 @@ function segregateUntrustedInstructions(text:string){
   };
 }
 const unsafeClaims = /\b(?:free|no\s+charge|without\s+registration|waived|complimentary)\b|मुफ्त|निःशुल्क|बिना\s+पंजीकरण/iu;
+const MONTHS: RegExp[] = [
+  /\bjanuary\b|जनवरी/iu,/\bfebruary\b|फ़रवरी|फरवरी/iu,
+  /\bmarch\b|मार्च/iu,/\bapril\b|अप्रैल/iu,
+  /\bmay\b|मई/iu,/\bjune\b|जून/iu,
+  /\bjuly\b|जुलाई/iu,/\baugust\b|अगस्त/iu,
+  /\bseptember\b|सितंबर|सितम्बर/iu,/\boctober\b|अक्टूबर/iu,
+  /\bnovember\b|नवंबर|नवम्बर/iu,/\bdecember\b|दिसंबर|दिसम्बर/iu,
+];
+function monthsIn(text:string):number[]{
+  return MONTHS.flatMap((month,i)=>month.test(text)?[i]:[]);
+}
+/**
+ * Only resolve a month when a question has a clearly bounded source relation.
+ * "When was the report FILED?" must not take the inspection's August date
+ * when the filing is recorded in September.
+ */
+function unambiguousRequestedMonth(question:string,chunks:{text:string}[]):number|null {
+  if(!/\b(?:which|what)\s+month\b|किस\s+महीने|कौन\s*से\s+महीने/iu.test(question))
+    return null;
+  const filing=/\b(?:filed|submitted|lodged|submission)\b|प्रस्तुत|दाखिल|जमा|दायर/iu.test(question);
+  const inspection=/\b(?:inspected|inspection|performed|conducted)\b|निरीक्षण|जांच/iu.test(question)&&!filing;
+  const sentences=chunks.flatMap(c=>c.text.split(/[।.!?\n]+/u)).map(s=>s.trim()).filter(Boolean);
+  let candidates=sentences;
+  if(filing)candidates=sentences.filter(s=>/\b(?:filed|submitted|lodged)\b|प्रस्तुत|दाखिल|जमा|दायर/iu.test(s));
+  else if(inspection)candidates=sentences.filter(s=>/\b(?:inspected|inspection|performed|conducted)\b|निरीक्षण|जांच/iu.test(s));
+  const values=[...new Set(candidates.flatMap(monthsIn))];
+  return values.length===1?values[0]:null;
+}
+const factualFree=/\b(?:free|no\s+(?:admission\s+)?charge|without\s+payment|without\s+paying|no\s+(?:entry\s+)?fee|fee\s+(?:is\s+)?waived|complimentary)\b|मुफ्त|निःशुल्क|कोई\s+शुल्क\s+नहीं|बिना\s+शुल्क/iu;
+const negatedFree=/\b(?:not|isn['’]t|aren['’]t|never)\s+(?:free|complimentary)\b|(?:मुफ्त|निःशुल्क)\s+नहीं/iu;
+
 
 /** Detect an explicit count mismatch or content borrowed only from hostile instructions. */
 export function assertQuestionFactSupport(
@@ -41,6 +72,12 @@ export function assertQuestionFactSupport(
 ): void {
   // Count evidence is only used where the source identifies one unambiguous
   // count of the item asked about. Do not reinterpret years or nearby totals.
+  const requestedMonth=unambiguousRequestedMonth(question,citedEvidence);
+  if(requestedMonth!==null){
+    const answerMonths=[...new Set(monthsIn(answer))];
+    if(answerMonths.length!==1||answerMonths[0]!==requestedMonth)
+      throw new UnsafeSourceClaimError("The requested month does not match the cited source event.");
+  }
   const hint=countEvidenceHint(question,citedEvidence);
   if(hint){
     const observed=numericFingerprint(answer);
@@ -49,8 +86,12 @@ export function assertQuestionFactSupport(
   }
 
   const splits=citedEvidence.map(e=>segregateUntrustedInstructions(e.text));
-  if(!splits.some(s=>s.hasInjection))return;
   const facts=splits.map(s=>s.factual).join(" ");
+  // An explicit claim of zero cost needs positive evidence of zero cost.
+  // Merely requiring registration does not establish whether it is free.
+  if(unsafeClaims.test(answer) && !negatedFree.test(answer) && !factualFree.test(facts))
+    throw new UnsafeSourceClaimError("A positive free-admission claim lacks source support.");
+  if(!splits.some(s=>s.hasInjection))return;
   const directions=splits.map(s=>s.instructions).join(" ");
   // A free/waived claim copied from hostile PDF instructions is particularly
   // dangerous: first check whether it appears in actual factual sentences.
