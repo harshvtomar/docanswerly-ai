@@ -978,6 +978,6 @@ describe("English/Hindi cross-script identifier and literal recovery",()=>{
       n++;return n===1?raw("answer","27","en"):
         raw("answer","29","hi");
     }}).answer(r)).rejects.toThrow();
-    expect(n).toBe(3);
+    expect(n).toBe(2); // An invented numeral is rejected immediately; no repeat.
   });
 });

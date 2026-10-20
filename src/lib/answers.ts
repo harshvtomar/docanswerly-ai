@@ -387,7 +387,7 @@ export function validateAnswer(
   if (lang === "en" && /\p{Script=Devanagari}/u.test(v.answer) && !/[A-Za-z]/.test(v.answer)) {
     // An original proper noun/codeword written in Devanagari IS a valid
     // English answer's exact identifier; don't force an invented translation.
-    const named = sourceIdentifierHint(request.question, citations.map(c => c.text));
+    const named = sourceIdentifierHint(request.question, citations.map(c => ({text:c.text})));
     if (!named || v.answer.trim().normalize("NFC").toLocaleLowerCase() !== named.value)
       throw Error("The model did not produce the requested English answer.");
   }
