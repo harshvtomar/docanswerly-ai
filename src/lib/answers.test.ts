@@ -890,3 +890,20 @@ describe("Session 3B bilingual accuracy regression: verified evidence only", () 
     expect(calls).toBe(3);
   });
 });
+
+describe("material attribution must be question-scoped", () => {
+  it("does not reject true recycled aluminum frames because a crate is wooden",()=>{
+    const source="सहज workshop के display frames recycled aluminum से बनते हैं। लकड़ी का उपयोग केवल shipping crate में होता है।";
+    const q:AnswerRequest = {question:"What material are the display frames made of?",
+      language:"en",evidence:[{id:"f",documentId:"f",documentName:"f.pdf",page:1,text:source,start:0,end:source.length}]};
+    const raw=JSON.stringify({status:"answer",answer:"The display frames use recycled aluminum.",language:"en",citations:["E1"]});
+    expect(validateAnswer(raw,q).status).toBe("answer");
+  });
+  it("still catches the wrong wooden roof material attributed to bamboo walls",()=>{
+    const source="प्रदर्शनी की दीवारें बाँस से बनी हैं। छत पर लकड़ी का काम है।";
+    const q:AnswerRequest={question:"What material are the walls made from?",language:"en",
+      evidence:[{id:"f",documentId:"f",documentName:"f.pdf",page:1,text:source,start:0,end:source.length}]};
+    const bad=JSON.stringify({status:"answer",answer:"wood",language:"en",citations:["E1"]});
+    expect(()=>validateAnswer(bad,q)).toThrow("mismatched");
+  });
+});

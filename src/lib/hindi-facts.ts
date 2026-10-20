@@ -85,14 +85,24 @@ export function sourceEnglishMaterialGlossary(question: string, evidence: string
   const text = evidence.join("\n");
   // If the question asks about one clear subject, keep the matching sentence.
   // This avoids translating the roof's wood as the walls' bamboo.
-  const subject = /\b(?:walls?|wall\s+material)\b/iu.test(question) &&
-    !/\b(?:roof|ceiling|and\s+walls)\b/iu.test(question)
-      ? /दीवार/iu
-      : /\b(?:roofs?|ceilings?)\b/iu.test(question) &&
-          !/\b(?:walls?)\b/iu.test(question)
-        ? /छत/iu : null;
+  const targetSubjects: {q:RegExp;source:RegExp}[] = [
+    {q:/\bwalls?\b/iu,source:/दीवार/u},
+    {q:/\b(?:roof|ceiling)s?\b/iu,source:/छत/u},
+    {q:/\b(?:display\s+)?frames?\b/iu,source:/\bframes?\b|फ्रेम/u},
+    {q:/\bdoors?\b/iu,source:/दरवा[ज़ज]|द्वार/u},
+    {q:/\bfloors?\b/iu,source:/फर्श/u},
+    {q:/\bbenches?\b/iu,source:/बेंच/u},
+    {q:/\bcrates?\b/iu,source:/\bcrates?\b|बक्स/u},
+  ];
+  const requested = targetSubjects.filter(({q})=>q.test(question));
   const sentences = text.split(/[।.!?\r\n]+/u).filter(s => s.trim());
-  const scoped = subject ? sentences.filter(s => subject.test(s)).join("\n") : text;
+  // An adjacent, different entity is NOT proof of this entity's material.
+  // Unknown/compound targets get no strict semantic check, never an invented fact.
+  if (requested.length > 1) return [];
+  const relevant = requested.length===1
+    ? sentences.filter(s=>requested[0].source.test(s)) : sentences;
+  if (!relevant.length || (!requested.length && sentences.length > 1)) return [];
+  const scoped = relevant.join("\n");
   return HINDI_MATERIAL_GLOSSARY.filter(x=>x.pattern.test(scoped))
     .map(({source,english})=>({source,english}));
 }
